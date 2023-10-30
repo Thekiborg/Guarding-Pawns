@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+    <GuardingP_GuardingSpotCheckBox>Show Guarding Spot</GuardingP_GuardingSpotCheckBox>
+    <GuardingP_PatrollingSpotCheckBox>Show Patrolling Spot</GuardingP_PatrollingSpotCheckBox>
+    <GuardingP_GuardingAreaCheckBox>Show Guarding Area</GuardingP_GuardingAreaCheckBox>
+
+    <!--
+    <GuardingP_SightHeader>sight</GuardingP_SightHeader>
+    <GuardingP_ConsciousnessHeader>cons.</GuardingP_ConsciousnessHeader>
+    <GuardingP_ManipulationHeader>man.</GuardingP_ManipulationHeader>
+    <GuardingP_MovementHeader>mov.</GuardingP_MovementHeader>
+    <GuardingP_ShootingHeader>shoot</GuardingP_ShootingHeader>
+    <GuardingP_MeleeHeader>melee</GuardingP_MeleeHeader>
+    <GuardingP_SelectJobHeader>select job</GuardingP_SelectJobHeader>
+    <GuardingP_SelectExtraJobHeader>Extra options for the selected job</GuardingP_SelectExtraJobHeader>
+    -->
+
+    <GuardingP_SightColumn>{0}'s sight</GuardingP_SightColumn>
+    <GuardingP_ConsciousnessColumn>{0}'s consciousness</GuardingP_ConsciousnessColumn>
+    <GuardingP_ManipulationColumn>{0}'s manipulation</GuardingP_ManipulationColumn>
+    <GuardingP_MovementColumn>{0}'s movement</GuardingP_MovementColumn>
+    <GuardingP_ShootingColumn>{0}'s shooting skill</GuardingP_ShootingColumn>
+    <GuardingP_MeleeColumn>{0}'s melee skill</GuardingP_MeleeColumn>
+
+    <GuardingP_Undefined>Unassigned</GuardingP_Undefined>
+    <GuardingP_GuardSpot>Guard Spot</GuardingP_GuardSpot>
+    <GuardingP_GuardArea>Guard Area</GuardingP_GuardArea>
+    <GuardingP_GuardPawn>Protect Pawn</GuardingP_GuardPawn>
+    <GuardingP_GuardPath>Patrol</GuardingP_GuardPath>
+
+    <GuardingP_redSpot>Guard at the red spots</GuardingP_redSpot>
+    <GuardingP_orangeSpot>Guard at the orange spots</GuardingP_orangeSpot>
+    <GuardingP_yellowSpot>Guard at the yellow spots</GuardingP_yellowSpot>
+    <GuardingP_blueSpot>Guard at the blue spots</GuardingP_blueSpot>
+    <GuardingP_purpleSpot>Guard at the purple spots</GuardingP_purpleSpot>
+
+    <GuardingP_redPath>Patrol the red route</GuardingP_redPath>
+    <GuardingP_orangePath>Patrol the orange route</GuardingP_orangePath>
+    <GuardingP_yellowPath>Patrol the yellow route</GuardingP_yellowPath>
+    <GuardingP_bluePath>Patrol the blue route</GuardingP_bluePath>
+    <GuardingP_purplePath>Patrol the purple route</GuardingP_purplePath>
+
+    <GuardingP_ProtectPawn>Bodyguard {0}</GuardingP_ProtectPawn>
+
+</LanguageData>

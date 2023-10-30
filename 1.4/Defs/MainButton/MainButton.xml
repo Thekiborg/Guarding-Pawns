@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <MainButtonDef>
+        <defName>GuardingP_GuardTab</defName>
+        <label>Guards</label>
+        <description>Manage your guards.</description>
+        <tabWindowClass>Thek_GuardingPawns.MainTabWindow_Guards</tabWindowClass>
+        <order>51</order>
+        <defaultHotKey></defaultHotKey>
+    </MainButtonDef>
+
+</Defs>
