@@ -1,13 +1,13 @@
 ﻿namespace Thek_GuardingPawns
 {
-    public abstract class GuardJobs()
+    public abstract class GuardJobs : IExposable
     {
-        public GuardJobs(Pawn pawn) : this()
+        public GuardJobs()
         {
-            this.pawn = pawn;
+            pawn = null;
         }
         public Pawn pawn;
 
-
+        public abstract void ExposeData();
     }
 }

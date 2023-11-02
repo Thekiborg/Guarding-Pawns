@@ -1,16 +1,15 @@
 ﻿namespace Thek_GuardingPawns
 {
-    public class GuardJobs_GuardPath(Pawn pawn, PawnColumnWorker_SelectJobExtras.GuardPathGroupColor PathColor) : GuardJobs(pawn)
+    public class GuardJobs_GuardPath : GuardJobs, IExposable
     {
-        public PawnColumnWorker_SelectJobExtras.GuardPathGroupColor PathColor = PathColor;
-        
-        private void GetData()
+        public GuardJobs_GuardPath()
         {
-            foreach (Pawn pawn in PawnColumnWorker_SelectJobExtras.PathColor.Keys)
-            {
-                // Here i get pawn as the pawn getting the option
-                //And PathColor[pawn], the value for that pawn
-            }
+            PathColor = PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath;
+        }
+        public PawnColumnWorker_SelectJobExtras.GuardPathGroupColor? PathColor;
+        public override void ExposeData()
+        {
+            Scribe_Values.Look(ref PathColor, "PathColor");
         }
     }
 }

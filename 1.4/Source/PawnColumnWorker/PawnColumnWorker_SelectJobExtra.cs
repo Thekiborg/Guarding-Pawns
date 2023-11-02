@@ -3,10 +3,10 @@
     [StaticConstructorOnStartup]
     public class PawnColumnWorker_SelectJobExtras : PawnColumnWorker
     {
-        public Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompInCurrentMap = new(); //Caching
-        private MapComponent_WindowTabButtonSelection dictClass;
+        public Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new(); //Caching
+        private MapComponent_WindowTabButtonSelection guardAssignmentsMapComp;
 
-        public static Dictionary<Pawn, PawnColumnWorker_SelectJobExtras.GuardPathGroupColor> PathColor = new();
+
         public enum GuardSpotGroupColor
         {
             GuardingP_redSpot,
@@ -26,87 +26,75 @@
 
         public override void DoCell(Rect rect, Pawn pawn, PawnTable table)
         {
-            if (!MapCompInCurrentMap.ContainsKey(pawn.MapHeld)) //Checks if the dictionary has the MapComponent.
+            if (!MapCompCache.ContainsKey(pawn.MapHeld)) //Checks if the dictionary has the MapComponent.
             {
-                MapCompInCurrentMap.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_WindowTabButtonSelection>());
+                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_WindowTabButtonSelection>());
                 //If it isn't, add the MapComponent as value, with the current map as a key.
             }
 
-            dictClass = MapCompInCurrentMap.TryGetValue(pawn.MapHeld);
-            //We use the caching here, to get the MapComponent we want, since GetComponent() is slow.
-            if (!dictClass.GuardSpotColorButtonSelection.ContainsKey(pawn))
-            {
-                dictClass.GuardSpotColorButtonSelection.TryAdd(pawn, GuardSpotGroupColor.GuardingP_redSpot);
-                //Now if the GuardSpotColorButtonSelection dictionary doesn't contain this pawn, it gets added, with the redSpot value as the default.
-            }
-            GuardSpotGroupColor buttonGuardingSpotLabel = dictClass.GuardSpotColorButtonSelection.TryGetValue(pawn);
-            //This one grabs the color group value assigned to the pawn in the dictionary, to use it for the button's label.
+            guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
 
+            var pawnJobType = guardAssignmentsMapComp.GuardJobsExtraOptions.TryGetValue(pawn);
 
-            if (!dictClass.GuardPathColorButtonSelection.ContainsKey(pawn))
-            {
-                dictClass.GuardPathColorButtonSelection.TryAdd(pawn, GuardPathGroupColor.GuardingP_redPath);
-            }
-            GuardPathGroupColor buttonGuardingPathLabel = dictClass.GuardPathColorButtonSelection.TryGetValue(pawn);
-
-
-            if (!dictClass.GuardPawnButtonSelection.ContainsKey(pawn))
-            {
-                dictClass.GuardPawnButtonSelection.TryAdd(pawn, pawn);
-            }
-            Pawn buttonGuardingPawnLabel = dictClass.GuardPawnButtonSelection.TryGetValue(pawn);
-
-
-            PawnColumnWorker_SelectJob.GuardJobType pawnJobType = dictClass.JobButtonSelection.TryGetValue(pawn);
-            //Grabs the guarding job assigned to the pawn
 
             if (pawn.IsFreeNonSlaveColonist) //Slaves don't guard, silly.
             {
-                //Now we do different buttons for each one of the job types.
+                Listing_Standard listing_StandardGuardAssignments = new();
                 switch (pawnJobType)
                 {
-                    case PawnColumnWorker_SelectJob.GuardJobType.GuardingP_GuardSpot:
+                    case GuardJobs_GuardSpot spot:
 
-                        Listing_Standard listing_StandardGuardSpot = new();
-                        listing_StandardGuardSpot.Begin(rect);
+                        listing_StandardGuardAssignments.Begin(rect);
 
-                        if (listing_StandardGuardSpot.ButtonText(
-                            label: buttonGuardingSpotLabel.ToString().Translate()
+                        if (listing_StandardGuardAssignments.ButtonText(
+                            label: spot.SpotColor.ToString().Translate()
                             ))
                         {
                             GuardSpotExtraOptions(pawn, rect);
                         }
 
-                        listing_StandardGuardSpot.End();
+                        listing_StandardGuardAssignments.End();
                         break;
 
-                    case PawnColumnWorker_SelectJob.GuardJobType.GuardingP_GuardPath:
 
-                        Listing_Standard listing_StandardGuardPath = new();
-                        listing_StandardGuardPath.Begin(rect);
+                    case GuardJobs_GuardPath path:
 
-                        if (listing_StandardGuardPath.ButtonText(
-                            label: buttonGuardingPathLabel.ToString().Translate()
+                        listing_StandardGuardAssignments.Begin(rect);
+
+                        if (listing_StandardGuardAssignments.ButtonText(
+                            label: path.PathColor.ToString().Translate()
                             ))
                         {
                             GuardPathExtraOptions(pawn, rect);
+                            Log.Message(path.PathColor.ToString().Translate());
                         }
-                        listing_StandardGuardPath.End();
+                        listing_StandardGuardAssignments.End();
                         break;
 
-                    case PawnColumnWorker_SelectJob.GuardJobType.GuardingP_GuardPawn: //Este no es null-safe, hay que prevenir más tarde
 
-                        Listing_Standard listing_StandardGuardPawn = new();
-                        listing_StandardGuardPawn.Begin(rect);
+                    case GuardJobs_GuardPawn pn: //Este no es null-safe, hay que prevenir más tarde
 
-                        if (listing_StandardGuardPawn.ButtonText(
-                            label: buttonGuardingPawnLabel.Name.ToString()
+                        listing_StandardGuardAssignments.Begin(rect);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+                        if (listing_StandardGuardAssignments.ButtonText(
+                            label: "GuardingP_ProtectPawn".ToString().Translate(pn.pawnToGuard.Name)
                             ))
                         {
                             GuardPawnExtraOptions(pawn, rect);
                         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
-                        listing_StandardGuardPawn.End();
+                        listing_StandardGuardAssignments.End();
+                        break;
+
+
+                    case null:
+                    default:
+
+                        //listing_StandardGuardAssignments.Begin(rect);
+
+                        //listing_StandardGuardAssignments.End();
                         break;
                 }
             }
@@ -127,15 +115,14 @@
                 menuOptions.Add(new(colorGroup.ToString().Translate(), () => //Makes a new button for each one of the cons inside the enum
                 {
                     //This all runs once the menu button is clicked
-                    if (dictClass.GuardSpotColorButtonSelection.ContainsKey(pawn))//I'm verifying the pawn is inside the dictionary
+                    GuardJobs_GuardSpot guardJobs_GuardSpot = new()
                     {
-                        dictClass.GuardSpotColorButtonSelection[pawn] = colorGroup;
-                        //Changes the colorGroup value in the dictionary for our current pawn.
-                    }
-                    else //If it isn't, i simply add it with the default value
-                    {
-                        dictClass.GuardSpotColorButtonSelection.TryAdd(pawn, GuardSpotGroupColor.GuardingP_redSpot);
-                    }
+                        pawn = pawn,
+                        SpotColor = colorGroup,
+                    };
+
+                    guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardSpot;
+                    //Changes the colorGroup value in the dictionary for our current pawn.
                 }));
             }
 
@@ -160,18 +147,13 @@
             {
                 menuOptions.Add(new(colorGroup.ToString(), () =>
                 {
-                    if (dictClass.GuardPathColorButtonSelection.ContainsKey(pawn))
+                    GuardJobs_GuardPath guardJobs_GuardPath = new()
                     {
-                        dictClass.GuardPathColorButtonSelection[pawn] = colorGroup;
-                        if (!PathColor.ContainsKey(pawn))
-                        {
-                            PathColor.TryAdd(pawn, colorGroup);
-                        }
-                    }
-                    else
-                    {
-                        dictClass.GuardPathColorButtonSelection.TryAdd(pawn, GuardPathGroupColor.GuardingP_redPath);
-                    }
+                        pawn = pawn,
+                        PathColor = colorGroup,
+                    };
+
+                    guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardPath;
                 }));
             }
 
@@ -195,21 +177,16 @@
 
             foreach (Pawn pawnToProtect in windowTabPawn.Map.mapPawns.FreeColonistsSpawned)
             {
-                if (pawnToProtect.teleporting)
-                {
-                    continue;
-                }
 #pragma warning disable CS0618 // Type or member is obsolete
-                menuOptions.Add(new("GuardingP_ProtectPawn".Translate(pawnToProtect.Name), () =>
+                menuOptions.Add(new("GuardingP_ProtectPawn".ToString().Translate(pawnToProtect.Name), () =>
                 {
-                    if (dictClass.GuardPawnButtonSelection.ContainsKey(windowTabPawn))
+                    GuardJobs_GuardPawn guardJobs_GuardPawn = new()
                     {
-                        dictClass.GuardPawnButtonSelection[windowTabPawn] = pawnToProtect;
-                    }
-                    else
-                    {
-                        dictClass.GuardPawnButtonSelection.TryAdd(windowTabPawn, windowTabPawn);
-                    }
+                        pawn = windowTabPawn,
+                        pawnToGuard = pawnToProtect,
+                    };
+
+                    guardAssignmentsMapComp.GuardJobsExtraOptions[windowTabPawn] = guardJobs_GuardPawn;
                 }));
 #pragma warning restore CS0618 // Type or member is obsolete
             }
@@ -218,7 +195,7 @@
 
             if (Mouse.IsOver(rect))
             {
-                GUI.DrawTexture (rect, TexUI.HighlightTex);
+                GUI.DrawTexture(rect, TexUI.HighlightTex);
             }
         }
     }
