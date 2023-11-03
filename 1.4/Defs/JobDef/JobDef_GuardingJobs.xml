@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <JobDef>
+        <defName>GuardingP_GuardSpot</defName>
+        <driverClass>Thek_GuardingPawns.JobDriver_GuardSpot</driverClass>
+        <reportString>guarding at TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+      </JobDef>
+
+      <JobDef>
+        <defName>GuardingP_GuardPath</defName>
+        <driverClass>Thek_GuardingPawns.JobDriver_GuardPath</driverClass>
+        <reportString>patrolling at TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+      </JobDef>
+
+      <JobDef>
+        <defName>GuardingP_GuardPawn</defName>
+        <driverClass>Thek_GuardingPawns.JobDriver_ProtectPawn</driverClass>
+        <reportString>protecting TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+      </JobDef>
+
+      <!--<JobDef>
+        <defName>GuardingP_GuardArea</defName>
+        <driverClass>Thek_GuardingPawns.JobDriver_GuardArea</driverClass>
+        <reportString>guarding TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+      </JobDef>-->
+
+</Defs>

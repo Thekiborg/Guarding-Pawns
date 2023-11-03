@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <WorkGiverDef>
+        <defName>GuardingP_GuardingWorkGiver</defName>
+        <label>guard the colony</label>
+        <giverClass>Thek_GuardingPawns.GiverClass_GuardAssignment</giverClass>
+        <workType>GuardingP_GuardingWorkType</workType>
+        <priorityInType>97</priorityInType>
+        <verb>guard colony</verb>
+        <gerund>guard colony at</gerund>
+        <requiredCapacities>
+          <li>Moving</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>True</canBeDoneByMechs>
+      </WorkGiverDef>
+
+</Defs>

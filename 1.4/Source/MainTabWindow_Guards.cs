@@ -8,6 +8,11 @@ namespace Thek_GuardingPawns
         public static PawnTableDef GuardingP_PawnTableDef_Guard;
     }
 
+    [DefOf]
+    public class WorkTypeDefOf
+    {
+        public static WorkTypeDef GuardingP_GuardingWorkType;
+    }
 
     public class MainTabWindow_Guards : MainTabWindow_PawnTable
     {
@@ -25,7 +30,7 @@ namespace Thek_GuardingPawns
         bool True = true;
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
-        protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => pawn.IsFreeNonSlaveColonist);
+        protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => pawn.IsFreeNonSlaveColonist && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
         
 
         public override void DoWindowContents(Rect rect)
