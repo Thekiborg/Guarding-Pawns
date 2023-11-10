@@ -3,7 +3,7 @@
     [StaticConstructorOnStartup]
     public class PawnColumnWorker_SelectJobExtras : PawnColumnWorker
     {
-        public Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new(); //Caching
+        private Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new(); //Caching
         private MapComponent_WindowTabButtonSelection guardAssignmentsMapComp;
 
 
@@ -33,7 +33,7 @@
             }
 
             guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
-
+            
             var pawnJobType = guardAssignmentsMapComp.GuardJobsExtraOptions.TryGetValue(pawn);
 
 

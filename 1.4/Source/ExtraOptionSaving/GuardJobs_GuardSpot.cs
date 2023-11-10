@@ -1,4 +1,6 @@
-﻿namespace Thek_GuardingPawns
+﻿using Verse.AI;
+
+namespace Thek_GuardingPawns
 {
     public class GuardJobs_GuardSpot : GuardJobs, IExposable
     {
@@ -11,6 +13,10 @@
         public override void ExposeData()
         {
             Scribe_Values.Look(ref SpotColor, "SpotColor");
+        }
+        public override Job GuardJob(Pawn pawn, IntVec3 cell, bool forced = false)
+        {
+            return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, cell.GetEdifice(pawn.Map));
         }
     }
 }

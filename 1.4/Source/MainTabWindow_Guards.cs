@@ -2,18 +2,6 @@
 
 namespace Thek_GuardingPawns
 {
-    [DefOf]
-    public class PawnTableDefOf
-    {
-        public static PawnTableDef GuardingP_PawnTableDef_Guard;
-    }
-
-    [DefOf]
-    public class WorkTypeDefOf
-    {
-        public static WorkTypeDef GuardingP_GuardingWorkType;
-    }
-
     public class MainTabWindow_Guards : MainTabWindow_PawnTable
     {
         const float padding = 5f + CheckboxPadding;

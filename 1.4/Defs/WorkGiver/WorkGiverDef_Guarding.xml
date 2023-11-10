@@ -4,7 +4,7 @@
     <WorkGiverDef>
         <defName>GuardingP_GuardingWorkGiver</defName>
         <label>guard the colony</label>
-        <giverClass>Thek_GuardingPawns.GiverClass_GuardAssignment</giverClass>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardAssignment</giverClass>
         <workType>GuardingP_GuardingWorkType</workType>
         <priorityInType>97</priorityInType>
         <verb>guard colony</verb>
