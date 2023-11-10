@@ -27,9 +27,8 @@ namespace Thek_GuardingPawns
             guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
             //Gets this map's MapComponent_WindowTabButtonSelection. This gets the component from each map.
 
-            var buttonLabel = guardAssignmentsMapComp.GuardJobsExtraOptions.TryGetValue(pawn);
+            var buttonLabel = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
             //Grabs the value tied to the pawn key, which is the job selected by the button.
-
 
             if (pawn.IsFreeNonSlaveColonist) //Only makes the list if the pawn is not a slave.
             {
@@ -68,8 +67,8 @@ namespace Thek_GuardingPawns
                                     SpotColor = PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_redSpot
                                 };
 
-                                guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardSpot;
-                                Log.Message(guardAssignmentsMapComp.GuardJobsExtraOptions.TryGetValue(pawn).ToString());
+                                guardAssignmentsMapComp.GuardJobs[pawn] = guardJobs_GuardSpot;
+                                Log.Message(guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn).ToString());
                             }));
                             break;
 
@@ -84,7 +83,7 @@ namespace Thek_GuardingPawns
                                     PathColor = PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath
                                 };
 
-                                guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardPath;
+                                guardAssignmentsMapComp.GuardJobs[pawn] = guardJobs_GuardPath;
                             }));
                             break;
 
@@ -99,7 +98,7 @@ namespace Thek_GuardingPawns
                                     pawnToGuard = pawn,
                                 };
 
-                                guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardPawn;
+                                guardAssignmentsMapComp.GuardJobs[pawn] = guardJobs_GuardPawn;
                             }));
                             break;
                     }

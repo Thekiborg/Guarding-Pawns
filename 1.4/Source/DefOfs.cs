@@ -6,7 +6,7 @@
         public static JobDef GuardingP_GuardSpot;
         public static JobDef GuardingP_GuardPath;
         public static JobDef GuardingP_GuardPawn;
-        public static JobDef GuardingP_GuardArea;
+        //public static JobDef GuardingP_GuardArea;
     }
 
     [DefOf]
@@ -29,5 +29,11 @@
         public static ThingDef GuardingP_orangeSpot;
         public static ThingDef GuardingP_blueSpot;
         public static ThingDef GuardingP_purpleSpot;
+    }
+
+    [DefOf]
+    public static class GuardPathDefOf
+    {
+
     }
 }

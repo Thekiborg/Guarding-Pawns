@@ -34,7 +34,7 @@
 
             guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
             
-            var pawnJobType = guardAssignmentsMapComp.GuardJobsExtraOptions.TryGetValue(pawn);
+            var pawnJobType = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
 
 
             if (pawn.IsFreeNonSlaveColonist) //Slaves don't guard, silly.
@@ -100,11 +100,7 @@
             }
         }
 
-        /// <summary>
-        /// Allows to select between the different colors for the guarding spot job, and changes it both on the GuardSpotColorButtonSelection dictionary, as well as in the button's label.
-        /// </summary>
-        /// <param name="pawn"></param>
-        /// <param name="rect"></param>
+
         private void GuardSpotExtraOptions(Pawn pawn, Rect rect)
         {
             List<FloatMenuOption> menuOptions = new();
@@ -121,7 +117,7 @@
                         SpotColor = colorGroup,
                     };
 
-                    guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardSpot;
+                    guardAssignmentsMapComp.GuardJobs[pawn] = guardJobs_GuardSpot;
                     //Changes the colorGroup value in the dictionary for our current pawn.
                 }));
             }
@@ -134,11 +130,7 @@
             }
         }
 
-        /// <summary>
-        /// Allows to select between the different colors for the patrol paths
-        /// </summary>
-        /// <param name="pawn"></param>
-        /// <param name="rect"></param>
+
         private void GuardPathExtraOptions(Pawn pawn, Rect rect)
         {
             List<FloatMenuOption> menuOptions = new();
@@ -153,7 +145,7 @@
                         PathColor = colorGroup,
                     };
 
-                    guardAssignmentsMapComp.GuardJobsExtraOptions[pawn] = guardJobs_GuardPath;
+                    guardAssignmentsMapComp.GuardJobs[pawn] = guardJobs_GuardPath;
                 }));
             }
 
@@ -165,12 +157,7 @@
             }
         }
 
-        /// <summary>
-        /// Allows to select between the different
-        /// </summary>
-        /// <param name="windowTabPawn"></param>
-        /// <param name="rect"></param>
-        /// <param name="freeColonistSpawnedPawns"></param>
+
         private void GuardPawnExtraOptions(Pawn windowTabPawn, Rect rect)
         {
             List<FloatMenuOption> menuOptions = new();
@@ -186,7 +173,7 @@
                         pawnToGuard = pawnToProtect,
                     };
 
-                    guardAssignmentsMapComp.GuardJobsExtraOptions[windowTabPawn] = guardJobs_GuardPawn;
+                    guardAssignmentsMapComp.GuardJobs[windowTabPawn] = guardJobs_GuardPawn;
                 }));
 #pragma warning restore CS0618 // Type or member is obsolete
             }
