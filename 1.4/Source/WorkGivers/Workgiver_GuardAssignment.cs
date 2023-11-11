@@ -6,27 +6,28 @@ namespace Thek_GuardingPawns
     {
         private Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new();
         private MapComponent_WindowTabButtonSelection guardAssignmentMapComp;
-
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            var assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
             if (guardAssignmentMapComp.GuardJobs.Keys != null)
             {
-                var assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
                 switch (assignedJob)
                 {
                     case GuardJobs_GuardSpot:
-                        foreach (ThingDef spotDef in Enum.GetValues(typeof(GuardSpotDefOf)))
+                        foreach (ThingDef thing in GuardSpotDefOf.GetDefOfs())
                         {
-                            if (!pawn.Map.listerThings.ThingsOfDef(spotDef).Any())
+                            if (!pawn.Map.listerThings.ThingsOfDef(thing).Any())
                             {
                                 return true;
                             }
                         }
                         break;
 
+
                     case GuardJobs_GuardPath:
 
                         break;
+
 
                     case GuardJobs_GuardPawn:
                         foreach (Pawn pawnInMap in pawn.Map.mapPawns.FreeColonistsSpawned)
@@ -42,9 +43,8 @@ namespace Thek_GuardingPawns
                     case null:
                         return true;
                 }
-                return false;
             }
-            return true;
+            return false;
         }
 
 

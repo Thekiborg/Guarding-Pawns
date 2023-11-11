@@ -1,4 +1,7 @@
-﻿namespace Thek_GuardingPawns
+﻿using RimWorld;
+using Verse;
+
+namespace Thek_GuardingPawns
 {
     [DefOf]
     public static class GuardingJobsDefOf
@@ -29,6 +32,29 @@
         public static ThingDef GuardingP_orangeSpot;
         public static ThingDef GuardingP_blueSpot;
         public static ThingDef GuardingP_purpleSpot;
+
+        private static HashSet<ThingDef> thingDefOfs;
+        public static HashSet<ThingDef> GetDefOfs()
+        {
+            if (thingDefOfs != null)
+            {
+                return thingDefOfs;
+            }
+
+            thingDefOfs = new HashSet<ThingDef>();
+
+
+            foreach (FieldInfo field in typeof(GuardSpotDefOf).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                object fieldValue = field.GetValue(null);
+                if (fieldValue is ThingDef thingDef)
+                {
+                    thingDefOfs.Add(thingDef);
+                }
+            }
+            Log.Error($"Contents: {string.Join(", ", thingDefOfs)}");
+            return thingDefOfs;
+        }
     }
 
     [DefOf]
