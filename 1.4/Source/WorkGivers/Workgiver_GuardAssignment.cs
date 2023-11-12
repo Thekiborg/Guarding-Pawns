@@ -8,41 +8,39 @@ namespace Thek_GuardingPawns
         private MapComponent_WindowTabButtonSelection guardAssignmentMapComp;
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            CacheMapComponent(pawn);
             var assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
-            if (guardAssignmentMapComp.GuardJobs.Keys != null)
+            switch (assignedJob)
             {
-                switch (assignedJob)
-                {
-                    case GuardJobs_GuardSpot:
-                        foreach (ThingDef thing in GuardSpotDefOf.GetDefOfs())
+                case GuardJobs_GuardSpot:
+                    foreach (ThingDef thing in GuardSpotDefOf.GetDefOfs())
+                    {
+                        if (!pawn.MapHeld.listerThings.ThingsOfDef(thing).Any())
                         {
-                            if (!pawn.Map.listerThings.ThingsOfDef(thing).Any())
-                            {
-                                return true;
-                            }
+                            return true;
                         }
-                        break;
+                    }
+                    break;
 
 
-                    case GuardJobs_GuardPath:
+                case GuardJobs_GuardPath:
 
-                        break;
+                    break;
 
 
-                    case GuardJobs_GuardPawn:
-                        foreach (Pawn pawnInMap in pawn.Map.mapPawns.FreeColonistsSpawned)
+                case GuardJobs_GuardPawn:
+                    foreach (Pawn pawnInMap in pawn.MapHeld.mapPawns.FreeColonistsSpawned)
+                    {
+                        if (pawnInMap == pawn || pawnInMap.Dead)
                         {
-                            if (pawnInMap == pawn || pawnInMap.Dead)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
-                        break;
+                    }
+                    break;
 
-                    default:
-                    case null:
-                        return true;
-                }
+                default:
+                case null:
+                    return true;
             }
             return false;
         }
@@ -50,7 +48,6 @@ namespace Thek_GuardingPawns
 
         public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
         {
-            CacheMapComponent(pawn);
             GuardJobs assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
             return assignedJob.GuardJob(pawn, cell);
         }
@@ -61,8 +58,8 @@ namespace Thek_GuardingPawns
             if (!MapCompCache.ContainsKey(pawn.MapHeld))
             {
                 MapCompCache.Add(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_WindowTabButtonSelection>());
-                guardAssignmentMapComp = MapCompCache[pawn.MapHeld];
             }
+            guardAssignmentMapComp = MapCompCache[pawn.MapHeld];
         }
     }
 }
