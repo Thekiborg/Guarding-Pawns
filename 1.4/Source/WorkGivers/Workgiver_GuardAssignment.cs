@@ -25,10 +25,8 @@ namespace Thek_GuardingPawns
                     }
                     if (shouldSkip == true)
                     {
-                        Log.Warning("Skipped");
                         return true;
                     }
-                    Log.Warning("Didn't skip");
                     break;
 
 
@@ -66,15 +64,7 @@ namespace Thek_GuardingPawns
                     Log.Warning("JobMaker reached!");
                     return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, t);
             }
-
             return null;
-        }
-
-
-        public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
-        {
-            Log.Warning("JobOnCell");
-            return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, cell.GetEdifice(pawn.Map));
         }
 
 
