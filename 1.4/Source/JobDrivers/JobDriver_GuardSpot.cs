@@ -10,7 +10,7 @@ namespace Thek_GuardingPawns
             {
                 return false;
             }
-            if (!pawn.ReserveSittableOrSpot(job.targetA.Cell, job))
+            if (!pawn.ReserveSittableOrSpot(job.targetB.Cell, job))
             {
                 return false;
             }

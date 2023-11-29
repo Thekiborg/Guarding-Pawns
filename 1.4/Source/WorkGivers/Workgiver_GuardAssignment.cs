@@ -1,4 +1,5 @@
 ﻿using Verse.AI;
+using static Thek_GuardingPawns.PawnColumnWorker_SelectJobExtras;
 
 namespace Thek_GuardingPawns
 {
@@ -13,14 +14,21 @@ namespace Thek_GuardingPawns
             switch (assignedJob)
             {
                 case GuardJobs_GuardSpot:
-                    foreach (ThingDef thing in GuardSpotDefOf.GetDefOfs())
+                    bool shouldSkip = true;
+                    foreach (Thing thing in pawn.MapHeld.listerThings.AllThings)
                     {
-                        if (!pawn.MapHeld.listerThings.ThingsOfDef(thing).Any())
+                        if (GuardSpotDefOf.GetDefOfs().Contains(thing.def))
                         {
-                            Log.Warning("Skipped!");
-                            return true;
+                            shouldSkip = false;
+                            break;
                         }
                     }
+                    if (shouldSkip == true)
+                    {
+                        Log.Warning("Skipped");
+                        return true;
+                    }
+                    Log.Warning("Didn't skip");
                     break;
 
 
@@ -56,17 +64,17 @@ namespace Thek_GuardingPawns
             {
                 case GuardJobs_GuardSpot:
                     Log.Warning("JobMaker reached!");
-                    return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot);
+                    return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, t);
             }
 
             return null;
         }
 
+
         public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
         {
-            GuardJobs assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
             Log.Warning("JobOnCell");
-            return assignedJob.GuardJob(pawn, cell);
+            return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, cell.GetEdifice(pawn.Map));
         }
 
 

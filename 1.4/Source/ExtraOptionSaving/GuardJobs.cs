@@ -9,8 +9,6 @@ namespace Thek_GuardingPawns
             pawn = null;
         }
         public Pawn pawn;
-
-        public abstract Job GuardJob(Pawn pawn, IntVec3 cell, bool forced = false);
         public abstract void ExposeData();
     }
 }

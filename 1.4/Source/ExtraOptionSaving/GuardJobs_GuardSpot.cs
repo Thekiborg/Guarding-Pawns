@@ -14,9 +14,5 @@ namespace Thek_GuardingPawns
         {
             Scribe_Values.Look(ref SpotColor, "SpotColor");
         }
-        public override Job GuardJob(Pawn pawn, IntVec3 cell, bool forced = false)
-        {
-            return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, cell.GetEdifice(pawn.Map));
-        }
     }
 }
