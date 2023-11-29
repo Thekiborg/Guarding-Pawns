@@ -68,7 +68,6 @@ namespace Thek_GuardingPawns
                                 };
 
                                 guardAssignmentsMapComp.GuardJobs[pawn] = guardJobs_GuardSpot;
-                                Log.Message(guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn).ToString());
                             }));
                             break;
 

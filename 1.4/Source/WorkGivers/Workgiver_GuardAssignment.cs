@@ -17,6 +17,7 @@ namespace Thek_GuardingPawns
                     {
                         if (!pawn.MapHeld.listerThings.ThingsOfDef(thing).Any())
                         {
+                            Log.Warning("Skipped!");
                             return true;
                         }
                     }
@@ -46,20 +47,37 @@ namespace Thek_GuardingPawns
         }
 
 
+        public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
+        {
+            CacheMapComponent(pawn);
+            var assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
+
+            switch (assignedJob)
+            {
+                case GuardJobs_GuardSpot:
+                    Log.Warning("JobMaker reached!");
+                    return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot);
+            }
+
+            return null;
+        }
+
         public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
         {
             GuardJobs assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
+            Log.Warning("JobOnCell");
             return assignedJob.GuardJob(pawn, cell);
         }
 
 
         private void CacheMapComponent(Pawn pawn)
         {
-            if (!MapCompCache.ContainsKey(pawn.MapHeld))
+            if (!MapCompCache.TryGetValue(pawn.MapHeld, out MapComponent_WindowTabButtonSelection value))
             {
-                MapCompCache.Add(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_WindowTabButtonSelection>());
+                value = pawn.MapHeld.GetComponent<MapComponent_WindowTabButtonSelection>();
+                MapCompCache.Add(pawn.MapHeld, value);
             }
-            guardAssignmentMapComp = MapCompCache[pawn.MapHeld];
+            guardAssignmentMapComp = value;
         }
     }
 }
