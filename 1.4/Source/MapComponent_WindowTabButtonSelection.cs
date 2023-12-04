@@ -1,13 +1,14 @@
 ﻿namespace Thek_GuardingPawns
 {
-    public class MapComponent_WindowTabButtonSelection : MapComponent
+    public class MapComponent_GuardingPawns : MapComponent
     {
-        public MapComponent_WindowTabButtonSelection(Map map) : base(map) { }
+        public MapComponent_GuardingPawns(Map map) : base(map) { }
 
         public Dictionary<Pawn, GuardJobs> GuardJobs = new();
         private List<Pawn> PawnsList = new();
         private List<GuardJobs> GuardJobsList = new();
 
+        public List<Thing> spotsOnMap = new();
 
         public override void ExposeData()
         {

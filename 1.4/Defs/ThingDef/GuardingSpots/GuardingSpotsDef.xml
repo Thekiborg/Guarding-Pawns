@@ -5,6 +5,7 @@
         <defName>GuardingP_redSpot</defName>
         <label>Red guarding spot</label>
         <description>Designate a spot where your pawns will stand to guard.</description>
+        <thingClass>Thek_GuardingPawns.GuardingP_StoreSpots</thingClass>
         <graphicData>
           <texPath>GuardSpots/GuardSpotRed</texPath>
           <graphicClass>Graphic_Multi</graphicClass>

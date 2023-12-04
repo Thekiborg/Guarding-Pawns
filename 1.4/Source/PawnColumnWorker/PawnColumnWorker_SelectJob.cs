@@ -5,8 +5,8 @@ namespace Thek_GuardingPawns
     [StaticConstructorOnStartup]
     public class PawnColumnWorker_SelectJob : PawnColumnWorker
     {
-        private MapComponent_WindowTabButtonSelection guardAssignmentsMapComp;
-        public Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new();
+        private MapComponent_GuardingPawns guardAssignmentsMapComp;
+        public Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
         public enum GuardJobType
         {
             GuardingP_Undefined,
@@ -21,7 +21,7 @@ namespace Thek_GuardingPawns
         {
             if (!MapCompCache.ContainsKey(pawn.MapHeld))
             {
-                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_WindowTabButtonSelection>());
+                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
             }
 
             guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);

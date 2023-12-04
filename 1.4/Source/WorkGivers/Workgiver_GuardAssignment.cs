@@ -1,12 +1,11 @@
 ﻿using Verse.AI;
-using static Thek_GuardingPawns.PawnColumnWorker_SelectJobExtras;
 
 namespace Thek_GuardingPawns
 {
     public class Workgiver_GuardAssignment : WorkGiver_Scanner
     {
-        private Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new();
-        private MapComponent_WindowTabButtonSelection guardAssignmentMapComp;
+        private Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
+        private MapComponent_GuardingPawns guardAssignmentMapComp;
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
@@ -57,7 +56,7 @@ namespace Thek_GuardingPawns
         {
             CacheMapComponent(pawn);
             var assignedJob = guardAssignmentMapComp.GuardJobs.TryGetValue(pawn);
-
+            Log.Warning("Outside Switch");
             switch (assignedJob)
             {
                 case GuardJobs_GuardSpot:
@@ -70,9 +69,9 @@ namespace Thek_GuardingPawns
 
         private void CacheMapComponent(Pawn pawn)
         {
-            if (!MapCompCache.TryGetValue(pawn.MapHeld, out MapComponent_WindowTabButtonSelection value))
+            if (!MapCompCache.TryGetValue(pawn.MapHeld, out MapComponent_GuardingPawns value))
             {
-                value = pawn.MapHeld.GetComponent<MapComponent_WindowTabButtonSelection>();
+                value = pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
                 MapCompCache.Add(pawn.MapHeld, value);
             }
             guardAssignmentMapComp = value;

@@ -3,8 +3,8 @@
     [StaticConstructorOnStartup]
     public class PawnColumnWorker_SelectJobExtras : PawnColumnWorker
     {
-        private Dictionary<Map, MapComponent_WindowTabButtonSelection> MapCompCache = new(); //Caching
-        private MapComponent_WindowTabButtonSelection guardAssignmentsMapComp;
+        private Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new(); //Caching
+        private MapComponent_GuardingPawns guardAssignmentsMapComp;
 
 
         public enum GuardSpotGroupColor
@@ -28,7 +28,7 @@
         {
             if (!MapCompCache.ContainsKey(pawn.MapHeld)) //Checks if the dictionary has the MapComponent.
             {
-                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_WindowTabButtonSelection>());
+                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
                 //If it isn't, add the MapComponent as value, with the current map as a key.
             }
 
