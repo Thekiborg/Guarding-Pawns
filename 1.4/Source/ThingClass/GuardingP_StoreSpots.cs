@@ -12,17 +12,21 @@ namespace Thek_GuardingPawns
             StoreThing();
         }
 
+
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             UnstoreThing();
             base.DeSpawn(mode);
         }
 
+
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             UnstoreThing();
             base.Destroy(mode);
         }
+
+
         private void StoreThing()
         {
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
@@ -33,6 +37,7 @@ namespace Thek_GuardingPawns
                 Log.Message(b.ToString());
             }
         }
+
 
         private void UnstoreThing()
         {
@@ -47,6 +52,5 @@ namespace Thek_GuardingPawns
                 Log.Message(b.ToString());
             }
         }
-
     }
 }
