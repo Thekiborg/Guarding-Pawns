@@ -31,11 +31,6 @@ namespace Thek_GuardingPawns
         {
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
             mapComp.spotsOnMap.Add(this);
-            Log.Message("added");
-            foreach (Building b in mapComp.spotsOnMap)
-            {
-                Log.Message(b.ToString());
-            }
         }
 
 
@@ -45,11 +40,6 @@ namespace Thek_GuardingPawns
             if (mapComp.spotsOnMap.Contains(this))
             {
                 MapHeld.GetComponent<MapComponent_GuardingPawns>().spotsOnMap.Remove(this);
-                Log.Message("removed");
-            }
-            foreach (Building b in mapComp.spotsOnMap)
-            {
-                Log.Message(b.ToString());
             }
         }
     }

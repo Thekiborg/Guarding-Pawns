@@ -66,6 +66,11 @@ namespace Thek_GuardingPawns
             return null;
         }
 
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
+        {
+            CacheMapComponent(pawn);
+            return guardAssignmentMapComp.spotsOnMap;
+        }
 
         private void CacheMapComponent(Pawn pawn)
         {
