@@ -2,11 +2,11 @@
 <Defs>
 
     <WorkGiverDef>
-        <defName>GuardingP_GuardingWorkGiver</defName>
+        <defName>GuardingP_GuardingSpotWorkGiver</defName>
         <label>guard the colony</label>
-        <giverClass>Thek_GuardingPawns.Workgiver_GuardAssignment</giverClass>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardSpot</giverClass>
         <workType>GuardingP_GuardingWorkType</workType>
-        <priorityInType>97</priorityInType>
+        <priorityInType>1</priorityInType>
         <verb>guard colony</verb>
         <gerund>guard colony at</gerund>
         <requiredCapacities>

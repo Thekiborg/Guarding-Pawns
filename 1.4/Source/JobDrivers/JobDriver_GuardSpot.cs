@@ -6,21 +6,18 @@ namespace Thek_GuardingPawns
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            if (!pawn.Reserve(job.targetA, job))
-            {
-                return false;
-            }
-            if (!pawn.ReserveSittableOrSpot(job.targetB.Cell, job))
-            {
-                return false;
-            }
-            return true;
+            return pawn.ReserveSittableOrSpot(job.targetA.Cell, job);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Log.Error("MakeNewToils reached!");
-            yield break;
+            Toil toil = ToilMaker.MakeToil("MakeNewToils");
+            toil.tickAction = delegate
+            {
+                pawn.pather.StartPath(TargetA, PathEndMode.OnCell);
+            };
+            toil.defaultCompleteMode = ToilCompleteMode.Never;
+            yield return toil;
         }
     }
 }

@@ -6,7 +6,7 @@
         <labelShort>Guard</labelShort>
         <pawnLabel>Guarding</pawnLabel>
         <gerundLabel>guarding</gerundLabel>
-        <description>Do guard for the well-being of the colony.</description>
+        <description>Guard for the well-being of the colony.</description>
         <verb>Guard</verb>
         <alwaysStartActive>false</alwaysStartActive>
         <requireCapableColonist>true</requireCapableColonist>
