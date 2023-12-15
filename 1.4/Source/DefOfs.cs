@@ -52,7 +52,6 @@ namespace Thek_GuardingPawns
                     thingDefOfs.Add(thingDef);
                 }
             }
-            Log.Error($"Contents: {string.Join(", ", thingDefOfs)}");
             return thingDefOfs;
         }
     }

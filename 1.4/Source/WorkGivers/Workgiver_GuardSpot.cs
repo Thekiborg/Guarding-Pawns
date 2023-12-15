@@ -41,7 +41,6 @@ namespace Thek_GuardingPawns
                 {
                     case PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_redSpot:
                         if (t.def == GuardSpotDefOf.GuardingP_redSpot) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, t);
-                        guardAssignmentMapComp.mewing.Add(t.Position, t.Rotation);
                         break;
 
                     case PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_orangeSpot:
