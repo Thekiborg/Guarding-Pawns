@@ -6,6 +6,7 @@
         <driverClass>Thek_GuardingPawns.JobDriver_GuardSpot</driverClass>
         <reportString>guarding at TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
       </JobDef>
 
       <JobDef>
@@ -13,6 +14,7 @@
         <driverClass>Thek_GuardingPawns.JobDriver_GuardPath</driverClass>
         <reportString>patrolling at TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
       </JobDef>
 
       <JobDef>
@@ -20,6 +22,7 @@
         <driverClass>Thek_GuardingPawns.JobDriver_ProtectPawn</driverClass>
         <reportString>protecting TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
       </JobDef>
 
       <!--<JobDef>
@@ -27,6 +30,7 @@
         <driverClass>Thek_GuardingPawns.JobDriver_GuardArea</driverClass>
         <reportString>guarding TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
       </JobDef>-->
 
 </Defs>

@@ -1,7 +1,4 @@
-﻿using Verse.AI.Group;
-using Verse.Sound;
-
-namespace Thek_GuardingPawns
+﻿namespace Thek_GuardingPawns
 {
     [StaticConstructorOnStartup]
     public class GuardingP_StoreSpots : Building

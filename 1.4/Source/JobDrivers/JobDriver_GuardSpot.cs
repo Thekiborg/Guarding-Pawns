@@ -1,8 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.IO;
-using UnityEngine.Assertions.Must;
-using Verse.AI;
-using Verse.AI.Group;
+﻿using Verse.AI;
 
 namespace Thek_GuardingPawns
 {
@@ -24,6 +20,7 @@ namespace Thek_GuardingPawns
             this.FailOnDespawnedOrNull(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell);
             Toil guard = ToilMaker.MakeToil("MakeNewToils");
+            guard.handlingFacing = true;
             guard.tickAction = delegate
             {
                 GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
@@ -48,6 +45,9 @@ namespace Thek_GuardingPawns
                         }
                     }
                 }
+
+                Rot4 buildingRot = pawn.Position.GetFirstBuilding(pawn.Map).Rotation;
+                pawn.Rotation = buildingRot;
             };
             guard.AddFinishAction(delegate
             {
@@ -61,7 +61,25 @@ namespace Thek_GuardingPawns
             guard.defaultCompleteMode = ToilCompleteMode.Delay;
             guard.defaultDuration = 1000;
             yield return guard;
-            yield return Toils_General.Wait(2);
+            yield return Wait(100);
+        }
+
+        public static Toil Wait(int ticks)
+        {
+            Toil toil = ToilMaker.MakeToil("Wait");
+            toil.initAction = delegate
+            {
+                toil.actor.pather.StopDead();
+            };
+            toil.defaultCompleteMode = ToilCompleteMode.Delay;
+            toil.defaultDuration = ticks;
+            toil.handlingFacing = true;
+            toil.tickAction = delegate
+            {
+                Rot4 buildingRot = toil.actor.Position.GetFirstBuilding(toil.actor.Map).Rotation;
+                toil.actor.Rotation = buildingRot;
+            };
+            return toil;
         }
 
         private void GetSelectedSpot()
