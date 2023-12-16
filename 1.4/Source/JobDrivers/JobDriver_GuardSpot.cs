@@ -26,36 +26,40 @@ namespace Thek_GuardingPawns
                 GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
                 guard.FailOn(() => spotColor != guardJobSpot.SpotColor);
 
-                if (Gen.IsHashIntervalTick(pawn, 60))
+                if (pawn.IsHashIntervalTick(60))
                 {
-                    foreach (Pawn enemyPawn in Map.mapPawns.AllPawnsSpawned) //MOVE THIS TO A MAPCOMP LIST
+                    foreach (Pawn enemyPawn in mapComp.AllHostilePawnsSpawned)
                     {
                         if (pawn.equipment.Primary.DestroyedOrNull() || pawn.equipment.Primary.def.IsMeleeWeapon)
                         {
                             if (pawn.Position.DistanceTo(enemyPawn.Position) <= meleeDetectionRange
-                                && enemyPawn.Faction.HostileTo(pawn.Faction) //MOVE THIS TO A MAPCOMP LIST
                                 && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map)
                                 && !enemyPawn.Downed)
                             {
+                                guard.handlingFacing = false;
                                 pawn.pather.StartPath(enemyPawn.Position, PathEndMode.Touch);
-                                //if (pawn.Position.DistanceTo(enemyPawn.Position) <= 1) { pawn.meleeVerbs.TryMeleeAttack(enemyPawn); }
+                                if (pawn.Position.DistanceTo(enemyPawn.Position) <= 1) { pawn.meleeVerbs.TryMeleeAttack(enemyPawn); }
                             }
                         }
-                        if (pawn.Position.DistanceTo(enemyPawn.Position) <= pawn.equipment.PrimaryEq?.PrimaryVerb?.verbProps.range
-                            && enemyPawn.Faction.HostileTo(pawn.Faction) //MOVE THIS TO A MAPCOMP LIST
+                        if (pawn.Position.DistanceToSquared(enemyPawn.Position) <= pawn.equipment.PrimaryEq?.PrimaryVerb?.verbProps.range
                             && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map)
                             && !enemyPawn.Downed)
                         {
                             pawn.TryStartAttack(enemyPawn);
-                            return;
                         }
                     }
                 }
-
-                Building building = pawn.Position.GetFirstBuilding(pawn.Map);
-                if (building != null) { pawn.Rotation = building.Rotation; }
             };
             guard.defaultCompleteMode = ToilCompleteMode.Delay;
+            guard.AddPreTickAction(delegate
+            {
+                Building building = pawn.Position.GetFirstBuilding(pawn.Map);
+                if (building != null && !pawn.pather.Moving)
+                {
+                    guard.handlingFacing = true;
+                    pawn.Rotation = building.Rotation;
+                }
+            });
             guard.defaultDuration = 1000;
             yield return guard;
             yield return Wait(2);

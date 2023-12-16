@@ -27,16 +27,16 @@
         private void StoreThing()
         {
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
-            mapComp.spotsOnMap.Add(this);
+            mapComp.SpotsOnMap.Add(this);
         }
 
 
         private void UnstoreThing()
         {
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
-            if (mapComp.spotsOnMap.Contains(this))
+            if (mapComp.SpotsOnMap.Contains(this))
             {
-                MapHeld.GetComponent<MapComponent_GuardingPawns>().spotsOnMap.Remove(this);
+                MapHeld.GetComponent<MapComponent_GuardingPawns>().SpotsOnMap.Remove(this);
             }
         }
     }
