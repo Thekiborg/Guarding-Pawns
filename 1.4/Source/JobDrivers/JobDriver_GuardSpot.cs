@@ -60,7 +60,7 @@ namespace Thek_GuardingPawns
                             request.wantCoverFromTarget = true;
                             if (CastPositionFinder.TryFindCastPosition(request, out var dest) && dest != pawn.Position)
                             {
-                                Job job_move = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                                Job job_move = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, dest);
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job_move);
                             }
@@ -113,7 +113,7 @@ namespace Thek_GuardingPawns
                             var tile = nearestEnemy.pather.curPath.Peek(Math.Min(nearestEnemy.pather.curPath.NodesLeftCount, 10));
                             if (pawn.CanReach(tile, PathEndMode.OnCell, Danger.Unspecified))
                             {
-                                Job job = JobMaker.MakeJob(JobDefOf.Goto, tile);
+                                Job job = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, tile);
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job);
                                 if (pawn.mindState != null)
@@ -143,7 +143,7 @@ namespace Thek_GuardingPawns
                         request.wantCoverFromTarget = true;
                         if (CastPositionFinder.TryFindCastPosition(request, out var dest))
                         {
-                            Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                            Job job = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, dest);
                             job.expiryInterval = 60;
                             pawn.jobs.StopAll();
                             pawn.jobs.StartJob(job);
@@ -154,7 +154,7 @@ namespace Thek_GuardingPawns
                         }
                         else
                         {
-                            Job job = JobMaker.MakeJob(JobDefOf.Goto, nearestEnemy);
+                            Job job = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, nearestEnemy);
                             job.expiryInterval              = 60;
                             job.expireRequiresEnemiesNearby = true;
                             pawn.jobs.StopAll();

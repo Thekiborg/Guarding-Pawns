@@ -13,6 +13,12 @@ namespace Thek_GuardingPawns
     }
 
     [DefOf]
+    public static class GotoJobDefOf
+    {
+        public static JobDef GuardingP_Goto;
+    }
+
+    [DefOf]
     public static class PawnTableDefOf
     {
         public static PawnTableDef GuardingP_PawnTableDef_Guard;
