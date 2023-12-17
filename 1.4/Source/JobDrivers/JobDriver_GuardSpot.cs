@@ -30,11 +30,6 @@ namespace Thek_GuardingPawns
             guard.defaultCompleteMode = ToilCompleteMode.Instant;
             guard.AddPreInitAction(delegate
             {
-                if (!mapComp.hostilityMode.ContainsKey(pawn)) { mapComp.hostilityMode.TryAdd(pawn, pawn.playerSettings.hostilityResponse); }
-                pawn.playerSettings.hostilityResponse = mapComp.hostilityMode.TryGetValue(pawn);
-            });
-            guard.AddPreInitAction(delegate
-            {
                 Verb verb = pawn.CurrentEffectiveVerb;
                 if (verb is not { state: VerbState.Idle })
                 {
