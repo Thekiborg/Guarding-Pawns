@@ -52,7 +52,6 @@ namespace Thek_GuardingPawns
                             {
                                 pawn.mindState.enemyTarget = enemyPawn;
                             }
-                            pawn.mindState.enemyTarget = enemyPawn;
                             CastPositionRequest request    = new ();
                             request.caster              = pawn;
                             request.target              = enemyPawn;
@@ -61,12 +60,8 @@ namespace Thek_GuardingPawns
                             if (CastPositionFinder.TryFindCastPosition(request, out var dest) && dest != pawn.Position)
                             {
                                 Job job_move = JobMaker.MakeJob(JobDefOf.Goto, dest);
-                                job_move.expiryInterval              = 60;
-                                job_move.expireRequiresEnemiesNearby = true;
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job_move);
-                                Job job_shoot = JobMaker.MakeJob(JobDefOf.Wait_Combat, enemyPawn, 400);
-                                pawn.jobs.jobQueue.EnqueueFirst(job_shoot);
                             }
                             else
                             {
@@ -74,7 +69,6 @@ namespace Thek_GuardingPawns
                                 Job job_shoot = JobMaker.MakeJob(JobDefOf.Wait_Combat, enemyPawn, 400);
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job_shoot);
-                                pawn.mindState.enemyTarget = enemyPawn;
                             }
                             return;
                         }
