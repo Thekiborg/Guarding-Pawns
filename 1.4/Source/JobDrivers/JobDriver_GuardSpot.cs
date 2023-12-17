@@ -48,6 +48,7 @@ namespace Thek_GuardingPawns
                     {
                         if (verb.CanHitTarget(enemyPawn))
                         {
+                            pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                             if (pawn.mindState != null)
                             {
                                 pawn.mindState.enemyTarget = enemyPawn;
@@ -65,7 +66,6 @@ namespace Thek_GuardingPawns
                             }
                             else
                             {
-                                pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                                 Job job_shoot = JobMaker.MakeJob(JobDefOf.Wait_Combat, enemyPawn, 400);
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job_shoot);
