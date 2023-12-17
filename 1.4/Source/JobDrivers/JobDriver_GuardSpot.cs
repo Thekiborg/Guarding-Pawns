@@ -108,13 +108,12 @@ namespace Thek_GuardingPawns
                     pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                     if (verb.IsMeleeAttack)
                     {
-                        Job     job;
                         if (nearestDistSqr >= 122 && nearestEnemy.pather.curPath != null && nearestEnemy.pather.curPath.NodesLeftCount > 10)
                         {
                             var tile = nearestEnemy.pather.curPath.Peek(Math.Min(nearestEnemy.pather.curPath.NodesLeftCount, 10));
                             if (pawn.CanReach(tile, PathEndMode.OnCell, Danger.Unspecified))
                             {
-                                job = JobMaker.MakeJob(JobDefOf.Goto, tile);
+                                Job job = JobMaker.MakeJob(JobDefOf.Goto, tile);
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job);
                                 if (pawn.mindState != null)
@@ -124,12 +123,14 @@ namespace Thek_GuardingPawns
                                 return;
                             }
                         }
-                        job = JobMaker.MakeJob(JobDefOf.Goto, nearestEnemy);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job);
-                        if (pawn.mindState != null)
                         {
-                            pawn.mindState.enemyTarget = nearestEnemy;
+                            Job job = JobMaker.MakeJob(JobDefOf.Goto, nearestEnemy);
+                            pawn.jobs.StopAll();
+                            pawn.jobs.StartJob(job);
+                            if (pawn.mindState != null)
+                            {
+                                pawn.mindState.enemyTarget = nearestEnemy;
+                            }
                         }
                     }
                     else
