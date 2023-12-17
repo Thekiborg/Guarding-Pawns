@@ -127,15 +127,14 @@ namespace Thek_GuardingPawns
                     }
                     else
                     {
-                        IntVec3             targetTile = pawn.Position;
                         CastPositionRequest request    = new ();
                         request.caster              = pawn;
                         request.target              = nearestEnemy;
-                        request.verb                = pawn.CurrentEffectiveVerb;
+                        request.verb                = verb;
                         request.wantCoverFromTarget = true;
-                        if (CastPositionFinder.TryFindCastPosition(request, out var dest) && pawn.CanReach(dest, PathEndMode.OnCell, Danger.Unspecified))
+                        if (CastPositionFinder.TryFindCastPosition(request, out var dest))
                         {
-                            Job job = JobMaker.MakeJob(JobDefOf.Goto, targetTile);
+                            Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
                             job.expiryInterval              = 60;
                             job.expireRequiresEnemiesNearby = true;
                             pawn.jobs.StopAll();
