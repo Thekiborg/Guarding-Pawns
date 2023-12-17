@@ -27,6 +27,12 @@ namespace Thek_GuardingPawns
             });
             GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
             guard.FailOn(() => spotColor != guardJobSpot.SpotColor);
+            guard.defaultCompleteMode = ToilCompleteMode.Instant;
+            guard.AddPreInitAction(delegate
+            {
+                if (!mapComp.hostilityMode.ContainsKey(pawn)) { mapComp.hostilityMode.TryAdd(pawn, pawn.playerSettings.hostilityResponse); }
+                pawn.playerSettings.hostilityResponse = mapComp.hostilityMode.TryGetValue(pawn);
+            });
             guard.preInitActions.Add(delegate
             {
                 Verb verb = pawn.CurrentEffectiveVerb;
@@ -153,12 +159,6 @@ namespace Thek_GuardingPawns
                         }
                     }
                 }
-            });
-            guard.defaultCompleteMode = ToilCompleteMode.Instant;
-            guard.AddPreInitAction(delegate
-            {
-                if (!mapComp.hostilityMode.ContainsKey(pawn)) { mapComp.hostilityMode.TryAdd(pawn, pawn.playerSettings.hostilityResponse); }
-                pawn.playerSettings.hostilityResponse = mapComp.hostilityMode.TryGetValue(pawn);
             });
             guard.AddPreInitAction(delegate
             {
