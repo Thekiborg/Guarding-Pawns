@@ -24,6 +24,8 @@ namespace Thek_GuardingPawns
 
         public IEnumerable<Pawn> AllHostilePawnsSpawned;
 
+        public Dictionary<Pawn, HostilityResponseMode> hostilityMode = new();
+
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref GuardJobs, "GuardingP_GuardJobsExtraOptions", LookMode.Reference, LookMode.Deep, ref PawnsList, ref GuardJobsList);

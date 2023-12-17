@@ -1,4 +1,6 @@
-﻿using Verse.AI;
+﻿using System.Linq;
+using Verse;
+using Verse.AI;
 
 namespace Thek_GuardingPawns
 {
@@ -6,7 +8,7 @@ namespace Thek_GuardingPawns
     {
         PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor spotColor;
         MapComponent_GuardingPawns mapComp;
-        const int meleeDetectionRange = 25;
+        const int meleeDetectionRange = 50;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -28,29 +30,98 @@ namespace Thek_GuardingPawns
 
                 if (pawn.IsHashIntervalTick(60))
                 {
+                    // GIVEN BY KARIM
+                    foreach (Pawn enemyPawn in mapComp.AllHostilePawnsSpawned)
+                    {
+                        if (pawn.TryStartAttack(enemyPawn))
+                        {
+                            Log.Message("Early return");
+                            return;
+                        }
+                    }
+                    // GIVEN BY KARIM
                     foreach (Pawn enemyPawn in mapComp.AllHostilePawnsSpawned)
                     {
                         if (pawn.equipment.Primary.DestroyedOrNull() || pawn.equipment.Primary.def.IsMeleeWeapon)
                         {
-                            if (pawn.Position.DistanceTo(enemyPawn.Position) <= meleeDetectionRange
+                            if (pawn.Position.DistanceToSquared(enemyPawn.Position) <= meleeDetectionRange
                                 && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map)
-                                && !enemyPawn.Downed)
+                                && (!enemyPawn.Downed || !enemyPawn.Dead))
                             {
                                 guard.handlingFacing = false;
-                                pawn.pather.StartPath(enemyPawn.Position, PathEndMode.Touch);
-                                if (pawn.Position.DistanceTo(enemyPawn.Position) <= 1) { pawn.meleeVerbs.TryMeleeAttack(enemyPawn); }
+
+                                // GIVEN BY KARIM
+                                var targetTile = enemyPawn.Position;
+                                Log.Message("A");
+                                if (enemyPawn.pather.curPath != null && enemyPawn.pather.curPath.NodesLeftCount > 10)
+                                {
+                                    var tile = enemyPawn.pather.curPath.Peek(Math.Min(enemyPawn.pather.curPath.NodesLeftCount, 10));
+                                    if (pawn.CanReach(tile, PathEndMode.OnCell, Danger.Unspecified))
+                                    {
+                                        targetTile = tile;
+                                        Log.Message("B");
+                                    }
+                                }
+                                if (pawn.CanReach(targetTile, PathEndMode.OnCell, Danger.Unspecified))
+                                {
+                                    pawn.pather.StartPath(targetTile, PathEndMode.Touch);
+                                    pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
+                                    break;
+                                }
+                                // GIVEN BY KARIM
                             }
                         }
-                        if (pawn.Position.DistanceToSquared(enemyPawn.Position) <= pawn.equipment.PrimaryEq?.PrimaryVerb?.verbProps.range
+                        else if (pawn.Position.DistanceToSquared(enemyPawn.Position) <= pawn.equipment.PrimaryEq?.PrimaryVerb?.verbProps.range
                             && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map)
-                            && !enemyPawn.Downed)
+                            && (!enemyPawn.Downed || !enemyPawn.Dead))
                         {
-                            pawn.TryStartAttack(enemyPawn);
+                            // GIVEN BY KARIM
+                            var targetTile = enemyPawn.Position;
+                            if (!pawn.TryStartAttack(enemyPawn))
+                            {
+                                Log.Message("A");
+                                if (enemyPawn.pather.curPath != null && enemyPawn.pather.curPath.NodesLeftCount > 10)
+                                {
+                                    var tile = enemyPawn.pather.curPath.Peek(Math.Min(enemyPawn.pather.curPath.NodesLeftCount - 1, 10));
+                                    if (pawn.CanReach(tile, PathEndMode.OnCell, Danger.Unspecified))
+                                    {
+                                        targetTile = tile;
+                                        Log.Message("B");
+                                    }
+                                }
+                                if (pawn.CanReach(targetTile, PathEndMode.OnCell, Danger.Unspecified))
+                                {
+                                    if (!(pawn.CurrentEffectiveVerb?.IsMeleeAttack ?? true))
+                                    {
+                                        CastPositionRequest request = new();
+                                        request.caster = pawn;
+                                        request.target = enemyPawn;
+                                        request.locus = targetTile;
+                                        request.verb = pawn.CurrentEffectiveVerb;
+                                        request.wantCoverFromTarget = true;
+                                        if (CastPositionFinder.TryFindCastPosition(request, out var dest) && pawn.CanReach(dest, PathEndMode.OnCell, Danger.Unspecified))
+                                        {
+                                            targetTile = dest;
+                                            Log.Message("C");
+                                        }
+                                    }
+                                    pawn.pather.StartPath(targetTile, PathEndMode.Touch);
+                                    pawn.mindState.enemyTarget = enemyPawn;
+                                    pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
+                                    break;
+                                }
+                            }
+                            // GIVEN BY KARIM
                         }
                     }
                 }
             };
             guard.defaultCompleteMode = ToilCompleteMode.Delay;
+            guard.AddPreInitAction(delegate
+            {
+                if (!mapComp.hostilityMode.ContainsKey(pawn)) { mapComp.hostilityMode.TryAdd(pawn, pawn.playerSettings.hostilityResponse); }
+                pawn.playerSettings.hostilityResponse = mapComp.hostilityMode.TryGetValue(pawn);
+            });
             guard.AddPreTickAction(delegate
             {
                 Building building = pawn.Position.GetFirstBuilding(pawn.Map);
@@ -74,8 +145,8 @@ namespace Thek_GuardingPawns
             toil.handlingFacing = true;
             toil.tickAction = delegate
             {
-                Rot4 buildingRot = toil.actor.Position.GetFirstBuilding(toil.actor.Map).Rotation;
-                toil.actor.Rotation = buildingRot;
+                Building building = toil.actor.Position.GetFirstBuilding(toil.actor.Map);
+                if (building != null) toil.actor.Rotation = building.Rotation;
             };
             return toil;
         }
