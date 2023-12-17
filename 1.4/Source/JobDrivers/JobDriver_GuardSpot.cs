@@ -33,7 +33,7 @@ namespace Thek_GuardingPawns
                 if (!mapComp.hostilityMode.ContainsKey(pawn)) { mapComp.hostilityMode.TryAdd(pawn, pawn.playerSettings.hostilityResponse); }
                 pawn.playerSettings.hostilityResponse = mapComp.hostilityMode.TryGetValue(pawn);
             });
-            guard.preInitActions.Add(delegate
+            guard.AddPreInitAction(delegate
             {
                 Verb verb = pawn.CurrentEffectiveVerb;
                 if (verb is not { state: VerbState.Idle })
