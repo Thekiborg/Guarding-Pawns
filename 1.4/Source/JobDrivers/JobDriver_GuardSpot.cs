@@ -127,10 +127,14 @@ namespace Thek_GuardingPawns
                         job = JobMaker.MakeJob(JobDefOf.Goto, nearestEnemy);
                         pawn.jobs.StopAll();
                         pawn.jobs.StartJob(job);
+                        if (pawn.mindState != null)
+                        {
+                            pawn.mindState.enemyTarget = nearestEnemy;
+                        }
                     }
                     else
                     {
-                        CastPositionRequest request    = new ();
+                        CastPositionRequest request = new ();
                         request.caster              = pawn;
                         request.target              = nearestEnemy;
                         request.verb                = verb;
