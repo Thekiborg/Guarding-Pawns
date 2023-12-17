@@ -117,7 +117,10 @@ namespace Thek_GuardingPawns
                                 job = JobMaker.MakeJob(JobDefOf.Goto, tile);
                                 pawn.jobs.StopAll();
                                 pawn.jobs.StartJob(job);
-                                pawn.mindState.enemyTarget = nearestEnemy;
+                                if (pawn.mindState != null)
+                                {
+                                    pawn.mindState.enemyTarget = nearestEnemy;
+                                }
                                 return;
                             }
                         }
@@ -139,7 +142,10 @@ namespace Thek_GuardingPawns
                             job.expireRequiresEnemiesNearby = true;
                             pawn.jobs.StopAll();
                             pawn.jobs.StartJob(job);
-                            pawn.mindState.enemyTarget = nearestEnemy;
+                            if (pawn.mindState != null)
+                            {
+                                pawn.mindState.enemyTarget = nearestEnemy;
+                            }
                         }
                         else
                         {
@@ -148,7 +154,10 @@ namespace Thek_GuardingPawns
                             job.expireRequiresEnemiesNearby = true;
                             pawn.jobs.StopAll();
                             pawn.jobs.StartJob(job);
-                            pawn.mindState.enemyTarget = nearestEnemy;
+                            if (pawn.mindState != null)
+                            {
+                                pawn.mindState.enemyTarget = nearestEnemy;
+                            }
                         }
                     }
                 }
