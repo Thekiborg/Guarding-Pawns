@@ -124,7 +124,7 @@ namespace Thek_GuardingPawns
                             }
                         }
                         {
-                            Job job = JobMaker.MakeJob(JobDefOf.Goto, nearestEnemy);
+                            Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, nearestEnemy);
                             pawn.jobs.StopAll();
                             pawn.jobs.StartJob(job);
                             if (pawn.mindState != null)
@@ -139,12 +139,12 @@ namespace Thek_GuardingPawns
                         request.caster              = pawn;
                         request.target              = nearestEnemy;
                         request.verb                = verb;
+                        request.maxRangeFromTarget  = 50;
                         request.wantCoverFromTarget = true;
                         if (CastPositionFinder.TryFindCastPosition(request, out var dest))
                         {
                             Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
-                            job.expiryInterval              = 60;
-                            job.expireRequiresEnemiesNearby = true;
+                            job.expiryInterval = 60;
                             pawn.jobs.StopAll();
                             pawn.jobs.StartJob(job);
                             if (pawn.mindState != null)
