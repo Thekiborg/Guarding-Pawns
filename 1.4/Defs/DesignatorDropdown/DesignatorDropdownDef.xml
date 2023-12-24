@@ -9,4 +9,12 @@
         <includeEyeDropperTool>true</includeEyeDropperTool>
       </DesignatorDropdownGroupDef>
 
+      <DesignatorDropdownGroupDef>
+        <defName>GuardingP_PatrolSpots</defName>
+        <label>patrolling spot</label>
+        <iconSource>Placed</iconSource>
+        <useGridMenu>false</useGridMenu>
+        <includeEyeDropperTool>true</includeEyeDropperTool>
+      </DesignatorDropdownGroupDef>
+
 </Defs>

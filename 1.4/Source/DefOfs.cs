@@ -65,6 +65,11 @@ namespace Thek_GuardingPawns
     [DefOf]
     public static class GuardPathDefOf
     {
-
+        public static ThingDef GuardingP_redPatrol;
+        public static ThingDef GuardingP_yellowPatrol;
+        public static ThingDef GuardingP_orangePatrol;
+        public static ThingDef GuardingP_greenPatrol;
+        public static ThingDef GuardingP_bluePatrol;
+        public static ThingDef GuardingP_purplePatrol;
     }
 }
