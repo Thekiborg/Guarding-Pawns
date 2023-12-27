@@ -15,5 +15,20 @@
         <prioritizeSustains>true</prioritizeSustains>
         <canBeDoneByMechs>True</canBeDoneByMechs>
       </WorkGiverDef>
+      
+      <WorkGiverDef>
+        <defName>GuardingP_GuardPathWorkGiver</defName>
+        <label>patrol the colony</label>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardPath</giverClass>
+        <workType>GuardingP_GuardingWorkType</workType>
+        <priorityInType>1</priorityInType>
+        <verb>patrol colony</verb>
+        <gerund>patrol colony at</gerund>
+        <requiredCapacities>
+          <li>Moving</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>True</canBeDoneByMechs>
+      </WorkGiverDef>
 
 </Defs>

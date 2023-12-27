@@ -4,6 +4,8 @@
     public class GuardingP_PatrolSpots : Building
     {
         private List<Thing> ListForDef;
+        private static Dictionary<ThingDef, int> SpotCounter = new();
+        private string resolvedLabel;
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (Gizmo gizmo in base.GetGizmos())
@@ -15,17 +17,26 @@
                 defaultLabel = "Change order",
                 action = delegate ()
                 {
-                    Find.WindowStack.Add(new Window_SortPatrolSpots(Map));
+                    Find.WindowStack.Add(new Window_SortPatrolSpots(Map, ListForDef));
                 }
             };
             yield return command_Action;
         }
 
+        public override string Label => resolvedLabel;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
+            ChangeLabel();
             StoreThing();
+        }
+
+        private void ChangeLabel()
+        {
+            SpotCounter.TryAdd(def, 0);
+            SpotCounter[def] += 1;
+            resolvedLabel = $"{def.label} {SpotCounter[def]}";
         }
 
 
@@ -90,6 +101,11 @@
                 ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().PurplePatrolsOnMap;
                 return;
             }
+        }
+
+        public override void ExposeData()
+        {
+            Scribe_Values.Look(ref resolvedLabel, "PatrolSpotLabel");
         }
     }
 }

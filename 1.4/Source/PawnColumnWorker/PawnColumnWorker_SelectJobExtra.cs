@@ -20,6 +20,7 @@
             GuardingP_redPath,
             GuardingP_orangePath,
             GuardingP_yellowPath,
+            GuardingP_greenPath,
             GuardingP_bluePath,
             GuardingP_purplePath,
         }
@@ -66,7 +67,6 @@
                             ))
                         {
                             GuardPathExtraOptions(pawn, rect);
-                            Log.Message(path.PathColor.ToString().Translate());
                         }
                         listing_StandardGuardAssignments.End();
                         break;
@@ -137,7 +137,7 @@
 
             foreach (GuardPathGroupColor colorGroup in Enum.GetValues(typeof(GuardPathGroupColor)))
             {
-                menuOptions.Add(new(colorGroup.ToString(), () =>
+                menuOptions.Add(new(colorGroup.ToString().Translate(), () =>
                 {
                     GuardJobs_GuardPath guardJobs_GuardPath = new()
                     {
