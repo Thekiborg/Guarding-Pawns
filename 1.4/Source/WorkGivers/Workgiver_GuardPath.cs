@@ -14,12 +14,13 @@ namespace Thek_GuardingPawns
             bool shouldSkip = true;
             foreach (Thing thing in pawn.MapHeld.listerThings.AllThings)
             {
-                if (GuardSpotDefOf.GetDefOfs().Contains(thing.def))
+                if (GuardPathDefOf.GetDefOfs().Contains(thing.def))
                 {
                     shouldSkip = false;
                     break;
                 }
             }
+            Log.Error(shouldSkip.ToString());
             if (shouldSkip)
             {
                 return true;
@@ -32,11 +33,11 @@ namespace Thek_GuardingPawns
         {
             CacheMapComponent(pawn);
             guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJob);
-            if (guardJob is GuardJobs_GuardPath && !pawn.Map.reservationManager.IsReservedByAnyoneOf(t, pawn.Faction))
+            if (guardJob is GuardJobs_GuardPath)
             {
-                GuardJobs_GuardPath spot;
-                spot = guardJob as GuardJobs_GuardPath;
-                switch (spot.PathColor)
+                GuardJobs_GuardPath path;
+                path = guardJob as GuardJobs_GuardPath;
+                switch (path.PathColor)
                 {
                     case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:
                         if (t.def == GuardPathDefOf.GuardingP_redPatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
@@ -70,7 +71,7 @@ namespace Thek_GuardingPawns
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
             CacheMapComponent(pawn);
-            return guardAssignmentMapComp.SpotsOnMap;
+            return guardAssignmentMapComp.PatrolSpotsOnMap;
         }
 
 

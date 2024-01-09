@@ -56,15 +56,24 @@
 
         private void StoreThing()
         {
+            MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
+
             FindListForDef();
             ListForDef.Add(this);
+            mapComp.PatrolSpotsOnMap.Add(this);
         }
 
 
         private void UnstoreThing()
         {
+            MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
+
             FindListForDef();
             ListForDef.Remove(this);
+            if (mapComp.PatrolSpotsOnMap.Contains(this))
+            {
+                mapComp.PatrolSpotsOnMap.Remove(this);
+            }
         }
 
 

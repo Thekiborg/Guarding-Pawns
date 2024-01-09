@@ -71,5 +71,27 @@ namespace Thek_GuardingPawns
         public static ThingDef GuardingP_greenPatrol;
         public static ThingDef GuardingP_bluePatrol;
         public static ThingDef GuardingP_purplePatrol;
+
+        private static HashSet<ThingDef> thingDefOfs;
+        public static HashSet<ThingDef> GetDefOfs()
+        {
+            if (thingDefOfs != null)
+            {
+                return thingDefOfs;
+            }
+
+            thingDefOfs = new HashSet<ThingDef>();
+
+
+            foreach (FieldInfo field in typeof(GuardSpotDefOf).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                object fieldValue = field.GetValue(null);
+                if (fieldValue is ThingDef thingDef)
+                {
+                    thingDefOfs.Add(thingDef);
+                }
+            }
+            return thingDefOfs;
+        }
     }
 }

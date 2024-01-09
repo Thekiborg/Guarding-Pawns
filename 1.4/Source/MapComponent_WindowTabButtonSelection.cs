@@ -20,7 +20,8 @@ namespace Thek_GuardingPawns
         private List<Pawn> PawnsList = new();
         private List<GuardJobs> GuardJobsList = new();
 
-        public List<Thing> SpotsOnMap = new();
+        public List<Thing> StandingSpotsOnMap = new();
+        public List<Thing> PatrolSpotsOnMap = new();
 
         public List<Thing> RedPatrolsOnMap = new();
         public List<Thing> OrangePatrolsOnMap = new();
@@ -34,7 +35,7 @@ namespace Thek_GuardingPawns
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref GuardJobs, "GuardingP_GuardJobsExtraOptions", LookMode.Reference, LookMode.Deep, ref PawnsList, ref GuardJobsList);
-            Scribe_Collections.Look(ref SpotsOnMap, "GuardingP_SpotsOnMap", LookMode.Reference);
+            Scribe_Collections.Look(ref StandingSpotsOnMap, "GuardingP_SpotsOnMap", LookMode.Reference);
             Scribe_Collections.Look(ref RedPatrolsOnMap, "GuardingP_RedPatrolsOnMap", LookMode.Reference);
             Scribe_Collections.Look(ref OrangePatrolsOnMap, "GuardingP_OrangePatrolsOnMap", LookMode.Reference);
             Scribe_Collections.Look(ref YellowPatrolsOnMap, "GuardingP_YellowPatrolsOnMap", LookMode.Reference);

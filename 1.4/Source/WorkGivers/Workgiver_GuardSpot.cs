@@ -66,7 +66,7 @@ namespace Thek_GuardingPawns
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
             CacheMapComponent(pawn);
-            return guardAssignmentMapComp.SpotsOnMap;
+            return guardAssignmentMapComp.StandingSpotsOnMap;
         }
 
 
