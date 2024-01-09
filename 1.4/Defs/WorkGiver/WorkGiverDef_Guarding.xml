@@ -6,7 +6,7 @@
         <label>guard the colony</label>
         <giverClass>Thek_GuardingPawns.Workgiver_GuardSpot</giverClass>
         <workType>GuardingP_GuardingWorkType</workType>
-        <priorityInType>1</priorityInType>
+        <priorityInType>100</priorityInType>
         <verb>guard colony</verb>
         <gerund>guard colony at</gerund>
         <requiredCapacities>
@@ -21,7 +21,7 @@
         <label>patrol the colony</label>
         <giverClass>Thek_GuardingPawns.Workgiver_GuardPath</giverClass>
         <workType>GuardingP_GuardingWorkType</workType>
-        <priorityInType>1</priorityInType>
+        <priorityInType>110</priorityInType>
         <verb>patrol colony</verb>
         <gerund>patrol colony at</gerund>
         <requiredCapacities>

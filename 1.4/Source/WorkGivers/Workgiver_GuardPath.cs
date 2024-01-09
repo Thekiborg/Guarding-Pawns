@@ -11,21 +11,7 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
-            bool shouldSkip = true;
-            foreach (Thing thing in pawn.MapHeld.listerThings.AllThings)
-            {
-                if (GuardPathDefOf.GetDefOfs().Contains(thing.def))
-                {
-                    shouldSkip = false;
-                    break;
-                }
-            }
-            Log.Error(shouldSkip.ToString());
-            if (shouldSkip)
-            {
-                return true;
-            }
-            return false;
+            return guardAssignmentMapComp.PatrolSpotsOnMap.NullOrEmpty();
         }
 
 
