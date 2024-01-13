@@ -6,7 +6,7 @@ namespace Thek_GuardingPawns
     {
         MapComponent_GuardingPawns mapComp;
         List<Thing> spotsList;
-        int loop;
+        
         protected override IEnumerable<Toil> MakeNewToils()
         {
             Toil guard = ToilMaker.MakeToil("MakeNewToils");
@@ -16,18 +16,27 @@ namespace Thek_GuardingPawns
                 if (spotsList.NullOrEmpty())
                 {
                     GetSpotsList();
-                    if (loop % 2 == 1)
-                    {
-                        spotsList.Reverse();
-                    }
-                    loop++;
+                    DoPrevSpotDictionary();
+                    Thing newDest = spotsList[0 + mapComp.previousPatrolSpotPassedByPawn[pawn]]; 
+                    //pawn.pather.StartPath(newDest, PathEndMode.OnCell);
+                    Job job = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, newDest);
+                    job.locomotionUrgency = LocomotionUrgency.Amble;
+                    pawn.jobs.StopAll();
+                    pawn.jobs.StartJob(job);
                 }
-                pawn.pather.StartPath(spotsList[0].Position, PathEndMode.OnCell);
-                spotsList.RemoveAt(0);
+            });
+            guard.AddFinishAction(delegate
+            {
+                if (mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out int index) && index == spotsList.Count - 1)
+                {
+                    mapComp.previousPatrolSpotPassedByPawn[pawn] = 0;
+                }
+                else
+                {
+                    mapComp.previousPatrolSpotPassedByPawn[pawn] += 1;
+                }
             });
             yield return guard;
-            yield return Toils_General.Wait(2);
-            yield return Toils_Jump.Jump(guard);
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -35,31 +44,47 @@ namespace Thek_GuardingPawns
             return true;
         }
 
-        private List<Thing> GetSpotsList()
+        private void DoPrevSpotDictionary()
         {
             mapComp = pawn.Map.GetComponent<MapComponent_GuardingPawns>();
+            mapComp.previousPatrolSpotPassedByPawn.TryAdd(pawn, 0);
+        }
+
+        private void GetSpotsList()
+        {
+            mapComp = pawn.Map.GetComponent<MapComponent_GuardingPawns>();
+            if (!spotsList.NullOrEmpty())
+            {
+                spotsList.Clear();
+            }
             switch ((mapComp.GuardJobs[pawn] as GuardJobs_GuardPath).PathColor)
             {
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:
-                    return spotsList = [.. mapComp.RedPatrolsOnMap];
+                    spotsList = [.. mapComp.RedPatrolsOnMap];
+                    break;
 
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_orangePath:
-                    return spotsList = [.. mapComp.OrangePatrolsOnMap];
+                    spotsList = [.. mapComp.OrangePatrolsOnMap];
+                    break;
 
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_yellowPath:
-                    return spotsList = [.. mapComp.YellowPatrolsOnMap];
+                    spotsList = [.. mapComp.YellowPatrolsOnMap];
+                    break;
 
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_greenPath:
-                    return spotsList = [.. mapComp.GreenPatrolsOnMap];
+                    spotsList = [.. mapComp.GreenPatrolsOnMap];
+                    break;
 
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_bluePath:
-                    return spotsList = [.. mapComp.BluePatrolsOnMap];
+                    spotsList = [.. mapComp.BluePatrolsOnMap];
+                    break;
 
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_purplePath:
-                    return spotsList = [.. mapComp.PurplePatrolsOnMap];
+                    spotsList = [.. mapComp.PurplePatrolsOnMap];
+                    break;
 
                 default:
-                    return null;
+                    break;
             }
         }
     }

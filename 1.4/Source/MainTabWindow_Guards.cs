@@ -23,7 +23,7 @@ namespace Thek_GuardingPawns
 
         public override void DoWindowContents(Rect rect)
         {
-            windowTabRect = rect;
+            windowTabRect = rect; 
             base.DoWindowContents(rect);
 
             Widgets.Checkbox((float)rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref True);

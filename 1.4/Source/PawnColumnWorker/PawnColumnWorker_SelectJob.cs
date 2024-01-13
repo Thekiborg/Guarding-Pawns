@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Thek_GuardingPawns
+﻿namespace Thek_GuardingPawns
 {
     [StaticConstructorOnStartup]
     public class PawnColumnWorker_SelectJob : PawnColumnWorker

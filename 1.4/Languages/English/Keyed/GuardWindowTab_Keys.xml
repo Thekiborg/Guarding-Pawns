@@ -46,6 +46,7 @@
     <GuardingP_greenPath>Patrol the green route</GuardingP_greenPath>
     <GuardingP_bluePath>Patrol the blue route</GuardingP_bluePath>
     <GuardingP_purplePath>Patrol the purple route</GuardingP_purplePath>
+    <ShouldLoop>Should loop?</ShouldLoop>
 
     <SpotGUIexplanation>This is the order pawns follow when patrolling patrol across the spots, starting at the highest one.
 Using the buttons you can change the order of the spots on the list, which will change the route the pawns will take.

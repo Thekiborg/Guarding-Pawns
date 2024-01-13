@@ -59,20 +59,30 @@
 
 
                     case GuardJobs_GuardPath path:
+                        float checkboxPadding = 7.5f;
 
-                        listing_StandardGuardAssignments.Begin(rect);
+                        Rect rectButton = new(rect.xMin, rect.yMin, rect.width / 2, rect.height);
+
+                        listing_StandardGuardAssignments.Begin(rectButton);
 
                         if (listing_StandardGuardAssignments.ButtonText(
                             label: path.PathColor.ToString().Translate()
                             ))
                         {
-                            GuardPathExtraOptions(pawn, rect);
+                            GuardPathExtraOptions(pawn, rectButton);
                         }
                         listing_StandardGuardAssignments.End();
+
+                        Text.Anchor = TextAnchor.MiddleCenter;
+                        Widgets.Label(new Rect(rectButton.xMax, rect.yMin, rect.width - rectButton.width - Widgets.CheckboxSize - checkboxPadding, rect.height), "ShouldLoop".Translate());
+                        Text.Anchor = TextAnchor.UpperLeft;
+
+                        Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - checkboxPadding, rect.y, ref path.shouldLoop);
+                        
                         break;
 
 
-                    case GuardJobs_GuardPawn pn: //Este no es null-safe, hay que prevenir más tarde
+                    case GuardJobs_GuardPawn pn:
 
                         listing_StandardGuardAssignments.Begin(rect);
 

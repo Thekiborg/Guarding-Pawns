@@ -30,6 +30,8 @@ namespace Thek_GuardingPawns
         public List<Thing> BluePatrolsOnMap = new();
         public List<Thing> PurplePatrolsOnMap = new();
 
+        public Dictionary<Pawn, int> previousPatrolSpotPassedByPawn = new();
+
         public IEnumerable<Pawn> AllHostilePawnsSpawned;
 
         public override void ExposeData()

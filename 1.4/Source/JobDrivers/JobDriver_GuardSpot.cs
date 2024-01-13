@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Verse;
-using Verse.AI;
+﻿using Verse.AI;
 
 namespace Thek_GuardingPawns
 {
@@ -21,6 +19,7 @@ namespace Thek_GuardingPawns
             this.FailOnDespawnedOrNull(TargetIndex.A);
             Toil guard = ToilMaker.MakeToil("MakeNewToils");
             guard.preInitActions ??= new List<Action>();
+            guard.defaultDuration = 4000;
             guard.preInitActions.Add(delegate
             {
                 pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;

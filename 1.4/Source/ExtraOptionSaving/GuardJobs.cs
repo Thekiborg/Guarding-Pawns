@@ -1,6 +1,4 @@
-﻿using Verse.AI;
-
-namespace Thek_GuardingPawns
+﻿namespace Thek_GuardingPawns
 {
     public abstract class GuardJobs : IExposable
     {
