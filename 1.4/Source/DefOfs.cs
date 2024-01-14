@@ -47,7 +47,7 @@ namespace Thek_GuardingPawns
                 return thingDefOfs;
             }
 
-            thingDefOfs = new HashSet<ThingDef>();
+            thingDefOfs = [];
 
 
             foreach (FieldInfo field in typeof(GuardSpotDefOf).GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -80,7 +80,7 @@ namespace Thek_GuardingPawns
                 return thingDefOfs;
             }
 
-            thingDefOfs = new HashSet<ThingDef>();
+            thingDefOfs = new();
 
 
             foreach (FieldInfo field in typeof(GuardSpotDefOf).GetFields(BindingFlags.Static | BindingFlags.Public))

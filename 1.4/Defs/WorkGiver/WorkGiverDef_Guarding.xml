@@ -23,7 +23,7 @@
         <workType>GuardingP_GuardingWorkType</workType>
         <priorityInType>110</priorityInType>
         <verb>patrol colony</verb>
-        <gerund>patrol colony at</gerund>
+        <gerund>patrolling colony</gerund>
         <requiredCapacities>
           <li>Moving</li>
         </requiredCapacities>

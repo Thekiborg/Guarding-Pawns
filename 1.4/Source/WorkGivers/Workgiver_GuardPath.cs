@@ -2,7 +2,7 @@
 
 namespace Thek_GuardingPawns
 {
-    public class WorkGiver_GuardPath : WorkGiver_Scanner
+    public class WorkGiver_GuardPath : WorkGiver
     {
         private Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
         private MapComponent_GuardingPawns guardAssignmentMapComp;
@@ -11,56 +11,18 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
-            return guardAssignmentMapComp.PatrolSpotsOnMap.NullOrEmpty();
+            return guardAssignmentMapComp.PatrolSpotsOnMap.NullOrEmpty()
+                || !guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob)
+                || gJob is not GuardJobs_GuardPath;
         }
 
-
-        public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
+        public override Job NonScanJob(Pawn pawn)
         {
-            CacheMapComponent(pawn);
-            guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJob);
-            if (guardJob is GuardJobs_GuardPath)
-            {
-                GuardJobs_GuardPath path;
-                path = guardJob as GuardJobs_GuardPath;
-                switch (path.PathColor)
-                {
-                    case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:
-                        if (t.def == GuardPathDefOf.GuardingP_redPatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
-                        break;
+            Job job = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath);
+            job.locomotionUrgency = LocomotionUrgency.Walk;
 
-                    case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_orangePath:
-                        if (t.def == GuardPathDefOf.GuardingP_orangePatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
-                        break;
-
-                    case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_yellowPath:
-                        if (t.def == GuardPathDefOf.GuardingP_yellowPatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
-                        break;
-
-                    case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_bluePath:
-                        if (t.def == GuardPathDefOf.GuardingP_bluePatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
-                        break;
-
-                    case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_greenPath:
-                        if (t.def == GuardPathDefOf.GuardingP_greenPatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
-                        break;
-
-                    case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_purplePath:
-                        if (t.def == GuardPathDefOf.GuardingP_purplePatrol) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath, t);
-                        break;
-                }
-            }
-            return null;
+            return job;
         }
-
-
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
-        {
-            CacheMapComponent(pawn);
-            return guardAssignmentMapComp.PatrolSpotsOnMap;
-        }
-
-
         private void CacheMapComponent(Pawn pawn)
         {
             if (!MapCompCache.TryGetValue(pawn.MapHeld, out MapComponent_GuardingPawns value))

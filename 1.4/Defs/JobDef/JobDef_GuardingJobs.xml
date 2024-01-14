@@ -12,7 +12,7 @@
       <JobDef>
         <defName>GuardingP_GuardPath</defName>
         <driverClass>Thek_GuardingPawns.JobDriver_GuardPath</driverClass>
-        <reportString>patrolling at TargetA.</reportString>
+        <reportString>patrolling the colony.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
         <alwaysShowWeapon>true</alwaysShowWeapon>
       </JobDef>

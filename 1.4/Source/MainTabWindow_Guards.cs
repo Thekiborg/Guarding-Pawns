@@ -13,9 +13,11 @@ namespace Thek_GuardingPawns
 
         private static readonly float GuardingSpotKeyWidth = Text.CalcSize("GuardingP_GuardingSpotCheckBox").x;
         private static readonly float PatrollingSpotKeyWidth = Text.CalcSize("GuardingP_PatrollingSpotCheckBox").x;
-        private static readonly float GuardingAreaKeyWidth = Text.CalcSize("GuardingP_GuardingAreaCheckBox").x;
+        //private static readonly float GuardingAreaKeyWidth = Text.CalcSize("GuardingP_GuardingAreaCheckBox").x;
 
-        bool True = true;
+        public static bool shouldRenderGuardingSpots = true;
+        public static bool shouldRenderPatrollingSpots = true;
+        //public static bool shouldRenderAreaSpots = false;
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
         protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => pawn.IsFreeNonSlaveColonist && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
@@ -26,14 +28,14 @@ namespace Thek_GuardingPawns
             windowTabRect = rect; 
             base.DoWindowContents(rect);
 
-            Widgets.Checkbox((float)rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref True);
+            Widgets.Checkbox((float)rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref shouldRenderGuardingSpots);
             Widgets.Label(new Rect(FirstRectLabelUtility()), "GuardingP_GuardingSpotCheckBox".Translate());
 
-            Widgets.Checkbox((float)firstRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref True);
+            Widgets.Checkbox((float)firstRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref shouldRenderPatrollingSpots);
             Widgets.Label(new Rect(SecondRectLabelUtility()), "GuardingP_PatrollingSpotCheckBox".Translate());
 
-            Widgets.Checkbox((float)secondRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref True);
-            Widgets.Label(new Rect(ThirdRectLabelUtility()), "GuardingP_GuardingAreaCheckBox".Translate());
+            //Widgets.Checkbox((float)secondRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref shouldRenderAreaSpots);
+            //Widgets.Label(new Rect(ThirdRectLabelUtility()), "GuardingP_GuardingAreaCheckBox".Translate());
 
         }
 
@@ -51,13 +53,13 @@ namespace Thek_GuardingPawns
             secondRectLabel = SecondRectLabel;
             return SecondRectLabel;
         }
-
+        /*
         private Rect ThirdRectLabelUtility()
         {
             Rect ThirdRectLabel = new(secondRectLabel.xMin - GuardingAreaKeyWidth + Widgets.CheckboxSize + padding, windowTabRect.y, GuardingAreaKeyWidth, windowTabRect.height);
             return ThirdRectLabel;
         }
-
+        */
 
         protected override float ExtraTopSpace
         {
