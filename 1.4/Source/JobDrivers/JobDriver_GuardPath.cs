@@ -6,7 +6,7 @@ namespace Thek_GuardingPawns
     {
         MapComponent_GuardingPawns mapComp;
         List<Thing> spotsList;
-
+        
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
@@ -18,17 +18,20 @@ namespace Thek_GuardingPawns
                 {
                     GetSpotsList();
                     DoPrevSpotDictionary();
-                    if (mapComp.previousPatrolSpotPassedByPawn[pawn].index > spotsList.Count - 1)
+                    var pawnInPreviousPatrolDict = mapComp.previousPatrolSpotPassedByPawn[pawn];
+
+                    if (pawnInPreviousPatrolDict.index > spotsList.Count - 1 || pawnInPreviousPatrolDict.index < 0)
                     {
-                        mapComp.previousPatrolSpotPassedByPawn[pawn].index = 0;
+                        pawnInPreviousPatrolDict.index = 0;
                     }
-                    Thing newDest = spotsList[0 + mapComp.previousPatrolSpotPassedByPawn[pawn].index];
+                    Thing newDest = spotsList[0 + pawnInPreviousPatrolDict.index];
                     
                     pawn.pather.StartPath(newDest, PathEndMode.OnCell);
                 }
             });
             guard.tickAction = () =>
             {
+                pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                 if (Gen.IsHashIntervalTick(pawn, 120))
                 {
                     Verb verb = pawn.CurrentEffectiveVerb;
@@ -42,9 +45,8 @@ namespace Thek_GuardingPawns
                     {
                         foreach (Pawn enemyPawn in mapComp.AllHostilePawnsSpawned)
                         {
-                            if (verb.CanHitTarget(enemyPawn))
+                            if (verb.CanHitTarget(enemyPawn) && !enemyPawn.Downed)
                             {
-                                pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                                 if (pawn.mindState != null)
                                 {
                                     pawn.mindState.enemyTarget = enemyPawn;
@@ -91,7 +93,7 @@ namespace Thek_GuardingPawns
                             var distSqr = enemyPawn.Position.DistanceToSquared(pawn.Position);
                             if (nearestDistSqr > distSqr && distSqr < meleeDetectionRange * meleeDetectionRange)
                             {
-                                if (pawn.CanReach(enemyPawn.Position, PathEndMode.Touch, Danger.Deadly) && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map))
+                                if (!enemyPawn.Downed && pawn.CanReach(enemyPawn.Position, PathEndMode.Touch, Danger.Deadly) && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map))
                                 {
                                     nearestEnemy = enemyPawn;
                                     nearestDistSqr = distSqr;
@@ -167,10 +169,10 @@ namespace Thek_GuardingPawns
             guard.AddFinishAction(delegate
             {
                 GuardJobs_GuardPath gJob = mapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
-                var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions obj);
+                var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
                 if (dictContainsPawn && gJob.shouldLoop == false)
                 {
-                    if (obj.index == spotsList.Count - 1)
+                    if (patrolOptions.index == spotsList.Count - 1)
                     {
                         mapComp.previousPatrolSpotPassedByPawn[pawn].index = 0;
                     }
@@ -181,23 +183,24 @@ namespace Thek_GuardingPawns
                 }
                 else if (dictContainsPawn && gJob.shouldLoop)
                 {
-                    if (obj.isBacktracking == false)
+                    if (patrolOptions.isBacktracking == false)
                     {
                         mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
-                        if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) obj.isBacktracking = true;
+                        if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) patrolOptions.isBacktracking = true;
                     }
                     else
                     {
+                        if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
                         mapComp.previousPatrolSpotPassedByPawn[pawn].index -= 1;
-                        if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) obj.isBacktracking = false;
+                        if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
                     }
                 }
             });
             yield return guard;
-            yield return Wait(pawn, Rand.Range(0, 160));
-            yield return Wait(pawn, Rand.Range(0, 160));
-            yield return Wait(pawn, Rand.Range(0, 160));
-            yield return Wait(pawn, Rand.Range(0, 160));
+            yield return Wait(pawn, Rand.Range(30, 160));
+            yield return Wait(pawn, Rand.Range(30, 160));
+            yield return Wait(pawn, Rand.Range(30, 160));
+            yield return Wait(pawn, Rand.Range(30, 160));
         }
 
 

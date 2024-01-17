@@ -10,16 +10,17 @@
         public enum GuardSpotGroupColor
         {
             GuardingP_redSpot,
-            GuardingP_orangeSpot,
             GuardingP_yellowSpot,
+            GuardingP_orangeSpot,
+            GuardingP_greenSpot,
             GuardingP_blueSpot,
             GuardingP_purpleSpot,
         }
         public enum GuardPathGroupColor
         {
             GuardingP_redPath,
-            GuardingP_orangePath,
             GuardingP_yellowPath,
+            GuardingP_orangePath,
             GuardingP_greenPath,
             GuardingP_bluePath,
             GuardingP_purplePath,

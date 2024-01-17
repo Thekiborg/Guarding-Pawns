@@ -50,6 +50,10 @@ namespace Thek_GuardingPawns
                         if (t.def == GuardSpotDefOf.GuardingP_yellowSpot) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, t);
                         break;
 
+                    case PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_greenSpot:
+                        if (t.def == GuardSpotDefOf.GuardingP_greenSpot) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, t);
+                        break;
+
                     case PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_blueSpot:
                         if (t.def == GuardSpotDefOf.GuardingP_blueSpot) return JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardSpot, t);
                         break;

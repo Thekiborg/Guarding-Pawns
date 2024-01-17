@@ -6,7 +6,7 @@ namespace Thek_GuardingPawns
     public class GuardingP_PatrolSpots : Building, ILoadReferenceable
     {
         private SortedList<int, Thing> ListForDef;
-        private static Dictionary<ThingDef, int> SpotCounter = new();
+        private static readonly Dictionary<ThingDef, int> SpotCounter = new();
         private string resolvedLabel;
         private int order;
         public override IEnumerable<Gizmo> GetGizmos()

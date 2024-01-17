@@ -2,20 +2,15 @@
 
 namespace Thek_GuardingPawns
 {
-    public class Window_SortPatrolSpots : Window
+    public class Window_SortPatrolSpots(Map map, SortedList<int, Thing> listForDef) : Window
     {
         //debe hacer cambios directamente en la sortedlist
         const float UpButtonWidth = 24f;
         const float UpButtonHeight = 24f;
         const float padding = 12f;
-        public Map Map;
-        public SortedList<int, Thing> ListForDef;
+        public Map Map = map;
+        public SortedList<int, Thing> ListForDef = listForDef;
         private static ScrollViewStatus _scrollViewStatus = new();
-        public Window_SortPatrolSpots(Map map, SortedList<int, Thing> listForDef)
-        {
-            Map = map;
-            ListForDef = listForDef;
-        }
 
         public override void DoWindowContents(Rect inRect)
         {

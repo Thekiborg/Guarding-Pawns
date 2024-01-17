@@ -4,7 +4,7 @@ namespace Thek_GuardingPawns
 {
     public class WorkGiver_GuardPath : WorkGiver
     {
-        private Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
+        private readonly Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
         private MapComponent_GuardingPawns guardAssignmentMapComp;
 
 

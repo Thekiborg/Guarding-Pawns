@@ -58,6 +58,16 @@
       </ThingDef>
 
       <ThingDef ParentName="GuardSpotBase">
+        <defName>GuardingP_greenSpot</defName>
+        <label>Green guarding spot</label>
+        <description>Designate a spot where your pawns will stand to guard.</description>
+        <graphicData>
+          <texPath>GuardSpots/GuardSpotGreen</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+        </graphicData>
+      </ThingDef>
+
+      <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_blueSpot</defName>
         <label>Blue guarding spot</label>
         <description>Designate a spot where your pawns will stand to guard.</description>

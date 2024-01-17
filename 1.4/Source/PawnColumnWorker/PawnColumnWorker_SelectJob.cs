@@ -17,9 +17,9 @@
 
         public override void DoCell(Rect rect, Pawn pawn, PawnTable table)
         {
-            if (!MapCompCache.ContainsKey(pawn.MapHeld))
+            if (pawn != null && pawn.Spawned && !MapCompCache.ContainsKey(pawn.MapHeld))
             {
-                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
+                MapCompCache.TryAdd(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
             }
 
             guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);

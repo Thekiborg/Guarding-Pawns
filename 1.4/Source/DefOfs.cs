@@ -36,6 +36,7 @@ namespace Thek_GuardingPawns
         public static ThingDef GuardingP_redSpot;
         public static ThingDef GuardingP_yellowSpot;
         public static ThingDef GuardingP_orangeSpot;
+        public static ThingDef GuardingP_greenSpot;
         public static ThingDef GuardingP_blueSpot;
         public static ThingDef GuardingP_purpleSpot;
 
