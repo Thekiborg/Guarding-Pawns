@@ -1,11 +1,14 @@
-﻿namespace Thek_GuardingPawns
+﻿using System.Linq;
+
+namespace Thek_GuardingPawns
 {
     [StaticConstructorOnStartup]
-    public class GuardingP_PatrolSpots : Building
+    public class GuardingP_PatrolSpots : Building, ILoadReferenceable
     {
-        private List<Thing> ListForDef;
+        private SortedList<int, Thing> ListForDef;
         private static Dictionary<ThingDef, int> SpotCounter = new();
         private string resolvedLabel;
+        private int order;
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (Gizmo gizmo in base.GetGizmos())
@@ -29,11 +32,17 @@
         {
             base.SpawnSetup(map, respawningAfterLoad);
             ChangeLabel();
+            FindListForDef();
             StoreThing();
         }
 
+
         private void ChangeLabel()
         {
+            if (resolvedLabel != null)
+            {
+                return;
+            }
             SpotCounter.TryAdd(def, 0);
             SpotCounter[def] += 1;
             resolvedLabel = $"{def.label} {SpotCounter[def]}";
@@ -59,7 +68,11 @@
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
 
             FindListForDef();
-            ListForDef.Add(this);
+            while (ListForDef.ContainsKey(order))
+            {
+                order += 1;
+            }
+            ListForDef.TryAdd(order, this);
             mapComp.PatrolSpotsOnMap.Add(this);
         }
 
@@ -69,7 +82,7 @@
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
 
             FindListForDef();
-            ListForDef.Remove(this);
+            ListForDef.Remove(order);
             if (mapComp.PatrolSpotsOnMap.Contains(this))
             {
                 mapComp.PatrolSpotsOnMap.Remove(this);
@@ -82,39 +95,44 @@
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
             if (def == GuardPathDefOf.GuardingP_redPatrol)
             {
-                ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().RedPatrolsOnMap;
+                ListForDef = mapComp.RedPatrolsOnMap;
                 return;
             }
             if (def == GuardPathDefOf.GuardingP_yellowPatrol)
             {
-                ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().YellowPatrolsOnMap;
+                ListForDef = mapComp.YellowPatrolsOnMap;
                 return;
             }
             if (def == GuardPathDefOf.GuardingP_orangePatrol)
             {
-                ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().OrangePatrolsOnMap;
+                ListForDef = mapComp.OrangePatrolsOnMap;
                 return;
             }
             if (def == GuardPathDefOf.GuardingP_greenPatrol)
             {
-                ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().GreenPatrolsOnMap;
+                ListForDef = mapComp.GreenPatrolsOnMap;
                 return;
             }
             if (def == GuardPathDefOf.GuardingP_bluePatrol)
             {
-                ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().BluePatrolsOnMap;
+                ListForDef = mapComp.BluePatrolsOnMap;
                 return;
             }
             if (def == GuardPathDefOf.GuardingP_purplePatrol)
             {
-                ListForDef = MapHeld.GetComponent<MapComponent_GuardingPawns>().PurplePatrolsOnMap;
+                ListForDef = mapComp.PurplePatrolsOnMap;
                 return;
             }
         }
-
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref resolvedLabel, "PatrolSpotLabel");
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                order = ListForDef.IndexOfValue(this);
+            }
+            base.ExposeData();
+            Scribe_Values.Look(ref order, "GuardingP_OrderInList");
+            Scribe_Values.Look(ref resolvedLabel, "GuardingP_PatrolSpotLabel");
         }
     }
 }

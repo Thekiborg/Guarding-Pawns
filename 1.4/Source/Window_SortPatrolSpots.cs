@@ -4,13 +4,14 @@ namespace Thek_GuardingPawns
 {
     public class Window_SortPatrolSpots : Window
     {
+        //debe hacer cambios directamente en la sortedlist
         const float UpButtonWidth = 24f;
         const float UpButtonHeight = 24f;
         const float padding = 12f;
         public Map Map;
-        public List<Thing> ListForDef;
+        public SortedList<int, Thing> ListForDef;
         private static ScrollViewStatus _scrollViewStatus = new();
-        public Window_SortPatrolSpots(Map map, List<Thing> listForDef)
+        public Window_SortPatrolSpots(Map map, SortedList<int, Thing> listForDef)
         {
             Map = map;
             ListForDef = listForDef;
@@ -47,19 +48,27 @@ namespace Thek_GuardingPawns
                 Thing thing = ListForDef[i];
                 listing_Standard.Label(thing.Label);
 
-
+                //Move upwards (The top of the list is index 0)
                 if (i != 0 && Widgets.ButtonImage(UpButtonRect, TexButton.ReorderUp))
                 {
                     soundClose.PlayOneShotOnCamera();
-                    ListForDef.Remove(thing);
-                    ListForDef.Insert(i - 1, thing);
+                    ListForDef.TryGetValue(i - 1, out Thing thingToRelocate); //Value of the place we want to be at
+                    ListForDef.TryGetValue(i, out Thing thingToBeMoved); //Current value
+                    ListForDef[i - 1] = thingToBeMoved;
+                    ListForDef[i] = thingToRelocate;
+                    //If we want to move T2 to T1's position
+                    //T1's index is i - 1, T2's index is i
+                    //T1 will be moved to i while T2 will be moved to i - 1
                 }
 
+                //Move downwards
                 if (i != ListForDef.Count - 1 && Widgets.ButtonImage(DownButtonRect, TexButton.ReorderDown))
                 {
                     soundClose.PlayOneShotOnCamera();
-                    ListForDef.Remove(thing);
-                    ListForDef.Insert(i + 1, thing);
+                    ListForDef.TryGetValue(i + 1, out Thing pastThing);
+                    ListForDef.TryGetValue(i, out Thing futureThing);
+                    ListForDef[i + 1] = futureThing;
+                    ListForDef[i] = pastThing;
 
                 }
 
