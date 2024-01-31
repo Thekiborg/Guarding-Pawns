@@ -29,7 +29,6 @@ namespace Thek_GuardingPawns
             guard.defaultCompleteMode = ToilCompleteMode.Delay;
             guard.tickAction = () =>
             {
-                pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                 if (Gen.IsHashIntervalTick(pawn, 180))
                 {
                     Verb verb = pawn.CurrentEffectiveVerb;
@@ -101,7 +100,6 @@ namespace Thek_GuardingPawns
                     }
                     if (nearestEnemy != null)
                     {
-                        pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                         if (verb.IsMeleeAttack)
                         {
                             if (nearestDistSqr >= 122 && nearestEnemy.pather.curPath != null && nearestEnemy.pather.curPath.NodesLeftCount > 10)
@@ -164,7 +162,7 @@ namespace Thek_GuardingPawns
                     }
                 }
             };
-            guard.AddPreInitAction(delegate
+            guard.preInitActions.Add(delegate
             {
                 Building building = pawn.Position.GetFirstBuilding(pawn.Map);
                 if (building != null && !pawn.pather.Moving)

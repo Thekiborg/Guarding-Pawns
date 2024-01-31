@@ -31,4 +31,19 @@
         <canBeDoneByMechs>True</canBeDoneByMechs>
       </WorkGiverDef>
 
+      <WorkGiverDef>
+        <defName>GuardingP_GuardPawnWorkGiver</defName>
+        <label>protect a pawn</label>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardPawn</giverClass>
+        <workType>GuardingP_GuardingWorkType</workType>
+        <priorityInType>120</priorityInType>
+        <verb>protect pawn</verb>
+        <gerund>protecting</gerund>
+        <requiredCapacities>
+          <li>Moving</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>True</canBeDoneByMechs>
+      </WorkGiverDef>
+
 </Defs>

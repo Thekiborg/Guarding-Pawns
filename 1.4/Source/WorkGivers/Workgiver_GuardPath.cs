@@ -11,8 +11,7 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
-            return guardAssignmentMapComp.PatrolSpotsOnMap.NullOrEmpty()
-                || !guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob)
+            return !guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob)
                 || gJob is not GuardJobs_GuardPath;
         }
 

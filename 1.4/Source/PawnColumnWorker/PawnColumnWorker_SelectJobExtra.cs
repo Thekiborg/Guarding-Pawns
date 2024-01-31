@@ -175,18 +175,21 @@
 
             foreach (Pawn pawnToProtect in windowTabPawn.Map.mapPawns.FreeColonistsSpawned)
             {
-#pragma warning disable CS0618 // Type or member is obsolete
-                menuOptions.Add(new("GuardingP_ProtectPawn".ToString().Translate(pawnToProtect.Name), () =>
+                if (pawnToProtect != windowTabPawn)
                 {
-                    GuardJobs_GuardPawn guardJobs_GuardPawn = new()
+#pragma warning disable CS0618 // Type or member is obsolete
+                    menuOptions.Add(new("GuardingP_ProtectPawn".ToString().Translate(pawnToProtect.Name), () =>
                     {
-                        pawn = windowTabPawn,
-                        pawnToGuard = pawnToProtect,
-                    };
+                        GuardJobs_GuardPawn guardJobs_GuardPawn = new()
+                        {
+                            pawn = windowTabPawn,
+                            pawnToGuard = pawnToProtect,
+                        };
 
-                    guardAssignmentsMapComp.GuardJobs[windowTabPawn] = guardJobs_GuardPawn;
-                }));
+                        guardAssignmentsMapComp.GuardJobs[windowTabPawn] = guardJobs_GuardPawn;
+                    }));
 #pragma warning restore CS0618 // Type or member is obsolete
+                }
             }
 
             Find.WindowStack.Add(new FloatMenu(menuOptions));

@@ -19,7 +19,7 @@
 
       <JobDef>
         <defName>GuardingP_GuardPawn</defName>
-        <driverClass>Thek_GuardingPawns.JobDriver_ProtectPawn</driverClass>
+        <driverClass>Thek_GuardingPawns.JobDriver_GuardPawn</driverClass>
         <reportString>protecting TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
         <alwaysShowWeapon>true</alwaysShowWeapon>

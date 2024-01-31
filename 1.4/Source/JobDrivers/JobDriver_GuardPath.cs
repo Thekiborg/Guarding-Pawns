@@ -12,7 +12,8 @@ namespace Thek_GuardingPawns
         {
             Toil guard = ToilMaker.MakeToil("MakeNewToils");
             guard.defaultCompleteMode = ToilCompleteMode.PatherArrival;
-            guard.AddPreInitAction(delegate
+            guard.preInitActions ??= new List<Action>();
+            guard.preInitActions.Add(delegate
             {
                 if (spotsList.NullOrEmpty())
                 {
@@ -29,9 +30,12 @@ namespace Thek_GuardingPawns
                     pawn.pather.StartPath(newDest, PathEndMode.OnCell);
                 }
             });
-            guard.tickAction = () =>
+            guard.preInitActions.Add(delegate
             {
                 pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
+            });
+            guard.tickAction = () =>
+            {
                 if (Gen.IsHashIntervalTick(pawn, 120))
                 {
                     Verb verb = pawn.CurrentEffectiveVerb;
@@ -103,7 +107,6 @@ namespace Thek_GuardingPawns
                     }
                     if (nearestEnemy != null)
                     {
-                        pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
                         if (verb.IsMeleeAttack)
                         {
                             if (nearestDistSqr >= 122 && nearestEnemy.pather.curPath != null && nearestEnemy.pather.curPath.NodesLeftCount > 10)
@@ -166,7 +169,7 @@ namespace Thek_GuardingPawns
                     }
                 }
             };
-            guard.AddFinishAction(delegate
+            guard.preInitActions.Add(delegate
             {
                 GuardJobs_GuardPath gJob = mapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
                 var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
