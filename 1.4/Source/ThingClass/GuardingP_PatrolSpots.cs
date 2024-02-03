@@ -9,6 +9,17 @@ namespace Thek_GuardingPawns
         private static readonly Dictionary<ThingDef, int> SpotCounter = new();
         private string resolvedLabel;
         private int order;
+
+
+        public override void Print(SectionLayer layer)
+        {
+            if (MainTabWindow_Guards.shouldRenderPatrollingSpots)
+            {
+                base.Print(layer);
+            }
+        }
+
+
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (Gizmo gizmo in base.GetGizmos())
@@ -26,7 +37,9 @@ namespace Thek_GuardingPawns
             yield return command_Action;
         }
 
+
         public override string Label => resolvedLabel;
+
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {

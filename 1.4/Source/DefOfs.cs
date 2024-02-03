@@ -81,10 +81,10 @@ namespace Thek_GuardingPawns
                 return thingDefOfs;
             }
 
-            thingDefOfs = new();
+            thingDefOfs = [];
 
 
-            foreach (FieldInfo field in typeof(GuardSpotDefOf).GetFields(BindingFlags.Static | BindingFlags.Public))
+            foreach (FieldInfo field in typeof(GuardPathDefOf).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
                 object fieldValue = field.GetValue(null);
                 if (fieldValue is ThingDef thingDef)

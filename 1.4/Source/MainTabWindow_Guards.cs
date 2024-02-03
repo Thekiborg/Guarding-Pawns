@@ -11,12 +11,13 @@ namespace Thek_GuardingPawns
         private Rect firstRectLabel;
         private Rect secondRectLabel;
 
+        public static bool shouldRenderGuardingSpots = true;
+        public static bool shouldRenderPatrollingSpots = true;
+
         private static readonly float GuardingSpotKeyWidth = Text.CalcSize("GuardingP_GuardingSpotCheckBox").x;
         private static readonly float PatrollingSpotKeyWidth = Text.CalcSize("GuardingP_PatrollingSpotCheckBox").x;
         //private static readonly float GuardingAreaKeyWidth = Text.CalcSize("GuardingP_GuardingAreaCheckBox").x;
 
-        public static bool shouldRenderGuardingSpots = true;
-        public static bool shouldRenderPatrollingSpots = true;
         //public static bool shouldRenderAreaSpots = false;
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
@@ -27,12 +28,36 @@ namespace Thek_GuardingPawns
         {
             windowTabRect = rect; 
             base.DoWindowContents(rect);
+            bool prevGuardingValue = shouldRenderGuardingSpots;
+            bool prevPatrollingValue = shouldRenderPatrollingSpots;
 
             Widgets.Checkbox((float)rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref shouldRenderGuardingSpots);
             Widgets.Label(new Rect(FirstRectLabelUtility()), "GuardingP_GuardingSpotCheckBox".Translate());
+            if (prevGuardingValue != shouldRenderGuardingSpots)
+            {
+                Map map = Find.CurrentMap;
+                foreach (Thing spot in map.listerBuildings.allBuildingsColonist)
+                {
+                    if (GuardSpotDefOf.GetDefOfs().Contains(spot.def))
+                    {
+                        spot.DirtyMapMesh(map);
+                    }
+                }
+            }
 
             Widgets.Checkbox((float)firstRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref shouldRenderPatrollingSpots);
             Widgets.Label(new Rect(SecondRectLabelUtility()), "GuardingP_PatrollingSpotCheckBox".Translate());
+            if (prevPatrollingValue != shouldRenderGuardingSpots)
+            {
+                Map map = Find.CurrentMap;
+                foreach (Thing spot in map.listerBuildings.allBuildingsColonist)
+                {
+                    if (GuardPathDefOf.GetDefOfs().Contains(spot.def))
+                    {
+                        spot.DirtyMapMesh(map);
+                    }
+                }
+            }
 
             //Widgets.Checkbox((float)secondRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref shouldRenderAreaSpots);
             //Widgets.Label(new Rect(ThirdRectLabelUtility()), "GuardingP_GuardingAreaCheckBox".Translate());

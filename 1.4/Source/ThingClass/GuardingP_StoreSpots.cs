@@ -3,6 +3,15 @@
     [StaticConstructorOnStartup]
     public class GuardingP_StoreSpots : Building
     {
+        public override void Print(SectionLayer layer)
+        {
+            if (MainTabWindow_Guards.shouldRenderGuardingSpots)
+            {
+                base.Print(layer);
+            }
+        }
+
+
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);

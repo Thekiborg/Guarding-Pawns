@@ -2,6 +2,7 @@
 <Defs>
     <ThingDef ParentName="BuildingBase" Name="GuardSpotBase" Abstract="True">
       <thingClass>Thek_GuardingPawns.GuardingP_StoreSpots</thingClass>
+      <description>Designate a spot where your pawns will stand to guard at.</description>
       <altitudeLayer>FloorEmplacement</altitudeLayer>
       <statBases>
         <WorkToBuild>0</WorkToBuild>
@@ -13,6 +14,7 @@
       <uiOrder>2000</uiOrder>
       <passability>Standable</passability>
       <drawGUIOverlay>true</drawGUIOverlay>
+      <drawerType>MapMeshOnly</drawerType>
       <designatorDropdown>GuardingP_GuardSpots</designatorDropdown>
       <building>
         <sowTag>SupportPlantsOnly</sowTag>
@@ -30,7 +32,6 @@
     <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_redSpot</defName>
         <label>Red guarding spot</label>
-        <description>Designate a spot where your pawns will stand to guard.</description>
         <graphicData>
           <texPath>GuardSpots/GuardSpotRed</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -40,7 +41,6 @@
       <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_yellowSpot</defName>
         <label>Yellow guarding spot</label>
-        <description>Designate a spot where your pawns will stand to guard.</description>
         <graphicData>
           <texPath>GuardSpots/GuardSpotYellow</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -50,7 +50,6 @@
       <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_orangeSpot</defName>
         <label>Orange guarding spot</label>
-        <description>Designate a spot where your pawns will stand to guard.</description>
         <graphicData>
           <texPath>GuardSpots/GuardSpotOrange</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -60,7 +59,6 @@
       <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_greenSpot</defName>
         <label>Green guarding spot</label>
-        <description>Designate a spot where your pawns will stand to guard.</description>
         <graphicData>
           <texPath>GuardSpots/GuardSpotGreen</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -70,7 +68,6 @@
       <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_blueSpot</defName>
         <label>Blue guarding spot</label>
-        <description>Designate a spot where your pawns will stand to guard.</description>
         <graphicData>
           <texPath>GuardSpots/GuardSpotBlue</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -80,7 +77,6 @@
       <ThingDef ParentName="GuardSpotBase">
         <defName>GuardingP_purpleSpot</defName>
         <label>Purple guarding spot</label>
-        <description>Designate a spot where your pawns will stand to guard.</description>
         <graphicData>
           <texPath>GuardSpots/GuardSpotPurple</texPath>
           <graphicClass>Graphic_Multi</graphicClass>

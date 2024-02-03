@@ -2,6 +2,7 @@
 <Defs>
     <ThingDef ParentName="BuildingBase" Name="PatrolSpotBase" Abstract="True">
         <thingClass>Thek_GuardingPawns.GuardingP_PatrolSpots</thingClass>
+        <description>Designate a route for your pawns to patrol at.</description>
         <altitudeLayer>FloorEmplacement</altitudeLayer>
         <statBases>
           <WorkToBuild>0</WorkToBuild>
@@ -13,6 +14,7 @@
         <uiOrder>2000</uiOrder>
         <passability>Standable</passability>
         <drawGUIOverlay>true</drawGUIOverlay>
+        <drawerType>MapMeshOnly</drawerType>
         <designatorDropdown>GuardingP_PatrolSpots</designatorDropdown>
         <building>
           <sowTag>SupportPlantsOnly</sowTag>
@@ -30,7 +32,6 @@
       <ThingDef ParentName="PatrolSpotBase">
         <defName>GuardingP_redPatrol</defName>
         <label>Red patrolling spot</label>
-        <description>Designate a route for your pawns to patrol at.</description>
         <graphicData>
           <texPath>PatrolSpots/PatrolSpotRed</texPath>
           <graphicClass>Graphic_Single</graphicClass>
@@ -40,7 +41,6 @@
       <ThingDef ParentName="PatrolSpotBase">
         <defName>GuardingP_yellowPatrol</defName>
         <label>Yellow patrolling spot</label>
-        <description>Designate a route for your pawns to patrol at.</description>
         <graphicData>
           <texPath>PatrolSpots/PatrolSpotYellow</texPath>
           <graphicClass>Graphic_Single</graphicClass>
@@ -50,7 +50,6 @@
       <ThingDef ParentName="PatrolSpotBase">
         <defName>GuardingP_orangePatrol</defName>
         <label>Orange patrolling spot</label>
-        <description>Designate a route for your pawns to patrol at.</description>
         <graphicData>
           <texPath>PatrolSpots/PatrolSpotOrange</texPath>
           <graphicClass>Graphic_Single</graphicClass>
@@ -60,7 +59,6 @@
       <ThingDef ParentName="PatrolSpotBase">
         <defName>GuardingP_greenPatrol</defName>
         <label>Green patrolling spot</label>
-        <description>Designate a route for your pawns to patrol at.</description>
         <graphicData>
           <texPath>PatrolSpots/PatrolSpotGreen</texPath>
           <graphicClass>Graphic_Single</graphicClass>
@@ -70,7 +68,6 @@
       <ThingDef ParentName="PatrolSpotBase">
         <defName>GuardingP_bluePatrol</defName>
         <label>Blue patrolling spot</label>
-        <description>Designate a route for your pawns to patrol at.</description>
         <graphicData>
           <texPath>PatrolSpots/PatrolSpotBlue</texPath>
           <graphicClass>Graphic_Single</graphicClass>
@@ -80,7 +77,6 @@
       <ThingDef ParentName="PatrolSpotBase">
         <defName>GuardingP_purplePatrol</defName>
         <label>Purple patrolling spot</label>
-        <description>Designate a route for your pawns to patrol at.</description>
         <graphicData>
           <texPath>PatrolSpots/PatrolSpotPurple</texPath>
           <graphicClass>Graphic_Single</graphicClass>

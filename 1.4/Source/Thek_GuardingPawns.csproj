@@ -46,7 +46,7 @@
 		<!-- A package for accessing private members. Optional -->
 		<!-- <PackageReference Include="Krafs.Publicizer" Version="2.*"/> -->
 		<!-- Publicize Include lines like the following are used to specify the members to publicize -->
-		<!-- <Publicize Include="Assembly-CSharp:RimWorld.JobGiver_Haul.TryGiveJob"/> -->
+		<!-- <Publicize Include="Assembly-CSharp:Verse.Thing.graphicInt"/> -->
 		<!-- A more advanced example with generics and a nested class is this: -->
 		<!-- <Publicize Include="mscorlib:System.Collections.Generic.Dictionary`2+Entry" /> -->
 		<!-- Details here: https://github.com/krafs/Publicizer -->
