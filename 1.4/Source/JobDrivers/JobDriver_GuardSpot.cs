@@ -72,7 +72,7 @@ namespace Thek_GuardingPawns
                         foreach (Pawn enemyPawn in mapComp.AllHostilePawnsSpawned)
                         {
                             var distSqr = enemyPawn.Position.DistanceToSquared(pawn.Position);
-                            if (nearestDistSqr > distSqr && distSqr < effectiveRange)
+                            if (!enemyPawn.Downed && nearestDistSqr > distSqr && distSqr < effectiveRange)
                             {
                                 if (GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map))
                                 {
