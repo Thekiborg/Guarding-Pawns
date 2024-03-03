@@ -6,14 +6,6 @@ namespace Thek_GuardingPawns
     public class MapComponent_GuardingPawns : MapComponent
     {
         public MapComponent_GuardingPawns(Map map) : base(map) { }
-        public override void MapComponentTick()
-        {
-            base.MapComponentTick();
-            if (map.IsHashIntervalTick(250))
-            {
-                AllHostilePawnsSpawned = map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.Faction.HostileTo(Faction.OfPlayer));
-            }
-        }
 
         public Dictionary<Pawn, GuardJobs> GuardJobs = new();
         private List<Pawn> PawnsList = new();
@@ -32,8 +24,6 @@ namespace Thek_GuardingPawns
         public Dictionary<Pawn, PatrolOptions> previousPatrolSpotPassedByPawn = new();
         private List<Pawn> prevPatrolPawnsList = new();
         private List<PatrolOptions> prevPatrolOptionsList = new();
-
-        public IEnumerable<Pawn> AllHostilePawnsSpawned;
 
         public override void ExposeData()
         {
