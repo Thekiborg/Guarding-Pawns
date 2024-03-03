@@ -25,6 +25,10 @@ namespace Thek_GuardingPawns
                 {
                     TryAttackEnemyPawn();
                     IntVec3 wanderDestination = RCellFinder.RandomWanderDestFor(pawn, TargetA.Pawn.Position, wanderRange, validator, Danger.Unspecified);
+                    while (!WanderUtility.InSameRoom(wanderDestination, TargetLocA, pawn.Map))
+                    {
+                        wanderDestination = RCellFinder.RandomWanderDestFor(pawn, TargetA.Pawn.Position, wanderRange, validator, Danger.Unspecified);
+                    }
                     pawn.pather.StartPath(wanderDestination, PathEndMode.OnCell);
                 }
             };
