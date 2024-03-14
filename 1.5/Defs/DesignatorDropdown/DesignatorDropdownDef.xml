@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <DesignatorDropdownGroupDef>
+        <defName>GuardingP_GuardSpots</defName>
+        <label>guarding spot</label>
+        <iconSource>Placed</iconSource>
+        <useGridMenu>false</useGridMenu>
+        <includeEyeDropperTool>true</includeEyeDropperTool>
+      </DesignatorDropdownGroupDef>
+
+      <DesignatorDropdownGroupDef>
+        <defName>GuardingP_PatrolSpots</defName>
+        <label>patrolling spot</label>
+        <iconSource>Placed</iconSource>
+        <useGridMenu>false</useGridMenu>
+        <includeEyeDropperTool>true</includeEyeDropperTool>
+      </DesignatorDropdownGroupDef>
+
+</Defs>

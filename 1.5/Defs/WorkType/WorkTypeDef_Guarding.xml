@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <WorkTypeDef>
+        <defName>GuardingP_GuardingWorkType</defName>
+        <labelShort>Guard</labelShort>
+        <pawnLabel>Guarding</pawnLabel>
+        <gerundLabel>guarding</gerundLabel>
+        <description>Guard for the well-being of the colony.</description>
+        <verb>Guard</verb>
+        <alwaysStartActive>false</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <naturalPriority>90</naturalPriority>
+        <relevantSkills>
+          <li>Shooting</li>
+          <li>Melee</li>
+        </relevantSkills>
+        <workTags>
+          <li>Violent</li>
+          <li>Shooting</li>
+          <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+</Defs>

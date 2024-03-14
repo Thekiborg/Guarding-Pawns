@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <WorkGiverDef>
+        <defName>GuardingP_GuardingSpotWorkGiver</defName>
+        <label>guard the colony</label>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardSpot</giverClass>
+        <workType>GuardingP_GuardingWorkType</workType>
+        <priorityInType>100</priorityInType>
+        <verb>guard colony</verb>
+        <gerund>guard colony at</gerund>
+        <requiredCapacities>
+          <li>Moving</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>True</canBeDoneByMechs>
+      </WorkGiverDef>
+      
+      <WorkGiverDef>
+        <defName>GuardingP_GuardPathWorkGiver</defName>
+        <label>patrol the colony</label>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardPath</giverClass>
+        <workType>GuardingP_GuardingWorkType</workType>
+        <priorityInType>110</priorityInType>
+        <verb>patrol colony</verb>
+        <gerund>patrolling colony</gerund>
+        <requiredCapacities>
+          <li>Moving</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>True</canBeDoneByMechs>
+      </WorkGiverDef>
+
+      <WorkGiverDef>
+        <defName>GuardingP_GuardPawnWorkGiver</defName>
+        <label>protect a pawn</label>
+        <giverClass>Thek_GuardingPawns.Workgiver_GuardPawn</giverClass>
+        <workType>GuardingP_GuardingWorkType</workType>
+        <priorityInType>120</priorityInType>
+        <verb>protect pawn</verb>
+        <gerund>protecting</gerund>
+        <requiredCapacities>
+          <li>Moving</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>True</canBeDoneByMechs>
+      </WorkGiverDef>
+
+</Defs>

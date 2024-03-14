@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_Manipulation</defName>
+        <label>man.</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_Manipulation</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_Movement</defName>
+        <label>mov.</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_Movement</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_Consciousness</defName>
+        <label>cons.</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_Consciousness</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_Sight</defName>
+        <label>sight</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_Sight</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_ShootingLevel</defName>
+        <label>shoot</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_ShootingLevel</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_MeleeLevel</defName>
+        <label>melee</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_MeleeLevel</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_SelectJob</defName>
+        <label>select job</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_SelectJob</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_SelectJobExtras</defName>
+        <label>Extra options for the selected job</label>
+        <workerClass>Thek_GuardingPawns.PawnColumnWorker_SelectJobExtras</workerClass>
+    </PawnColumnDef>
+
+    <PawnColumnDef>
+        <defName>GuardingP_PawnColumnDef_LifeStage</defName>
+        <workerClass>PawnColumnWorker_LifeStage</workerClass>
+    </PawnColumnDef>
+
+</Defs>

@@ -50,7 +50,7 @@ namespace Thek_GuardingPawns
                 {
                     soundClose.PlayOneShotOnCamera();
                     Thing movingVar;
-                    movingVar = listToSort[i - 1];
+                    movingVar = listToSort[i-1];
                     listToSort[i - 1] = listToSort[i];
                     listToSort[i] = movingVar;
                     //If we want to move T2 to T1's position
@@ -64,7 +64,7 @@ namespace Thek_GuardingPawns
                 {
                     soundClose.PlayOneShotOnCamera();
                     Thing movingVar;
-                    movingVar = listToSort[i + 1];
+                    movingVar = listToSort[i+1];
                     listToSort[i + 1] = listToSort[i];
                     listToSort[i] = movingVar;
 
