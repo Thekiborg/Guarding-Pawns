@@ -7,7 +7,7 @@ global using UnityEngine;
 
 namespace Thek_GuardingPawns
 {
-    public class GuardingPawns
+    internal class GuardingPawns
     {
     }
 }

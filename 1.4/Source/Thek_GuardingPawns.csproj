@@ -36,7 +36,7 @@
 		<!-- To target a beta version of 1.5, as an example, you'd write this: Version="1.5.*-*" -->
 
 		<!-- Harmony -->
-		<PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" />
+		<!-- <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" /> -->
 		<!-- https://harmony.pardeike.net/articles/intro.html -->
 
 		<!-- Certain newer C# features like records require this optional nuget package -->
