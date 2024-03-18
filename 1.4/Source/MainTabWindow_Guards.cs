@@ -11,16 +11,16 @@ namespace Thek_GuardingPawns
         private Rect firstRectLabel;
         private Rect secondRectLabel;
         //private Rect thirdRectLabel;
-        private Rect leftRectLabel;
+        //private Rect leftRectLabel;
 
         internal static bool shouldRenderGuardingSpots = true;
         internal static bool shouldRenderPatrollingSpots = true;
-        internal static bool shouldOverrideAllowedArea = false;
+        //internal static bool shouldOverrideAllowedArea = false;
 
         private static readonly float GuardingSpotKeyWidth = Text.CalcSize("GuardingP_GuardingSpotCheckBox".Translate()).x;
         private static readonly float PatrollingSpotKeyWidth = Text.CalcSize("GuardingP_PatrollingSpotCheckBox".Translate()).x;
         //private static readonly float GuardingAreaKeyWidth = Text.CalcSize("GuardingP_GuardingAreaCheckBox").x;
-        private static readonly float OverrideAllowedAreaWidth = Text.CalcSize("GuardingP_OverrideAllowedAreaCheckBox".Translate()).x;
+        //private static readonly float OverrideAllowedAreaWidth = Text.CalcSize("GuardingP_OverrideAllowedAreaCheckBox".Translate()).x;
 
         //public static bool shouldRenderAreaSpots = false;
 
@@ -63,8 +63,8 @@ namespace Thek_GuardingPawns
                 }
             }
 
-            Widgets.Label(new Rect(LeftRectLabelUtility()), "GuardingP_OverrideAllowedAreaCheckBox".Translate());
-            Widgets.Checkbox(leftRectLabel.xMax + CheckboxPadding, rect.y, ref shouldOverrideAllowedArea);
+            //Widgets.Label(new Rect(LeftRectLabelUtility()), "GuardingP_OverrideAllowedAreaCheckBox".Translate());
+            //Widgets.Checkbox(leftRectLabel.xMax + CheckboxPadding, rect.y, ref shouldOverrideAllowedArea);
 
             //Widgets.Checkbox((float)secondRectLabel.xMin - padding - Widgets.CheckboxSize, rect.y, ref shouldRenderAreaSpots);
             //Widgets.Label(new Rect(ThirdRectLabelUtility()), "GuardingP_GuardingAreaCheckBox".Translate());
@@ -72,12 +72,12 @@ namespace Thek_GuardingPawns
         }
 
 
-        private Rect LeftRectLabelUtility()
+        /*private Rect LeftRectLabelUtility()
         {
             Rect LeftRectLabel = new(windowTabRect.xMin, windowTabRect.y, OverrideAllowedAreaWidth + 0.5f, windowTabRect.height);
             leftRectLabel = LeftRectLabel;
             return LeftRectLabel;
-        }
+        }*/
 
         private Rect FirstRectLabelUtility()
         {
