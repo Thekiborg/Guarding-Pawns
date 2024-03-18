@@ -5,6 +5,8 @@
     <GuardingP_PatrollingSpotCheckBox>Show Patrolling Spot</GuardingP_PatrollingSpotCheckBox>
     <GuardingP_GuardingAreaCheckBox>Show Guarding Area</GuardingP_GuardingAreaCheckBox>
 
+    <GuardingP_OverrideAllowedAreaCheckBox>Ignore allowed area</GuardingP_OverrideAllowedAreaCheckBox>
+
     <!--
     <GuardingP_SightHeader>sight</GuardingP_SightHeader>
     <GuardingP_ConsciousnessHeader>cons.</GuardingP_ConsciousnessHeader>
