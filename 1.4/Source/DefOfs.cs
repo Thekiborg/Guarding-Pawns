@@ -4,7 +4,7 @@ using Verse;
 namespace Thek_GuardingPawns
 {
     [DefOf]
-    public static class GuardingJobsDefOf
+    internal static class GuardingJobsDefOf
     {
         public static JobDef GuardingP_GuardSpot;
         public static JobDef GuardingP_GuardPath;
@@ -13,25 +13,25 @@ namespace Thek_GuardingPawns
     }
 
     [DefOf]
-    public static class GotoJobDefOf
+    internal static class GotoJobDefOf
     {
         public static JobDef GuardingP_Goto;
     }
 
     [DefOf]
-    public static class PawnTableDefOf
+    internal static class PawnTableDefOf
     {
         public static PawnTableDef GuardingP_PawnTableDef_Guard;
     }
 
     [DefOf]
-    public static class WorkTypeDefOf
+    internal static class WorkTypeDefOf
     {
         public static WorkTypeDef GuardingP_GuardingWorkType;
     }
 
     [DefOf]
-    public static class GuardSpotDefOf
+    internal static class GuardSpotDefOf
     {
         public static ThingDef GuardingP_redSpot;
         public static ThingDef GuardingP_yellowSpot;
@@ -64,7 +64,7 @@ namespace Thek_GuardingPawns
     }
 
     [DefOf]
-    public static class GuardPathDefOf
+    internal static class GuardPathDefOf
     {
         public static ThingDef GuardingP_redPatrol;
         public static ThingDef GuardingP_yellowPatrol;

@@ -7,8 +7,8 @@ namespace Thek_GuardingPawns
         const float UpButtonWidth = 24f;
         const float UpButtonHeight = 24f;
         const float padding = 12f;
-        public Map Map = map;
-        public List<Thing> listToSort = [.. listForDef.Values];
+        internal Map Map = map;
+        internal List<Thing> listToSort = [.. listForDef.Values];
         private static ScrollViewStatus _scrollViewStatus = new();
 
         public override void DoWindowContents(Rect inRect)

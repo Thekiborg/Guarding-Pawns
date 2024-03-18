@@ -2,11 +2,11 @@
 {
     public class GuardJobs_GuardSpot : GuardJobs, IExposable
     {
-        public GuardJobs_GuardSpot()
+        internal GuardJobs_GuardSpot()
         {
             SpotColor = PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_redSpot;
         }
-        public PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor? SpotColor;
+        internal PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor? SpotColor;
 
         public override void ExposeData()
         {

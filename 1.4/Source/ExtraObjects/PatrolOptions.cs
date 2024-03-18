@@ -2,13 +2,13 @@
 {
     public class PatrolOptions : IExposable
     {
-        public PatrolOptions() 
+        internal PatrolOptions() 
         {
             index = 0;
             isBacktracking = false;
         }
-        public int index;
-        public bool isBacktracking;
+        internal int index;
+        internal bool isBacktracking;
 
         public void ExposeData()
         {

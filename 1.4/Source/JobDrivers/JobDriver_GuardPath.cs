@@ -74,11 +74,9 @@ namespace Thek_GuardingPawns
             });
             yield return guard;
             yield return Wait(pawn, Rand.Range(30, 160));
-            TryAttackEnemyPawn();
             yield return Wait(pawn, Rand.Range(30, 160));
             TryAttackEnemyPawn();
             yield return Wait(pawn, Rand.Range(30, 160));
-            TryAttackEnemyPawn();
             yield return Wait(pawn, Rand.Range(30, 160));
         }
 
