@@ -2,11 +2,11 @@
 {
     public class GuardJobs_GuardPawn : GuardJobs, IExposable
     {
-        public GuardJobs_GuardPawn()
+        internal GuardJobs_GuardPawn()
         {
             pawnToGuard = null;
         }
-        public Pawn pawnToGuard;
+        internal Pawn pawnToGuard;
 
         public override void ExposeData()
         {

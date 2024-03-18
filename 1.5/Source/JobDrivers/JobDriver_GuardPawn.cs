@@ -6,12 +6,9 @@ namespace Thek_GuardingPawns
     {
         private const int wanderRange = 4;
         private readonly Func<Pawn, IntVec3, IntVec3, bool> validator;
-        MapComponent_GuardingPawns mapComp;
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            GetMapComp();
-
             Toil guard = ToilMaker.MakeToil("MakeNewToils");
             guard.defaultCompleteMode = ToilCompleteMode.PatherArrival;
             guard.preInitActions ??= new List<Action>();
@@ -137,11 +134,5 @@ namespace Thek_GuardingPawns
         {
             return true;
         }
-
-        private void GetMapComp()
-        {
-            mapComp = pawn.Map.GetComponent<MapComponent_GuardingPawns>();
-        }
     }
 }
-

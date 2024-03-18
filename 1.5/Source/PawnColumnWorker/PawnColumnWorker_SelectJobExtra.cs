@@ -35,7 +35,7 @@
             }
 
             guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
-            
+
             var pawnJobType = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
 
 
@@ -79,7 +79,7 @@
                         Text.Anchor = TextAnchor.UpperLeft;
 
                         Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - checkboxPadding, rect.y, ref path.shouldLoop);
-                        
+
                         break;
 
 

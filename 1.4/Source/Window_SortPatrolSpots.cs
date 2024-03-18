@@ -7,8 +7,8 @@ namespace Thek_GuardingPawns
         const float UpButtonWidth = 24f;
         const float UpButtonHeight = 24f;
         const float padding = 12f;
-        internal Map Map = map;
-        internal List<Thing> listToSort = [.. listForDef.Values];
+        private Map Map = map;
+        private List<Thing> listToSort = [.. listForDef.Values];
         private static ScrollViewStatus _scrollViewStatus = new();
 
         public override void DoWindowContents(Rect inRect)
@@ -56,7 +56,7 @@ namespace Thek_GuardingPawns
                     //If we want to move T2 to T1's position
                     //We save T1 (i - 1), overwrite T1's position (i - 1) with T2
                     //overwrite T2's position (i) with T1
-                    pushChangesToList(listToSort, listForDef);
+                    PushChangesToList(listToSort, listForDef);
                 }
 
                 //Move downwards
@@ -68,7 +68,7 @@ namespace Thek_GuardingPawns
                     listToSort[i + 1] = listToSort[i];
                     listToSort[i] = movingVar;
 
-                    pushChangesToList(listToSort, listForDef);
+                    PushChangesToList(listToSort, listForDef);
                 }
 
                 if (Mouse.IsOver(highlightRect))
@@ -82,7 +82,7 @@ namespace Thek_GuardingPawns
 
         public override Vector2 InitialSize => new(450, 750);
 
-        private void pushChangesToList(List<Thing> listToSort, SortedList<int, Thing> listForDef)
+        private static void PushChangesToList(List<Thing> listToSort, SortedList<int, Thing> listForDef)
         {
             for (int i = 0; i < listToSort.Count; i++)
             {

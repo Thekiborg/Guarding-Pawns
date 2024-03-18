@@ -4,7 +4,7 @@ namespace Thek_GuardingPawns
 {
     public class Workgiver_GuardSpot : WorkGiver_Scanner
     {
-        private Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
+        private readonly Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new();
         private MapComponent_GuardingPawns guardAssignmentMapComp;
 
 
@@ -12,7 +12,7 @@ namespace Thek_GuardingPawns
         {
             CacheMapComponent(pawn);
             bool shouldSkip = true;
-            foreach (Thing thing in pawn.MapHeld.listerThings.AllThings)
+            foreach (Thing thing in pawn.MapHeld.listerBuildings.allBuildingsColonist)
             {
                 if (GuardSpotDefOf.GetDefOfs().Contains(thing.def))
                 {

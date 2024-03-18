@@ -2,11 +2,11 @@
 {
     public abstract class GuardJobs : IExposable
     {
-        public GuardJobs()
+        internal GuardJobs()
         {
             pawn = null;
         }
-        public Pawn pawn;
+        internal Pawn pawn;
         public abstract void ExposeData();
     }
 }
