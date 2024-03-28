@@ -17,30 +17,30 @@
 
         public override void DoCell(Rect rect, Pawn pawn, PawnTable table)
         {
-            if (pawn != null && pawn.Spawned && !MapCompCache.ContainsKey(pawn.MapHeld))
+            if (pawn != null && pawn.Spawned)
             {
-                MapCompCache.TryAdd(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>());
-            }
+                if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.TryAdd(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>());
 
-            guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
-            //Gets this map's MapComponent_WindowTabButtonSelection. This gets the component from each map.
+                guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
+                //Gets this map's MapComponent_WindowTabButtonSelection. This gets the component from each map.
 
-            var buttonLabel = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
-            //Grabs the value tied to the pawn key, which is the job selected by the button.
+                var buttonLabel = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
+                //Grabs the value tied to the pawn key, which is the job selected by the button.
 
-            if (pawn.IsFreeNonSlaveColonist) //Only makes the list if the pawn is not a slave.
-            {
-                Listing_Standard listing_Standard = new();
-                listing_Standard.Begin(rect); //This needs a listing_Standard.End(), else the gui crashes.
-
-                var x = buttonLabel?.ToString() ?? GuardJobType.GuardingP_Undefined.ToString();
-                if (listing_Standard.ButtonText( //Fires once the button is pressed
-                    label: x.Translate()
-                    ))
+                if (pawn.IsFreeNonSlaveColonist) //Only makes the list if the pawn is not a slave.
                 {
-                    DoFloatMenuButtons(pawn);
+                    Listing_Standard listing_Standard = new();
+                    listing_Standard.Begin(rect); //This needs a listing_Standard.End(), else the gui crashes.
+
+                    var x = buttonLabel?.ToString() ?? GuardJobType.GuardingP_Undefined.ToString();
+                    if (listing_Standard.ButtonText( //Fires once the button is pressed
+                        label: x.Translate()
+                        ))
+                    {
+                        DoFloatMenuButtons(pawn);
+                    }
+                    listing_Standard.End(); //Ends the listing_Standard, we don't want the gui to crash... Right?
                 }
-                listing_Standard.End(); //Ends the listing_Standard, we don't want the gui to crash... Right?
             }
         }
 

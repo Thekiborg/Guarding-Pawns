@@ -28,85 +28,85 @@
 
         public override void DoCell(Rect rect, Pawn pawn, PawnTable table)
         {
-            if (!MapCompCache.ContainsKey(pawn.MapHeld)) //Checks if the dictionary has the MapComponent.
+            if (pawn != null && pawn.Spawned)
             {
-                MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
-                //If it isn't, add the MapComponent as value, with the current map as a key.
-            }
-
-            guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
-            
-            var pawnJobType = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
+                if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
+                //Checks if the dictionary has the MapComponent.
+                //If it isn't, add the MapComponent as value, with the current map as a key
 
 
-            if (pawn.IsFreeNonSlaveColonist) //Slaves don't guard, silly.
-            {
-                Listing_Standard listing_StandardGuardAssignments = new();
-                switch (pawnJobType)
+                guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
+
+                var pawnJobType = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
+
+                if (pawn.IsFreeNonSlaveColonist) //Slaves don't guard, silly.
                 {
-                    case GuardJobs_GuardSpot spot:
+                    Listing_Standard listing_StandardGuardAssignments = new();
+                    switch (pawnJobType)
+                    {
+                        case GuardJobs_GuardSpot spot:
 
-                        listing_StandardGuardAssignments.Begin(rect);
+                            listing_StandardGuardAssignments.Begin(rect);
 
-                        if (listing_StandardGuardAssignments.ButtonText(
-                            label: spot.SpotColor.ToString().Translate()
-                            ))
-                        {
-                            GuardSpotExtraOptions(pawn, rect);
-                        }
+                            if (listing_StandardGuardAssignments.ButtonText(
+                                label: spot.SpotColor.ToString().Translate()
+                                ))
+                            {
+                                GuardSpotExtraOptions(pawn, rect);
+                            }
 
-                        listing_StandardGuardAssignments.End();
-                        break;
-
-
-                    case GuardJobs_GuardPath path:
-                        float checkboxPadding = 7.5f;
-
-                        Rect rectButton = new(rect.xMin, rect.yMin, rect.width / 2, rect.height);
-
-                        listing_StandardGuardAssignments.Begin(rectButton);
-
-                        if (listing_StandardGuardAssignments.ButtonText(
-                            label: path.PathColor.ToString().Translate()
-                            ))
-                        {
-                            GuardPathExtraOptions(pawn, rectButton);
-                        }
-                        listing_StandardGuardAssignments.End();
-
-                        Text.Anchor = TextAnchor.MiddleCenter;
-                        Widgets.Label(new Rect(rectButton.xMax, rect.yMin, rect.width - rectButton.width - Widgets.CheckboxSize - checkboxPadding, rect.height), "ShouldLoop".Translate());
-                        Text.Anchor = TextAnchor.UpperLeft;
-
-                        Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - checkboxPadding, rect.y, ref path.shouldLoop);
-                        
-                        break;
+                            listing_StandardGuardAssignments.End();
+                            break;
 
 
-                    case GuardJobs_GuardPawn pn:
+                        case GuardJobs_GuardPath path:
+                            float checkboxPadding = 7.5f;
 
-                        listing_StandardGuardAssignments.Begin(rect);
+                            Rect rectButton = new(rect.xMin, rect.yMin, rect.width / 2, rect.height);
+
+                            listing_StandardGuardAssignments.Begin(rectButton);
+
+                            if (listing_StandardGuardAssignments.ButtonText(
+                                label: path.PathColor.ToString().Translate()
+                                ))
+                            {
+                                GuardPathExtraOptions(pawn, rectButton);
+                            }
+                            listing_StandardGuardAssignments.End();
+
+                            Text.Anchor = TextAnchor.MiddleCenter;
+                            Widgets.Label(new Rect(rectButton.xMax, rect.yMin, rect.width - rectButton.width - Widgets.CheckboxSize - checkboxPadding, rect.height), "ShouldLoop".Translate());
+                            Text.Anchor = TextAnchor.UpperLeft;
+
+                            Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - checkboxPadding, rect.y, ref path.shouldLoop);
+
+                            break;
+
+
+                        case GuardJobs_GuardPawn pn:
+
+                            listing_StandardGuardAssignments.Begin(rect);
 
 #pragma warning disable CS0618 // Type or member is obsolete
-                        if (listing_StandardGuardAssignments.ButtonText(
-                            label: "GuardingP_ProtectPawn".ToString().Translate(pn.pawnToGuard.Name)
-                            ))
-                        {
-                            GuardPawnExtraOptions(pawn, rect);
-                        }
+                            if (listing_StandardGuardAssignments.ButtonText(
+                                label: "GuardingP_ProtectPawn".ToString().Translate(pn.pawnToGuard.LabelShort)
+                                ))
+                            {
+                                GuardPawnExtraOptions(pawn, rect);
+                            }
 #pragma warning restore CS0618 // Type or member is obsolete
 
-                        listing_StandardGuardAssignments.End();
-                        break;
+                            listing_StandardGuardAssignments.End();
+                            break;
 
 
-                    case null:
-                    default:
+                        default:
 
-                        //listing_StandardGuardAssignments.Begin(rect);
+                            //listing_StandardGuardAssignments.Begin(rect);
 
-                        //listing_StandardGuardAssignments.End();
-                        break;
+                            //listing_StandardGuardAssignments.End();
+                            break;
+                    }
                 }
             }
         }
@@ -178,7 +178,7 @@
                 if (pawnToProtect != windowTabPawn)
                 {
 #pragma warning disable CS0618 // Type or member is obsolete
-                    menuOptions.Add(new("GuardingP_ProtectPawn".ToString().Translate(pawnToProtect.Name), () =>
+                    menuOptions.Add(new("GuardingP_ProtectPawn".ToString().Translate(pawnToProtect.LabelShort), () =>
                     {
                         GuardJobs_GuardPawn guardJobs_GuardPawn = new()
                         {

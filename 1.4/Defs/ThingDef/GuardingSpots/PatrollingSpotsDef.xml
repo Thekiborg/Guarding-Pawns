@@ -10,7 +10,7 @@
         <rotatable>false</rotatable>
         <scatterableOnMapGen>false</scatterableOnMapGen>
         <useHitPoints>False</useHitPoints>
-        <designationCategory>Misc</designationCategory>
+        <designationCategory>Security</designationCategory>
         <uiOrder>2000</uiOrder>
         <passability>Standable</passability>
         <drawGUIOverlay>true</drawGUIOverlay>
