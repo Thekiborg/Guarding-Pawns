@@ -10,14 +10,14 @@
             {
                 Text.Anchor = TextAnchor.MiddleCenter;
                 Widgets.Label(rect, (string)pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness).ToString("P0", System.Globalization.CultureInfo.InvariantCulture));
-                
+
 
                 Text.Anchor = TextAnchor.UpperLeft;
                 if (Mouse.IsOver(rect2))
                 {
                     GUI.DrawTexture(rect2, TexUI.HighlightTex);
                     TipSignal tooltip = pawn.GetTooltip();
-                    tooltip.text = "GuardingP_SightColumn".Translate(pawn.NameShortColored);
+                    tooltip.text = TranslatorFormattedStringExtensions.Translate("GuardingP_SightColumn", pawn);
                     TooltipHandler.TipRegion(rect2, tooltip);
                 }
             }

@@ -18,12 +18,12 @@
     <GuardingP_SelectExtraJobHeader>Extra options for the selected job</GuardingP_SelectExtraJobHeader>
     -->
 
-    <GuardingP_SightColumn>{0}'s sight</GuardingP_SightColumn>
-    <GuardingP_ConsciousnessColumn>{0}'s consciousness</GuardingP_ConsciousnessColumn>
-    <GuardingP_ManipulationColumn>{0}'s manipulation</GuardingP_ManipulationColumn>
-    <GuardingP_MovementColumn>{0}'s movement</GuardingP_MovementColumn>
-    <GuardingP_ShootingColumn>{0}'s shooting skill</GuardingP_ShootingColumn>
-    <GuardingP_MeleeColumn>{0}'s melee skill</GuardingP_MeleeColumn>
+    <GuardingP_SightColumn>{0_nameDef}'s sight</GuardingP_SightColumn>
+    <GuardingP_ConsciousnessColumn>{0_nameDef}'s consciousness</GuardingP_ConsciousnessColumn>
+    <GuardingP_ManipulationColumn>{0_nameDef}'s manipulation</GuardingP_ManipulationColumn>
+    <GuardingP_MovementColumn>{0_nameDef}'s movement</GuardingP_MovementColumn>
+    <GuardingP_ShootingColumn>{0_nameDef}'s shooting skill</GuardingP_ShootingColumn>
+    <GuardingP_MeleeColumn>{0_nameDef}'s melee skill</GuardingP_MeleeColumn>
 
     <GuardingP_Undefined>Unassigned</GuardingP_Undefined>
     <GuardingP_GuardSpot>Guard Spot</GuardingP_GuardSpot>
@@ -56,6 +56,6 @@ Using the buttons you can change the order of the spots on the list, which will 
     </SpotGUIexplanation>
     <SpotGUIbutton>Done</SpotGUIbutton>
 
-    <GuardingP_ProtectPawn>Bodyguard {0}</GuardingP_ProtectPawn>
+    <GuardingP_ProtectPawn>Bodyguard {0_nameDef}</GuardingP_ProtectPawn>
 
 </LanguageData>

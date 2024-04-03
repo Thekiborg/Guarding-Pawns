@@ -17,7 +17,7 @@
                 {
                     GUI.DrawTexture(rect2, TexUI.HighlightTex);
                     TipSignal tooltip = pawn.GetTooltip();
-                    tooltip.text = "GuardingP_MovementColumn".Translate(pawn.NameShortColored);
+                    tooltip.text = TranslatorFormattedStringExtensions.Translate("GuardingP_MovementColumn", pawn);
                     TooltipHandler.TipRegion(rect2, tooltip);
                 }
             }

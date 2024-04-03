@@ -89,7 +89,7 @@
 
 #pragma warning disable CS0618 // Type or member is obsolete
                             if (listing_StandardGuardAssignments.ButtonText(
-                                label: "GuardingP_ProtectPawn".ToString().Translate(pn.pawnToGuard.LabelShort)
+                                label: TranslatorFormattedStringExtensions.Translate("GuardingP_ProtectPawn", pn.pawnToGuard)
                                 ))
                             {
                                 GuardPawnExtraOptions(pawn, rect);
@@ -178,7 +178,7 @@
                 if (pawnToProtect != windowTabPawn)
                 {
 #pragma warning disable CS0618 // Type or member is obsolete
-                    menuOptions.Add(new("GuardingP_ProtectPawn".ToString().Translate(pawnToProtect.LabelShort), () =>
+                    menuOptions.Add(new(TranslatorFormattedStringExtensions.Translate("GuardingP_ProtectPawn", pawnToProtect), () =>
                     {
                         GuardJobs_GuardPawn guardJobs_GuardPawn = new()
                         {
