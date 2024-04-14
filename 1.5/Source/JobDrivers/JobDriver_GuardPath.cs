@@ -6,6 +6,7 @@ namespace Thek_GuardingPawns
     {
         MapComponent_GuardingPawns mapComp;
         List<Thing> spotsList;
+        readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
 
 
         protected override IEnumerable<Toil> MakeNewToils()
@@ -28,6 +29,7 @@ namespace Thek_GuardingPawns
                     }
                     Thing newDest = spotsList[0 + pawnInPreviousPatrolDict.index];
 
+                    if (newDest == null) EndJobWith(JobCondition.ErroredPather);
                     pawn.pather.StartPath(newDest, PathEndMode.OnCell);
                 }
             });
@@ -98,7 +100,6 @@ namespace Thek_GuardingPawns
             float nearestDistSqr = 2500;
             if (!verb.IsMeleeAttack)
             {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
                 float effectiveRange = verb.verbProps.range * verb.verbProps.range * 4;
                 Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, null, 0, effectiveRange);
 
@@ -131,7 +132,6 @@ namespace Thek_GuardingPawns
             }
             else
             {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
                 Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, null, 0);
 
                 if (enemyPawn != null)

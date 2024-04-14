@@ -25,7 +25,7 @@ namespace Thek_GuardingPawns
         //public static bool shouldRenderAreaSpots = false;
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
-        protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => pawn.IsFreeNonSlaveColonist && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
+        protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => (pawn.DevelopmentalStage != DevelopmentalStage.Newborn) && pawn.IsFreeNonSlaveColonist && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
 
 
         public override void DoWindowContents(Rect rect)

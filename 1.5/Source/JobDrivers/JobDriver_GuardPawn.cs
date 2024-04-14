@@ -4,8 +4,7 @@ namespace Thek_GuardingPawns
 {
     public class JobDriver_GuardPawn : JobDriver
     {
-        private const int wanderRange = 4;
-        private readonly Func<Pawn, IntVec3, IntVec3, bool> validator;
+        readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
@@ -21,12 +20,19 @@ namespace Thek_GuardingPawns
                 if (Gen.IsHashIntervalTick(pawn, 120))
                 {
                     TryAttackEnemyPawn();
-                    IntVec3 wanderDestination = RCellFinder.RandomWanderDestFor(pawn, TargetA.Pawn.Position, wanderRange, validator, Danger.Unspecified);
-                    while (!WanderUtility.InSameRoom(wanderDestination, TargetLocA, pawn.Map))
+
+                    if (!((TargetA.Pawn.Position - pawn.Position).LengthHorizontal <= 5f) || !pawn.Position.WithinRegions(TargetA.Pawn.Position, Map, 2, TraverseParms.For(pawn)))
                     {
-                        wanderDestination = RCellFinder.RandomWanderDestFor(pawn, TargetA.Pawn.Position, wanderRange, validator, Danger.Unspecified);
+                        if (!pawn.CanReach(TargetA.Pawn, PathEndMode.Touch, Danger.Unspecified) || TargetA.Pawn.IsForbidden(pawn))
+                        {
+                            EndJobWith(JobCondition.Incompletable);
+                        }
+                        else if (!pawn.pather.Moving || pawn.pather.Destination != TargetA.Pawn)
+                        {
+
+                            pawn.pather.StartPath(TargetA.Pawn, PathEndMode.Touch);
+                        }
                     }
-                    pawn.pather.StartPath(wanderDestination, PathEndMode.OnCell);
                 }
             };
             guard.preInitActions.Add(TryAttackEnemyPawn);
@@ -46,7 +52,6 @@ namespace Thek_GuardingPawns
             float nearestDistSqr = 2500;
             if (!verb.IsMeleeAttack)
             {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
                 float effectiveRange = verb.verbProps.range * verb.verbProps.range * 4;
                 Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(TargetA.Pawn, targetScanFlags, null, 0, effectiveRange);
 
@@ -79,7 +84,6 @@ namespace Thek_GuardingPawns
             }
             else
             {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
                 Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(TargetA.Pawn, targetScanFlags, null, 0);
 
                 if (enemyPawn != null)

@@ -6,6 +6,7 @@ namespace Thek_GuardingPawns
     {
         PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor spotColor;
         MapComponent_GuardingPawns mapComp;
+        readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -31,7 +32,15 @@ namespace Thek_GuardingPawns
             {
                 if (Gen.IsHashIntervalTick(pawn, 120))
                 {
-                    TryAttackEnemyPawn();
+                    if (pawn.equipment != null && pawn.equipment.Primary != null)
+                    {
+                        if (pawn.equipment.Primary.def.IsRangedWeapon)
+                        {
+                            TryAttackranged();
+                        }
+                        // add else melee
+                    }
+
                 }
             };
             guard.preInitActions.Add(delegate
@@ -50,51 +59,56 @@ namespace Thek_GuardingPawns
         }
 
 
-        private void TryAttackEnemyPawn()
+        private void TryAttackranged()
         {
-            Verb verb = pawn.CurrentEffectiveVerb;
-            if (verb is not { state: VerbState.Idle })
-            {
-                return;
-            }
-            Pawn nearestEnemy = null;
-            float nearestDistSqr = 2500;
-            if (!verb.IsMeleeAttack)
-            {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
-                float effectiveRange = verb.verbProps.range * verb.verbProps.range * 4;
-                Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, null, 0, effectiveRange);
+            Verb pawnVerb = pawn.CurrentEffectiveVerb;
+            Thing target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: pawnVerb.EffectiveRange);
+            if (target == null) return;
 
-                if (enemyPawn != null && verb.CanHitTarget(enemyPawn) && !enemyPawn.Downed)
+            if (target is Pawn pawnTarget)
+            {
+                job.SetTarget(TargetIndex.B, pawnTarget);
+                if (pawnVerb.CanHitTarget(pawnTarget) && !pawnTarget.DeadOrDowned)
                 {
                     if (pawn.mindState != null)
                     {
-                        pawn.mindState.enemyTarget = enemyPawn;
+                        pawn.mindState.enemyTarget = pawnTarget;
                     }
-                    CastPositionRequest request = new();
-                    request.caster = pawn;
-                    request.target = enemyPawn;
-                    request.verb = pawn.CurrentEffectiveVerb;
-                    request.wantCoverFromTarget = true;
-                    if (CastPositionFinder.TryFindCastPosition(request, out var dest) && dest != pawn.Position)
+
+                    CastPositionRequest cast = new();
+                    cast.caster = pawn;
+                    cast.target = pawn.mindState.enemyTarget;
+                    cast.verb = pawnVerb;
+                    cast.maxRangeFromTarget = pawnVerb.EffectiveRange;
+                    cast.locus = job.targetA.Cell;
+                    cast.maxRangeFromLocus = pawnVerb.EffectiveRange;
+                    cast.wantCoverFromTarget = true;
+                    cast.maxRegions = 50;
+
+                    if (!CastPositionFinder.TryFindCastPosition(cast, out var dest))
                     {
-                        Job job_move = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, dest);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job_move);
+                        return;
+                    }
+                    if (dest == pawn.Position)
+                    {
+                        //try attack manually
                     }
                     else
                     {
-                        Job job_shoot = JobMaker.MakeJob(JobDefOf.Wait_Combat, enemyPawn, 400);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job_shoot);
+                        pawn.pather.StartPath(dest, PathEndMode.OnCell);
                     }
-                    return;
+                    bool hasCover = CoverUtility.CalculateOverallBlockChance(pawn, pawnTarget.Position, Map) > 0.01f;
+                    bool reservedCell = pawn.Position.Standable(Map) && Map.pawnDestinationReservationManager.CanReserve(pawn.Position, pawn, pawn.Drafted);
+                    bool canHitTarget = pawnVerb.CanHitTarget(pawnTarget);
+                    if (hasCover && reservedCell && canHitTarget)
+                    {
+                        // try attack manually
+                    }
                 }
-
             }
+            /*
             else
             {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
                 Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, null, 0);
 
                 if (enemyPawn != null)
@@ -131,17 +145,15 @@ namespace Thek_GuardingPawns
                             return;
                         }
                     }
+                    Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, nearestEnemy);
+                    pawn.jobs.StopAll();
+                    pawn.jobs.StartJob(job);
+                    if (pawn.mindState != null)
                     {
-                        Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, nearestEnemy);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job);
-                        if (pawn.mindState != null)
-                        {
-                            pawn.mindState.enemyTarget = nearestEnemy;
-                        }
+                        pawn.mindState.enemyTarget = nearestEnemy;
                     }
                 }
-            }
+            }*/
         }
 
 

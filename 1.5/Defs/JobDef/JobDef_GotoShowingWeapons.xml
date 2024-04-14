@@ -9,6 +9,7 @@
         <carryThingAfterJob>true</carryThingAfterJob>
         <dropThingBeforeJob>false</dropThingBeforeJob>
         <alwaysShowWeapon>true</alwaysShowWeapon>
+        <checkOverrideOnDamage>OnlyIfInstigatorNotJobTarget</checkOverrideOnDamage>
       </JobDef>
     
 </Defs>
