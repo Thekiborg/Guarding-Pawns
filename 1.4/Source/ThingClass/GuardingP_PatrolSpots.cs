@@ -9,7 +9,7 @@ namespace Thek_GuardingPawns
         private static readonly Dictionary<ThingDef, int> SpotCounter = new();
         private string resolvedLabel;
         private int order;
-
+        private readonly CachedTexture gizmoIcon = new("Gizmo/SortPatrolSpotsIcon");
 
         public override void Print(SectionLayer layer)
         {
@@ -29,6 +29,7 @@ namespace Thek_GuardingPawns
             Command_Action command_Action = new()
             {
                 defaultLabel = "Change order",
+                icon = gizmoIcon.Texture,
                 action = delegate ()
                 {
                     Find.WindowStack.Add(new Window_SortPatrolSpots(Map, ListForDef));

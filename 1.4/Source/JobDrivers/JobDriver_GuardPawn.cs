@@ -4,130 +4,320 @@ namespace Thek_GuardingPawns
 {
     public class JobDriver_GuardPawn : JobDriver
     {
-        private const int wanderRange = 4;
-        private readonly Func<Pawn, IntVec3, IntVec3, bool> validator;
+        readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
+        private Thing target;
+        private bool anyHostileEverFound;
+        Verb Verb
+        {
+            get
+            {
+                return pawn.CurrentEffectiveVerb;
+            }
+        }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Toil guard = ToilMaker.MakeToil("MakeNewToils");
-            guard.defaultCompleteMode = ToilCompleteMode.PatherArrival;
-            guard.preInitActions ??= new List<Action>();
-            guard.preInitActions.Add(delegate
+            // Handles attacking manually until the threat response kicks in
+            Toil attackUntilNoEnemies = ToilMaker.MakeToil("MakeNewToils");
+            attackUntilNoEnemies.AddPreInitAction(delegate
+            {
+                AttackUntilNoEnemies(attackUntilNoEnemies);
+            });
+            attackUntilNoEnemies.defaultCompleteMode = ToilCompleteMode.FinishedBusy;
+
+
+            // Makes the pawn walk to cover
+            Toil movePawn = ToilMaker.MakeToil("MakeNewToils");
+            movePawn.AddPreInitAction(() =>
+            {
+                if (pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon)
+                {
+                    TryAttackRanged(attackUntilNoEnemies);
+                }
+                else
+                {
+                    anyHostileEverFound = true;
+                    TryReachMelee();
+                }
+            });
+            movePawn.defaultCompleteMode = ToilCompleteMode.PatherArrival;
+
+
+            // Handles the behavior of the guard job and scanning for enemies
+            Toil behaviorAndScan = ToilMaker.MakeToil("MakeNewToils");
+            behaviorAndScan.defaultCompleteMode = ToilCompleteMode.PatherArrival;
+            behaviorAndScan.preInitActions ??= new List<Action>();
+            behaviorAndScan.preInitActions.Add(delegate
             {
                 pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
             });
-            guard.tickAction = () =>
+            behaviorAndScan.tickAction = () =>
             {
-                if (Gen.IsHashIntervalTick(pawn, 120))
+                if (Gen.IsHashIntervalTick(pawn, 160))
                 {
-                    TryAttackEnemyPawn();
-                    IntVec3 wanderDestination = RCellFinder.RandomWanderDestFor(pawn, TargetA.Pawn.Position, wanderRange, validator, Danger.Unspecified);
-                    while (!WanderUtility.InSameRoom(wanderDestination, TargetLocA, pawn.Map))
+                    if (!((TargetA.Pawn.Position - pawn.Position).LengthHorizontal <= 10f) || !pawn.Position.WithinRegions(TargetA.Pawn.Position, Map, 2, TraverseParms.For(pawn)))
                     {
-                        wanderDestination = RCellFinder.RandomWanderDestFor(pawn, TargetA.Pawn.Position, wanderRange, validator, Danger.Unspecified);
+                        if (!pawn.CanReach(TargetA.Pawn, PathEndMode.Touch, Danger.Unspecified) || TargetA.Pawn.IsForbidden(pawn))
+                        {
+                            EndJobWith(JobCondition.Incompletable);
+                        }
+                        else if (!pawn.pather.Moving || pawn.pather.Destination != TargetA.Pawn)
+                        {
+
+                            pawn.pather.StartPath(TargetA.Pawn, PathEndMode.Touch);
+                        }
                     }
-                    pawn.pather.StartPath(wanderDestination, PathEndMode.OnCell);
+
+                    target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Math.Max(Verb.verbProps.range, 35f));
+                    if (target == null) return;
+
+                    if (pawn.equipment != null)
+                    {
+                        anyHostileEverFound = true;
+                        JumpToToil(movePawn);
+                    }
                 }
             };
-            guard.preInitActions.Add(TryAttackEnemyPawn);
-            yield return guard;
+
+            Toil waitToil = Toils_General.Wait(2);
+
+            yield return behaviorAndScan;
+            yield return Toils_Jump.JumpIf(waitToil, () =>
+            {
+                return !anyHostileEverFound;
+            });
+            yield return movePawn;
+            yield return attackUntilNoEnemies;
+            yield return waitToil;
             yield return Toils_General.Wait(120);
         }
 
 
-        private void TryAttackEnemyPawn()
+        private void AttackUntilNoEnemies(Toil thisToil)
         {
-            Verb verb = pawn.CurrentEffectiveVerb;
-            if (verb is not { state: VerbState.Idle })
+            if (target is Pawn tPawn)
             {
-                return;
-            }
-            Pawn nearestEnemy = null;
-            float nearestDistSqr = 2500;
-            if (!verb.IsMeleeAttack)
-            {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
-                float effectiveRange = verb.verbProps.range * verb.verbProps.range * 4;
-                Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(TargetA.Pawn, targetScanFlags, null, 0, effectiveRange);
+                #region target is a Pawn
+                bool flag = (!tPawn.Dead || !tPawn.Downed)
+                    && Verb.CanHitTargetFrom(pawn.Position, tPawn)
+                    || GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
 
-                if (enemyPawn != null && verb.CanHitTarget(enemyPawn) && !enemyPawn.Downed)
+                bool flag2 = (!tPawn.Dead || !tPawn.Downed)
+                    || !Verb.CanHitTargetFrom(pawn.Position, tPawn)
+                    || GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
+
+                if (flag)
                 {
-                    if (pawn.mindState != null)
+                    pawn.TryStartAttack(tPawn);
+                }
+
+                if (flag2)
+                {
+                    tPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Verb.verbProps.range, locus: TargetA.Cell);
+                    if (tPawn != null)
                     {
-                        pawn.mindState.enemyTarget = enemyPawn;
-                    }
-                    CastPositionRequest request = new();
-                    request.caster = pawn;
-                    request.target = enemyPawn;
-                    request.verb = pawn.CurrentEffectiveVerb;
-                    request.wantCoverFromTarget = true;
-                    if (CastPositionFinder.TryFindCastPosition(request, out var dest) && dest != pawn.Position)
-                    {
-                        Job job_move = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, dest);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job_move);
+                        if (pawn.mindState != null)
+                        {
+                            pawn.mindState.enemyTarget = tPawn;
+                            JumpToToil(thisToil);
+                        }
                     }
                     else
                     {
-                        Job job_shoot = JobMaker.MakeJob(JobDefOf.Wait_Combat, enemyPawn, 400);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job_shoot);
+                        EndJobWith(JobCondition.Succeeded);
                     }
-                    return;
                 }
-
+                #endregion
             }
             else
             {
-                TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
-                Pawn enemyPawn = (Pawn)AttackTargetFinder.BestAttackTarget(TargetA.Pawn, targetScanFlags, null, 0);
+                #region target is a Thing
+                bool flag = target != null
+                    && !target.Destroyed
+                    && Verb.CanHitTargetFrom(pawn.Position, target)
+                    || GenSight.LineOfSightToThing(pawn.Position, target, Map);
 
-                if (enemyPawn != null)
+                bool flag2 = target == null
+                    || target.Destroyed
+                    || !Verb.CanHitTargetFrom(pawn.Position, target)
+                    || GenSight.LineOfSightToThing(pawn.Position, target, Map);
+
+                if (flag)
                 {
-                    var meleeDetectionRange = Math.Max((enemyPawn.CurrentEffectiveVerb?.verbProps.range ?? 25) + 1, 50f);
-                    var distSqr = enemyPawn.Position.DistanceToSquared(pawn.Position);
-
-                    if (nearestDistSqr > distSqr && distSqr < meleeDetectionRange * meleeDetectionRange)
-                    {
-                        if (!enemyPawn.Downed && pawn.CanReach(enemyPawn.Position, PathEndMode.Touch, Danger.Deadly) && GenSight.LineOfSightToThing(pawn.Position, enemyPawn, pawn.Map))
-                        {
-                            nearestEnemy = enemyPawn;
-                            nearestDistSqr = distSqr;
-                        }
-                    }
+                    pawn.TryStartAttack(target);
                 }
-            }
-            if (nearestEnemy != null)
-            {
-                if (verb.IsMeleeAttack)
+
+                if (flag2)
                 {
-                    if (nearestDistSqr >= 122 && nearestEnemy.pather.curPath != null && nearestEnemy.pather.curPath.NodesLeftCount > 10)
+                    target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Verb.verbProps.range, locus: TargetA.Cell);
+                    if (target != null)
                     {
-                        var tile = nearestEnemy.pather.curPath.Peek(Math.Min(nearestEnemy.pather.curPath.NodesLeftCount, 10));
-                        if (pawn.CanReach(tile, PathEndMode.OnCell, Danger.Unspecified))
-                        {
-                            Job job_move = JobMaker.MakeJob(GotoJobDefOf.GuardingP_Goto, tile);
-                            pawn.jobs.StopAll();
-                            pawn.jobs.StartJob(job_move);
-                            if (pawn.mindState != null)
-                            {
-                                pawn.mindState.enemyTarget = nearestEnemy;
-                            }
-                            return;
-                        }
-                    }
-                    {
-                        Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, nearestEnemy);
-                        pawn.jobs.StopAll();
-                        pawn.jobs.StartJob(job);
                         if (pawn.mindState != null)
                         {
-                            pawn.mindState.enemyTarget = nearestEnemy;
+                            pawn.mindState.enemyTarget = target;
+                            JumpToToil(thisToil);
+                        }
+                    }
+                    else
+                    {
+                        EndJobWith(JobCondition.Succeeded);
+                    }
+                }
+                #endregion
+            }
+        }
+
+
+        private void TryAttackRanged(Toil movePawnToCoverToil)
+        {
+            if (target is Pawn pawnTarget)
+            {
+                #region target is Pawn
+                if (Verb.CanHitTarget(pawnTarget) && (!pawnTarget.Dead || !pawnTarget.Downed))
+                {
+                    if (pawn.mindState != null)
+                    {
+                        pawn.mindState.enemyTarget = pawnTarget;
+                    }
+
+                    CastPositionRequest cast = new()
+                    {
+                        caster = pawn,
+                        target = pawn.mindState.enemyTarget,
+                        verb = Verb,
+                        maxRangeFromTarget = Verb.verbProps.range,
+                        locus = job.targetA.Cell,
+                        maxRangeFromLocus = Verb.verbProps.range,
+                        wantCoverFromTarget = true,
+                        maxRegions = 50
+                    };
+
+                    if (!CastPositionFinder.TryFindCastPosition(cast, out var dest))
+                    {
+                        return;
+                    }
+                    if (dest == pawn.Position)
+                    {
+                        JumpToToil(movePawnToCoverToil);
+                    }
+                    else
+                    {
+                        pawn.pather.StartPath(dest, PathEndMode.OnCell);
+                    }
+                    bool hasCover = CoverUtility.CalculateOverallBlockChance(pawn, pawnTarget.Position, Map) > 0.01f;
+                    bool reservedCell = pawn.Position.Standable(Map) && Map.pawnDestinationReservationManager.CanReserve(pawn.Position, pawn, pawn.Drafted);
+                    bool canHitTarget = Verb.CanHitTarget(pawnTarget);
+                    if (hasCover && reservedCell && canHitTarget)
+                    {
+                        JumpToToil(movePawnToCoverToil);
+                    }
+                }
+                #endregion
+            }
+            else if (target is Thing)
+            {
+                #region target is Thing
+                if (Verb.CanHitTarget(target) && !target.Destroyed)
+                {
+                    if (pawn.mindState != null)
+                    {
+                        pawn.mindState.enemyTarget = target;
+                    }
+
+                    CastPositionRequest cast = new()
+                    {
+                        caster = pawn,
+                        target = pawn.mindState.enemyTarget,
+                        verb = Verb,
+                        maxRangeFromTarget = Verb.verbProps.range,
+                        locus = job.targetA.Cell,
+                        maxRangeFromLocus = Verb.verbProps.range,
+                        wantCoverFromTarget = true,
+                        maxRegions = 50
+                    };
+
+                    if (!CastPositionFinder.TryFindCastPosition(cast, out var dest))
+                    {
+                        return;
+                    }
+                    if (dest == pawn.Position)
+                    {
+                        JumpToToil(movePawnToCoverToil);
+                    }
+                    else
+                    {
+                        pawn.pather.StartPath(dest, PathEndMode.OnCell);
+                    }
+                    bool hasCover = CoverUtility.CalculateOverallBlockChance(pawn, target.Position, Map) > 0.01f;
+                    bool reservedCell = pawn.Position.Standable(Map) && Map.pawnDestinationReservationManager.CanReserve(pawn.Position, pawn, pawn.Drafted);
+                    bool canHitTarget = Verb.CanHitTarget(target);
+                    if (hasCover && reservedCell && canHitTarget)
+                    {
+                        JumpToToil(movePawnToCoverToil);
+                    }
+                }
+                #endregion
+            }
+        }
+
+
+        private void TryReachMelee()
+        {
+            if (target is Pawn pawnTarget)
+            {
+                #region target is a pawn
+                float meleeDetectRange = Math.Max((pawnTarget.CurrentEffectiveVerb?.verbProps.range ?? 20f) + 1, 35f);
+                if (pawnTarget.Position.DistanceToSquared(TargetA.Pawn.Position) <= meleeDetectRange * meleeDetectRange)
+                {
+                    if ((!pawnTarget.Dead || !pawnTarget.Downed) && GenSight.LineOfSightToThing(pawn.Position, pawnTarget, Map))
+                    {
+                        if (pawn.mindState != null)
+                        {
+                            pawn.mindState.enemyTarget = pawnTarget;
+                        }
+
+                        if (pawnTarget.pather.curPath != null && pawnTarget.pather.curPath.NodesLeftCount > 0)
+                        {
+                            IntVec3 targetTile = pawnTarget.pather.curPath.Peek(pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3));
+                            if (pawn.CanReach(targetTile, PathEndMode.OnCell, Danger.Deadly))
+                            {
+                                pawn.pather.StartPath(targetTile, PathEndMode.OnCell);
+                            }
+                        }
+                        else
+                        {
+                            if (pawn.CanReach(pawnTarget, PathEndMode.Touch, Danger.Deadly))
+                            {
+                                pawn.pather.StartPath(pawnTarget, PathEndMode.Touch);
+                            }
                         }
                     }
                 }
+                #endregion
+            }
+            else if (target is Thing)
+            {
+                #region target is a thing
+                float meleeDetectRange = 35f;
+                if (target.Position.DistanceToSquared(pawn.Position) <= meleeDetectRange * meleeDetectRange)
+                {
+                    if (!target.Destroyed && GenSight.LineOfSightToThing(pawn.Position, target, Map))
+                    {
+                        if (pawn.mindState != null)
+                        {
+                            pawn.mindState.enemyTarget = target;
+                        }
+
+                        if (pawn.CanReach(target, PathEndMode.Touch, Danger.Deadly))
+                        {
+                            pawn.pather.StartPath(target, PathEndMode.Touch);
+                        }
+                    }
+                }
+                #endregion
             }
         }
+
 
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
