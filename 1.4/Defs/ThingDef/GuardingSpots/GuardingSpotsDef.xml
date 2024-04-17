@@ -17,6 +17,7 @@
       <drawerType>MapMeshOnly</drawerType>
       <designatorDropdown>GuardingP_GuardSpots</designatorDropdown>
       <building>
+        <isEdifice>false</isEdifice>
         <sowTag>SupportPlantsOnly</sowTag>
         <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
         <ai_chillDestination>false</ai_chillDestination>
