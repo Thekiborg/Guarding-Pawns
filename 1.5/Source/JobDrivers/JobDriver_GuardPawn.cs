@@ -50,7 +50,8 @@ namespace Thek_GuardingPawns
 
             // Handles the behavior of the guard job and scanning for enemies
             Toil behaviorAndScan = ToilMaker.MakeToil("MakeNewToils");
-            behaviorAndScan.defaultCompleteMode = ToilCompleteMode.PatherArrival;
+            behaviorAndScan.defaultCompleteMode = ToilCompleteMode.Delay;
+            behaviorAndScan.defaultDuration = 2500;
             behaviorAndScan.preInitActions ??= new List<Action>();
             behaviorAndScan.preInitActions.Add(delegate
             {
