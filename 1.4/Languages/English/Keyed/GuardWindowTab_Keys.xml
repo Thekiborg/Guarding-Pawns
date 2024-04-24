@@ -31,6 +31,8 @@
     <GuardingP_GuardPawn>Protect Pawn</GuardingP_GuardPawn>
     <GuardingP_GuardPath>Patrol</GuardingP_GuardPath>
 
+    <GuardingP_ChangeOrderGizmo>Change order</GuardingP_ChangeOrderGizmo>
+
     <Thek_GuardingPawns.GuardJobs_GuardSpot>Guard Spot</Thek_GuardingPawns.GuardJobs_GuardSpot>
     <Thek_GuardingPawns.GuardJobs_GuardArea>Guard Area</Thek_GuardingPawns.GuardJobs_GuardArea>
     <Thek_GuardingPawns.GuardJobs_GuardPawn>Protect Pawn</Thek_GuardingPawns.GuardJobs_GuardPawn>

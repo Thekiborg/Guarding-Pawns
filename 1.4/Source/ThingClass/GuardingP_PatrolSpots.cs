@@ -28,7 +28,7 @@ namespace Thek_GuardingPawns
             }
             Command_Action command_Action = new()
             {
-                defaultLabel = "Change order",
+                defaultLabel = "GuardingP_ChangeOrderGizmo".Translate(),
                 icon = gizmoIcon.Texture,
                 action = delegate ()
                 {
