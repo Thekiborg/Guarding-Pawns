@@ -20,7 +20,7 @@ namespace Thek_GuardingPawns
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            return pawn.ReserveSittableOrSpot(job.targetA.Cell, job);
+            return pawn.Reserve(job.targetA, job);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
