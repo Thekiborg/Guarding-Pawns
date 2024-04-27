@@ -11,6 +11,15 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
+            if (!guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJobs))
+            {
+                return true;
+            }
+            if (guardJobs is not GuardJobs_GuardSpot)
+            {
+                return true;
+            }
+
             bool shouldSkip = true;
             foreach (Thing thing in pawn.MapHeld.listerBuildings.allBuildingsColonist)
             {
@@ -32,7 +41,7 @@ namespace Thek_GuardingPawns
         {
             CacheMapComponent(pawn);
             guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJob);
-            if (guardJob is GuardJobs_GuardSpot && !pawn.Map.reservationManager.IsReservedByAnyoneOf(t, pawn.Faction))
+            if (guardJob is GuardJobs_GuardSpot)
             {
                 GuardJobs_GuardSpot spot;
                 spot = guardJob as GuardJobs_GuardSpot;
@@ -64,6 +73,15 @@ namespace Thek_GuardingPawns
                 }
             }
             return null;
+        }
+
+        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
+        {
+            if (!pawn.CanReserve(t, 1, -1, null, forced))
+            {
+                return false;
+            }
+            return true;
         }
 
 
