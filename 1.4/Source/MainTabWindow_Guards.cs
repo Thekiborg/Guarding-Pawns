@@ -13,16 +13,12 @@ namespace Thek_GuardingPawns
         //private Rect thirdRectLabel;
         //private Rect leftRectLabel;
 
-        internal static bool shouldRenderGuardingSpots = true;
-        internal static bool shouldRenderPatrollingSpots = true;
-        //internal static bool shouldOverrideAllowedArea = false;
-
         private static readonly float GuardingSpotKeyWidth = Text.CalcSize("GuardingP_GuardingSpotCheckBox".Translate()).x;
         private static readonly float PatrollingSpotKeyWidth = Text.CalcSize("GuardingP_PatrollingSpotCheckBox".Translate()).x;
         //private static readonly float GuardingAreaKeyWidth = Text.CalcSize("GuardingP_GuardingAreaCheckBox").x;
         //private static readonly float OverrideAllowedAreaWidth = Text.CalcSize("GuardingP_OverrideAllowedAreaCheckBox".Translate()).x;
 
-        //public static bool shouldRenderAreaSpots = false;
+
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
         protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => pawn.IsFreeNonSlaveColonist && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
@@ -31,14 +27,14 @@ namespace Thek_GuardingPawns
         public override void DoWindowContents(Rect rect)
         {
             windowTabRect = rect;
-            base.DoWindowContents(rect);
-            bool prevGuardingValue = shouldRenderGuardingSpots;
-            bool prevPatrollingValue = shouldRenderPatrollingSpots;
+            base.DoWindowContents(rect); 
+            bool prevGuardingValue = MapComponent_GuardingPawns.shouldRenderGuardingSpots;
+            bool prevPatrollingValue = MapComponent_GuardingPawns.shouldRenderPatrollingSpots;
             Map map = Find.CurrentMap;
 
-            Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref shouldRenderGuardingSpots);
+            Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref MapComponent_GuardingPawns.shouldRenderGuardingSpots);
             Widgets.Label(new Rect(FirstRectLabelUtility()), "GuardingP_GuardingSpotCheckBox".Translate());
-            if (prevGuardingValue != shouldRenderGuardingSpots)
+            if (prevGuardingValue != MapComponent_GuardingPawns.shouldRenderGuardingSpots)
             {
                 foreach (Thing spot in map.listerBuildings.allBuildingsColonist)
                 {
@@ -49,9 +45,9 @@ namespace Thek_GuardingPawns
                 }
             }
             
-            Widgets.Checkbox(firstRectLabel.xMin - padding - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref shouldRenderPatrollingSpots);
+            Widgets.Checkbox(firstRectLabel.xMin - padding - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref MapComponent_GuardingPawns.shouldRenderPatrollingSpots);
             Widgets.Label(new Rect(SecondRectLabelUtility()), "GuardingP_PatrollingSpotCheckBox".Translate());
-            if (prevPatrollingValue != shouldRenderGuardingSpots)
+            if (prevPatrollingValue != MapComponent_GuardingPawns.shouldRenderGuardingSpots)
             {
                 
                 foreach (Thing spot in map.listerBuildings.allBuildingsColonist)

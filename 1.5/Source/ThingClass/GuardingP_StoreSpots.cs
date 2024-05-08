@@ -5,7 +5,7 @@
     {
         public override void Print(SectionLayer layer)
         {
-            if (MainTabWindow_Guards.shouldRenderGuardingSpots)
+            if (MapComponent_GuardingPawns.shouldRenderGuardingSpots)
             {
                 base.Print(layer);
             }

@@ -22,10 +22,17 @@
         private List<Pawn> prevPatrolPawnsList = new();
         private List<PatrolOptions> prevPatrolOptionsList = new();
 
+        internal static bool shouldRenderGuardingSpots = true;
+        internal static bool shouldRenderPatrollingSpots = true;
+        //internal static bool shouldOverrideAllowedArea = false;
+        //public static bool shouldRenderAreaSpots = false;
+
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref GuardJobs, "GuardingP_GuardJobsExtraOptions", LookMode.Reference, LookMode.Deep, ref PawnsList, ref GuardJobsList);
             Scribe_Collections.Look(ref previousPatrolSpotPassedByPawn, "GuardingP_PreviousPatrolSpotPassedByPawn", LookMode.Reference, LookMode.Deep, ref prevPatrolPawnsList, ref prevPatrolOptionsList);
+            Scribe_Values.Look(ref shouldRenderGuardingSpots, "GuardingP_ShouldRenderGuardingSpots", true);
+            Scribe_Values.Look(ref shouldRenderPatrollingSpots, "GuardingP_ShouldRenderPatrollingSpots", true);
         }
     }
 }

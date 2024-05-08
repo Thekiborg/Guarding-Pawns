@@ -14,7 +14,7 @@ namespace Thek_GuardingPawns
 
         public override void Print(SectionLayer layer)
         {
-            if (MainTabWindow_Guards.shouldRenderPatrollingSpots)
+            if (MapComponent_GuardingPawns.shouldRenderPatrollingSpots)
             {
                 base.Print(layer);
             }
