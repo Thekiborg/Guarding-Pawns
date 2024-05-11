@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Patch>
+
+    <Operation Class="PatchOperationFindMod">
+        <mods>
+            <li>Vanilla Textures Expanded</li>
+        </mods>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/MainButtonDef[defName="GuardingP_GuardTab"]</xpath>
+            <value>
+                <iconPath>GuardTabIcon/Shield</iconPath>
+            </value>
+        </match>
+    </Operation>
+
+</Patch>

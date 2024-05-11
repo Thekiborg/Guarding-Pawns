@@ -7,7 +7,6 @@
         <description>Manage your guards.</description>
         <tabWindowClass>Thek_GuardingPawns.MainTabWindow_Guards</tabWindowClass>
         <order>51</order>
-        <defaultHotKey></defaultHotKey>
     </MainButtonDef>
 
 </Defs>

@@ -60,7 +60,7 @@ namespace Thek_GuardingPawns
         public override Job NonScanJob(Pawn pawn)
         {
             Job job = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPath);
-            job.locomotionUrgency = LocomotionUrgency.Walk;
+            job.locomotionUrgency = LocomotionUrgency.Jog;
 
             return job;
         }
