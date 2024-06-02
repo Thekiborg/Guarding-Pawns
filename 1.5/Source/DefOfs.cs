@@ -1,7 +1,4 @@
-﻿using RimWorld;
-using Verse;
-
-namespace Thek_GuardingPawns
+﻿namespace Thek_GuardingPawns
 {
     [DefOf]
     internal static class GuardingJobsDefOf

@@ -43,7 +43,6 @@ namespace Thek_GuardingPawns
                         Log.Warning($"{pawn.LabelShort}'s pawnKind cannot do melee attacks, exiting jobDriver.");
                         return;
                     }
-                    anyHostileEverFound = true;
                     TryReachMelee();
                 }
             });
@@ -68,7 +67,7 @@ namespace Thek_GuardingPawns
                     }
                     Thing newDest = spotsList[0 + pawnInPreviousPatrolDict.index];
 
-                    if (newDest == null) EndJobWith(JobCondition.ErroredPather);
+                    if (newDest == null || newDest.Destroyed) EndJobWith(JobCondition.ErroredPather);
                     pawn.pather.StartPath(newDest, PathEndMode.OnCell);
                 }
 
@@ -99,7 +98,10 @@ namespace Thek_GuardingPawns
                     }
                 }
             };
-            behaviorAndScan.preInitActions.Add(delegate
+
+            Toil waitJumpObj = Wait(pawn, Rand.Range(30, 160));
+            Toil lastWait = Wait(pawn, Rand.Range(30, 120));
+            lastWait.AddFinishAction(delegate
             {
                 GuardJobs_GuardPath gJob = mapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
                 var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
@@ -130,8 +132,6 @@ namespace Thek_GuardingPawns
                 }
             });
 
-            Toil waitJumpObj = Wait(pawn, Rand.Range(30, 160));
-
             yield return behaviorAndScan;
             yield return Toils_Jump.JumpIf(waitJumpObj, () =>
             {
@@ -142,7 +142,7 @@ namespace Thek_GuardingPawns
             yield return waitJumpObj;
             yield return Wait(pawn, Rand.Range(30, 120));
             yield return Wait(pawn, Rand.Range(30, 120));
-            yield return Wait(pawn, Rand.Range(30, 120));
+            yield return lastWait;
         }
 
 
@@ -151,13 +151,11 @@ namespace Thek_GuardingPawns
             if (target is Pawn tPawn)
             {
                 #region target is a Pawn
-                bool flag = tPawn != null
-                    && !tPawn.Downed
+                bool flag = !tPawn.Downed
                     && Verb.CanHitTargetFrom(pawn.Position, tPawn)
                     || GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
 
-                bool flag2 = tPawn == null
-                    || tPawn.DeadOrDowned
+                bool flag2 = tPawn.DeadOrDowned
                     || !Verb.CanHitTargetFrom(pawn.Position, tPawn)
                     || GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
 
@@ -275,7 +273,7 @@ namespace Thek_GuardingPawns
                 }
                 #endregion
             }
-            else if (target is Thing)
+            else if (target is not null)
             {
                 #region target is Thing
                 if (Verb.CanHitTarget(target) && !target.Destroyed)
@@ -339,7 +337,12 @@ namespace Thek_GuardingPawns
 
                         if (pawnTarget.pather.curPath != null && pawnTarget.pather.curPath.NodesLeftCount > 0)
                         {
-                            IntVec3 targetTile = pawnTarget.pather.curPath.Peek(pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3));
+                            int peekAt = (pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3) - 1);
+
+                            IntVec3 targetTile = pawnTarget.pather.curPath.Peek(peekAt);
+
+                            if (!targetTile.IsValid || !targetTile.InBounds(Map)) EndJobWith(JobCondition.ErroredPather);
+
                             if (pawn.CanReach(targetTile, PathEndMode.OnCell, Danger.Deadly))
                             {
                                 pawn.pather.StartPath(targetTile, PathEndMode.OnCell);
@@ -356,7 +359,7 @@ namespace Thek_GuardingPawns
                 }
                 #endregion
             }
-            else if (target is Thing)
+            else if (target is not null)
             {
                 #region target is a thing
                 float meleeDetectRange = 35f;

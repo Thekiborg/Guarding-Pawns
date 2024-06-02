@@ -3,7 +3,7 @@
     [StaticConstructorOnStartup]
     public class PawnColumnWorker_SelectJobExtras : PawnColumnWorker
     {
-        private Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new(); //Caching
+        private readonly Dictionary<Map, MapComponent_GuardingPawns> MapCompCache = new(); //Caching
         private MapComponent_GuardingPawns guardAssignmentsMapComp;
 
 
@@ -30,17 +30,17 @@
         {
             if (pawn != null && pawn.Spawned)
             {
-                if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
-                //Checks if the dictionary has the MapComponent.
-                //If it isn't, add the MapComponent as value, with the current map as a key
-
-
-                guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
-
-                var pawnJobType = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
-
-                if (pawn.IsFreeNonSlaveColonist) //Slaves don't guard, silly.
+                if (pawn.IsFreeNonSlaveColonist || (pawn.RaceProps.IsMechanoid && !pawn.IsColonyMechRequiringMechanitor())) //Slaves don't guard, silly.
                 {
+                    if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
+                    //Checks if the dictionary has the MapComponent.
+                    //If it isn't, add the MapComponent as value, with the current map as a key
+
+
+                    guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
+
+                    var pawnJobType = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
+
                     Listing_Standard listing_StandardGuardAssignments = new();
                     switch (pawnJobType)
                     {
@@ -86,15 +86,12 @@
                         case GuardJobs_GuardPawn pn:
 
                             listing_StandardGuardAssignments.Begin(rect);
-
-#pragma warning disable CS0618 // Type or member is obsolete
                             if (listing_StandardGuardAssignments.ButtonText(
                                 label: TranslatorFormattedStringExtensions.Translate("GuardingP_ProtectPawn", pn.pawnToGuard)
                                 ))
                             {
                                 GuardPawnExtraOptions(pawn, rect);
                             }
-#pragma warning restore CS0618 // Type or member is obsolete
 
                             listing_StandardGuardAssignments.End();
                             break;
@@ -177,7 +174,6 @@
             {
                 if (pawnToProtect != windowTabPawn)
                 {
-#pragma warning disable CS0618 // Type or member is obsolete
                     menuOptions.Add(new(TranslatorFormattedStringExtensions.Translate("GuardingP_ProtectPawn", pawnToProtect), () =>
                     {
                         GuardJobs_GuardPawn guardJobs_GuardPawn = new()
@@ -188,7 +184,6 @@
 
                         guardAssignmentsMapComp.GuardJobs[windowTabPawn] = guardJobs_GuardPawn;
                     }));
-#pragma warning restore CS0618 // Type or member is obsolete
                 }
             }
 

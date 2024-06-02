@@ -2,14 +2,13 @@
 
 namespace Thek_GuardingPawns
 {
-    public class Window_SortPatrolSpots(Map map, SortedList<int, Thing> listForDef) : Window
+    public class Window_SortPatrolSpots(SortedList<int, Thing> listForDef) : Window
     {
         const float UpButtonWidth = 24f;
         const float UpButtonHeight = 24f;
         const float padding = 12f;
-        private Map Map = map;
-        private List<Thing> listToSort = [.. listForDef.Values];
-        private static ScrollViewStatus _scrollViewStatus = new();
+        private readonly List<Thing> listToSort = [.. listForDef.Values];
+        private static readonly ScrollViewStatus _scrollViewStatus = new();
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -102,7 +101,7 @@ namespace Thek_GuardingPawns
     /// Code from Bradson's Adaptive Storage Framework, makes it easier to do scrollings.
     /// Goes with the ScrollViewStatus class.
     /// </summary>
-    public readonly struct ScrollView : IDisposable
+    public readonly record struct ScrollView : IDisposable
     {
         private readonly ScrollViewStatus _scrollViewStatus;
 

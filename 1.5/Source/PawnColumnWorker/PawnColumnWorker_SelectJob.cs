@@ -19,16 +19,16 @@
         {
             if (pawn != null && pawn.Spawned)
             {
-                if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.TryAdd(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>());
-
-                guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
-                //Gets this map's MapComponent_WindowTabButtonSelection. This gets the component from each map.
-
-                var buttonLabel = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
-                //Grabs the value tied to the pawn key, which is the job selected by the button.
-
-                if (pawn.IsFreeNonSlaveColonist) //Only makes the list if the pawn is not a slave.
+                if (pawn.IsFreeNonSlaveColonist || (pawn.RaceProps.IsMechanoid && !pawn.IsColonyMechRequiringMechanitor())) //Only makes the list if the pawn is not a slave.
                 {
+                    if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.TryAdd(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>());
+
+                    guardAssignmentsMapComp = MapCompCache.TryGetValue(pawn.MapHeld);
+                    //Gets this map's MapComponent_WindowTabButtonSelection. This gets the component from each map.
+
+                    var buttonLabel = guardAssignmentsMapComp.GuardJobs.TryGetValue(pawn);
+                    //Grabs the value tied to the pawn key, which is the job selected by the button.
+
                     Listing_Standard listing_Standard = new();
                     listing_Standard.Begin(rect); //This needs a listing_Standard.End(), else the gui crashes.
 

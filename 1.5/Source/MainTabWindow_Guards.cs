@@ -28,7 +28,28 @@ namespace Thek_GuardingPawns
         }
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
-        protected override IEnumerable<Pawn> Pawns => base.Pawns.Where((Pawn pawn) => (pawn.DevelopmentalStage != DevelopmentalStage.Newborn) && pawn.IsFreeNonSlaveColonist && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
+        protected override IEnumerable<Pawn> Pawns
+        {
+            get
+            {
+                var pawnIEnum = base.Pawns.Where((Pawn pawn) => (pawn.DevelopmentalStage != DevelopmentalStage.Newborn)
+                && pawn.IsFreeNonSlaveColonist
+                && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
+
+                var mechIEnum = Find.CurrentMap.mapPawns.SpawnedColonyMechs.Where(p => p.RaceProps.IsMechanoid
+                    && p.OverseerSubject != null
+                    && !p.WorkTypeIsDisabled(WorkTypeDefOf.GuardingP_GuardingWorkType));
+                
+                foreach (Pawn pawn in pawnIEnum)
+                {
+                    yield return pawn;
+                }
+                foreach (Pawn mech in mechIEnum)
+                {
+                    yield return mech;
+                }
+            }
+        }
 
 
         public override void DoWindowContents(Rect rect)

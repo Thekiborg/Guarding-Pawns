@@ -25,7 +25,7 @@ namespace Thek_GuardingPawns
             guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob);
             GuardJobs_GuardPawn protectJob = gJob as GuardJobs_GuardPawn;
             Job job = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPawn, protectJob.pawnToGuard);
-            job.locomotionUrgency = LocomotionUrgency.Sprint;
+            job.locomotionUrgency = LocomotionUrgency.Jog;
 
             return job;
         }

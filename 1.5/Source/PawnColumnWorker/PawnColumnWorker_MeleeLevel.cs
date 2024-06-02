@@ -9,7 +9,7 @@
             if (pawn.IsFreeNonSlaveColonist)
             {
                 Text.Anchor = TextAnchor.MiddleCenter;
-                Widgets.Label(rect, (string)pawn.skills.GetSkill(SkillDefOf.Melee).GetLevel(true).ToString());
+                Widgets.Label(rect, pawn.skills?.GetSkill(SkillDefOf.Melee).GetLevel(true).ToString());
 
                 Text.Anchor = TextAnchor.UpperLeft;
                 if (Mouse.IsOver(rect2))

@@ -14,6 +14,17 @@ namespace Thek_GuardingPawns
                 return pawn.CurrentEffectiveVerb;
             }
         }
+        bool WalkingTowardsProtegee
+        {
+            get
+            {
+                if (pawn.pather.Moving)
+                {
+                    return pawn.pather.Destination == (Pawn)job.GetTarget(TargetIndex.A).Thing;
+                }
+                return false;
+            }
+        }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
@@ -41,7 +52,6 @@ namespace Thek_GuardingPawns
                         Log.Warning($"{pawn.LabelShort}'s pawnKind cannot do melee attacks, exiting jobDriver.");
                         return;
                     }
-                    anyHostileEverFound = true;
                     TryReachMelee();
                 }
             });
@@ -61,19 +71,6 @@ namespace Thek_GuardingPawns
             {
                 if (Gen.IsHashIntervalTick(pawn, 160))
                 {
-                    if (!((TargetA.Pawn.Position - pawn.Position).LengthHorizontal <= 10f) || !pawn.Position.WithinRegions(TargetA.Pawn.Position, Map, 2, TraverseParms.For(pawn)))
-                    {
-                        if (!pawn.CanReach(TargetA.Pawn, PathEndMode.Touch, Danger.Unspecified) || TargetA.Pawn.IsForbidden(pawn))
-                        {
-                            EndJobWith(JobCondition.Incompletable);
-                        }
-                        else if (!pawn.pather.Moving || pawn.pather.Destination != TargetA.Pawn)
-                        {
-
-                            pawn.pather.StartPath(TargetA.Pawn, PathEndMode.Touch);
-                        }
-                    }
-
                     target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Math.Max(Verb.EffectiveRange, 35f));
                     if (target == null) return;
 
@@ -81,6 +78,45 @@ namespace Thek_GuardingPawns
                     {
                         anyHostileEverFound = true;
                         JumpToToil(movePawn);
+                    }
+                }
+
+
+                if (!anyHostileEverFound && (!pawn.pather.Moving || pawn.IsHashIntervalTick(120)))
+                {
+                    bool moveToPawn = false;
+                    if (WalkingTowardsProtegee)
+                    {
+                        if (!NearProtegee(pawn, job.targetA.Pawn, 5f))
+                        {
+                            moveToPawn = true;
+                        }
+                    }
+                    else
+                    {
+                        float radius = 5f * 1.2f;
+                        if (!NearProtegee(pawn, job.targetA.Pawn, radius))
+                        {
+                            if (!pawn.CanReach(job.targetA.Pawn, PathEndMode.Touch, Danger.Deadly))
+                            {
+                                EndJobWith(JobCondition.Incompletable);
+                                return;
+                            }
+
+                            moveToPawn = true;
+                        }
+                    }
+                    if (moveToPawn)
+                    {
+                        IntVec3 lastPassableCellInPath = job.targetA.Pawn.pather.LastPassableCellInPath;
+                        if (!pawn.pather.Moving || pawn.pather.Destination.HasThing || !pawn.pather.Destination.Cell.InHorDistOf(lastPassableCellInPath, 5f))
+                        {
+                            IntVec3 cell = CellFinder.RandomClosewalkCellNear(lastPassableCellInPath, Map, Mathf.FloorToInt(5f));
+                            if (cell != pawn.Position && cell.IsValid && pawn.CanReach(cell, PathEndMode.OnCell, Danger.Deadly))
+                            {
+                                pawn.pather.StartPath(cell, PathEndMode.OnCell);
+                            }
+                        }
                     }
                 }
             };
@@ -104,13 +140,11 @@ namespace Thek_GuardingPawns
             if (target is Pawn tPawn)
             {
                 #region target is a Pawn
-                bool flag = tPawn != null
-                    && !tPawn.Downed
+                bool flag = !tPawn.Downed
                     && Verb.CanHitTargetFrom(pawn.Position, tPawn)
                     || GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
 
-                bool flag2 = tPawn == null
-                    || tPawn.DeadOrDowned
+                bool flag2 = tPawn.DeadOrDowned
                     || !Verb.CanHitTargetFrom(pawn.Position, tPawn)
                     || GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
 
@@ -222,7 +256,7 @@ namespace Thek_GuardingPawns
                 }
                 #endregion
             }
-            else if (target is Thing)
+            else if (target is not null)
             {
                 #region target is Thing
                 if (Verb.CanHitTarget(target) && !target.Destroyed)
@@ -286,7 +320,12 @@ namespace Thek_GuardingPawns
 
                         if (pawnTarget.pather.curPath != null && pawnTarget.pather.curPath.NodesLeftCount > 0)
                         {
-                            IntVec3 targetTile = pawnTarget.pather.curPath.Peek(pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3));
+                            int peekAt = (pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3) - 1);
+
+                            IntVec3 targetTile = pawnTarget.pather.curPath.Peek(peekAt);
+
+                            if (!targetTile.IsValid || !targetTile.InBounds(Map)) EndJobWith(JobCondition.ErroredPather);
+
                             if (pawn.CanReach(targetTile, PathEndMode.OnCell, Danger.Deadly))
                             {
                                 pawn.pather.StartPath(targetTile, PathEndMode.OnCell);
@@ -303,7 +342,7 @@ namespace Thek_GuardingPawns
                 }
                 #endregion
             }
-            else if (target is Thing)
+            else if (target is not null)
             {
                 #region target is a thing
                 float meleeDetectRange = 35f;
@@ -326,6 +365,19 @@ namespace Thek_GuardingPawns
             }
         }
 
+
+        private static bool NearProtegee(Pawn follower, Pawn followee, float radius)
+        {
+            if (follower.Position.AdjacentTo8WayOrInside(followee.Position))
+            {
+                return true;
+            }
+            if (follower.Position.InHorDistOf(followee.Position, radius))
+            {
+                return GenSight.LineOfSight(follower.Position, followee.Position, follower.Map);
+            }
+            return false;
+        }
 
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)

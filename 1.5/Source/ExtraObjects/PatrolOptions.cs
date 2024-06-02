@@ -9,6 +9,7 @@
         }
         internal int index;
         internal bool isBacktracking;
+        internal bool reachedSpot;
 
         public void ExposeData()
         {

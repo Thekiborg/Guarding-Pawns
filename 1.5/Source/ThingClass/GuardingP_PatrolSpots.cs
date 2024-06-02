@@ -33,7 +33,7 @@ namespace Thek_GuardingPawns
                 icon = gizmoIcon.Texture,
                 action = delegate ()
                 {
-                    Find.WindowStack.Add(new Window_SortPatrolSpots(Map, ListForDef));
+                    Find.WindowStack.Add(new Window_SortPatrolSpots(ListForDef));
                 }
             };
             yield return command_Action;
