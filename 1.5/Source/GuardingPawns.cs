@@ -4,6 +4,8 @@ global using System.Reflection;
 global using RimWorld;
 global using Verse;
 global using UnityEngine;
+global using HarmonyLib;
+global using Verse.AI;
 
 namespace Thek_GuardingPawns
 {
@@ -13,6 +15,8 @@ namespace Thek_GuardingPawns
         static GuardingPawns()
         {
             Log.Message("<color=#702963>Thek was here:</color> Guarding Pawns <color=#702963>loaded!</color>");
+            Harmony harmony = new("Thekiborg.GuardingPawns");
+            harmony.PatchAll();
         }
     }
 }

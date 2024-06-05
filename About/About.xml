@@ -11,5 +11,18 @@
     <description>This mod adds 3 different jobs to protect your colony and pawns from possible threats! Check the steam workshop page for more information!
     </description>
 
+    <modDependenciesByVersion>
+        <v1.5>
+          <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+          </li>
+        </v1.5>
+    </modDependenciesByVersion>
+
+    <loadAfter>
+        <li>brrainz.harmony</li>
+    </loadAfter>
     
 </ModMetaData>

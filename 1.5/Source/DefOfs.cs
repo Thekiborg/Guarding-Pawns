@@ -7,13 +7,9 @@
         public static JobDef GuardingP_GuardPath;
         public static JobDef GuardingP_GuardPawn;
         //public static JobDef GuardingP_GuardArea;
+        public static JobDef GuardingP_AttackMelee;
     }
 
-    [DefOf]
-    internal static class GotoJobDefOf
-    {
-        public static JobDef GuardingP_Goto;
-    }
 
     [DefOf]
     internal static class PawnTableDefOf

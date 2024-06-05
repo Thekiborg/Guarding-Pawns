@@ -7,7 +7,7 @@
         <reportString>guarding at TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
         <alwaysShowWeapon>true</alwaysShowWeapon>
-        <checkOverrideOnDamage>OnlyIfInstigatorNotJobTarget</checkOverrideOnDamage>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
       </JobDef>
 
       <JobDef>
@@ -16,7 +16,7 @@
         <reportString>patrolling the colony.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
         <alwaysShowWeapon>true</alwaysShowWeapon>
-        <checkOverrideOnDamage>OnlyIfInstigatorNotJobTarget</checkOverrideOnDamage>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
       </JobDef>
 
       <JobDef>
@@ -25,7 +25,7 @@
         <reportString>protecting TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
         <alwaysShowWeapon>true</alwaysShowWeapon>
-        <checkOverrideOnDamage>OnlyIfInstigatorNotJobTarget</checkOverrideOnDamage>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
       </JobDef>
 
       <!--<JobDef>
@@ -34,7 +34,7 @@
         <reportString>guarding TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
         <alwaysShowWeapon>true</alwaysShowWeapon>
-        <checkOverrideOnDamage>OnlyIfInstigatorNotJobTarget</checkOverrideOnDamage>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
       </JobDef>-->
       
 </Defs>

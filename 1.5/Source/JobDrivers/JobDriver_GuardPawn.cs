@@ -1,6 +1,4 @@
-﻿using Verse.AI;
-
-namespace Thek_GuardingPawns
+﻿namespace Thek_GuardingPawns
 {
     public class JobDriver_GuardPawn : JobDriver
     {
@@ -32,7 +30,16 @@ namespace Thek_GuardingPawns
             Toil attackUntilNoEnemies = ToilMaker.MakeToil("MakeNewToils");
             attackUntilNoEnemies.AddPreInitAction(delegate
             {
-                AttackUntilNoEnemies(attackUntilNoEnemies);
+                if (pawn.RaceProps.IsMechanoid && (pawn.equipment.Primary == null || !pawn.equipment.Primary.def.IsRangedWeapon))
+                {
+                    Job attackMeleeJob = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_AttackMelee, target);
+                    pawn.jobs.StopAll();
+                    pawn.jobs.StartJob(attackMeleeJob);
+                }
+                else
+                {
+                    AttackUntilNoEnemies(attackUntilNoEnemies);
+                }
             });
             attackUntilNoEnemies.defaultCompleteMode = ToilCompleteMode.FinishedBusy;
 
@@ -150,12 +157,17 @@ namespace Thek_GuardingPawns
 
                 if (flag)
                 {
-                    pawn.TryStartAttack(tPawn);
+                    if (!pawn.TryStartAttack(tPawn) && pawn.RaceProps.IsMechanoid)
+                    {
+                        Job attackMeleeJob = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_AttackMelee, target);
+                        pawn.jobs.StopAll();
+                        pawn.jobs.StartJob(attackMeleeJob);
+                    }
                 }
 
                 if (flag2)
                 {
-                    tPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Verb.EffectiveRange, locus: TargetA.Cell);
+                    tPawn = (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Verb.EffectiveRange, locus: tPawn.Position);
                     if (tPawn != null)
                     {
                         if (pawn.mindState != null)

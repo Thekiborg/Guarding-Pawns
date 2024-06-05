@@ -36,7 +36,7 @@
 		<!-- To target a beta version of 1.5, as an example, you'd write this: Version="1.5.*-*" -->
 
 		<!-- Harmony -->
-		<!-- <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" /> -->
+		<PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" />
 		<!-- https://harmony.pardeike.net/articles/intro.html -->
 
 		<!-- Certain newer C# features like records require this optional nuget package -->
@@ -44,9 +44,9 @@
 		<!-- Details here: https://www.nuget.org/packages/PolySharp/ -->
 
 		<!-- A package for accessing private members. Optional -->
-		<!-- <PackageReference Include="Krafs.Publicizer" Version="2.*"/> -->
+		<PackageReference Include="Krafs.Publicizer" Version="2.*"/>
 		<!-- Publicize Include lines like the following are used to specify the members to publicize -->
-		<!-- <Publicize Include="Assembly-CSharp:Verse.Thing.graphicInt"/> -->
+		<Publicize Include="Assembly-CSharp:Verse.AI.CastPositionFinder.req"/>
 		<!-- A more advanced example with generics and a nested class is this: -->
 		<!-- <Publicize Include="mscorlib:System.Collections.Generic.Dictionary`2+Entry" /> -->
 		<!-- Details here: https://github.com/krafs/Publicizer -->
