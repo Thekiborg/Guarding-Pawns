@@ -75,15 +75,6 @@ namespace Thek_GuardingPawns
             return null;
         }
 
-        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-        {
-            if (!pawn.CanReserve(t, 1, -1, null, forced))
-            {
-                return false;
-            }
-            return true;
-        }
-
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
