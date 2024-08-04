@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Patch>
-
+  
     <Operation Class="PatchOperationConditional">
         <xpath>Defs/ThingDef[defName="Mech_Apocriton" or defName="Mech_CentipedeBlaster" or defName="Mech_CentipedeBurner" or defName="Mech_CentipedeGunner" 
                     or defName="Mech_Centurion" or defName="Mech_Diabolus" or defName="Mech_Lancer" or defName="Mech_Legionary" or defName="Mech_Militor" 

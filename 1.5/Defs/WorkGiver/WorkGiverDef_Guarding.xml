@@ -9,6 +9,7 @@
         <priorityInType>100</priorityInType>
         <verb>guard colony</verb>
         <gerund>guard colony at</gerund>
+        <tagToGive>Fieldwork</tagToGive>
         <requiredCapacities>
           <li>Moving</li>
         </requiredCapacities>
@@ -24,6 +25,7 @@
         <priorityInType>110</priorityInType>
         <verb>patrol colony</verb>
         <gerund>patrolling colony</gerund>
+        <tagToGive>Fieldwork</tagToGive>
         <requiredCapacities>
           <li>Moving</li>
         </requiredCapacities>
@@ -39,6 +41,7 @@
         <priorityInType>120</priorityInType>
         <verb>protect pawn</verb>
         <gerund>protecting</gerund>
+        <tagToGive>Fieldwork</tagToGive>
         <requiredCapacities>
           <li>Moving</li>
         </requiredCapacities>

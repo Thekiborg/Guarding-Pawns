@@ -1,6 +1,6 @@
 ﻿namespace Thek_GuardingPawns
 {
-    public abstract class GuardJobs : IExposable
+    internal abstract class GuardJobs : IExposable
     {
         internal GuardJobs()
         {

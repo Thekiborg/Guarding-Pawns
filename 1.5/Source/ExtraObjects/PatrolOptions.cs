@@ -1,6 +1,6 @@
 ﻿namespace Thek_GuardingPawns
 {
-    public class PatrolOptions : IExposable
+    internal class PatrolOptions : IExposable
     {
         internal PatrolOptions()
         {

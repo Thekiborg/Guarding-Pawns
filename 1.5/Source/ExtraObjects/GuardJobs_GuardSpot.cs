@@ -1,6 +1,6 @@
 ﻿namespace Thek_GuardingPawns
 {
-    public class GuardJobs_GuardSpot : GuardJobs, IExposable
+    internal class GuardJobs_GuardSpot : GuardJobs, IExposable
     {
         internal GuardJobs_GuardSpot()
         {
