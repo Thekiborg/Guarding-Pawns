@@ -30,7 +30,7 @@
         {
             if (pawn != null && pawn.Spawned)
             {
-                if (pawn.IsFreeNonSlaveColonist || (pawn.RaceProps.IsMechanoid && !pawn.IsColonyMechRequiringMechanitor())) //Slaves don't guard, silly.
+                if (!pawn.RaceProps.IsMechanoid || (pawn.RaceProps.IsMechanoid && !pawn.IsColonyMechRequiringMechanitor())) //Slaves don't guard, silly.
                 {
                     if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.Add(pawn.MapHeld, pawn.Map.GetComponent<MapComponent_GuardingPawns>());
                     //Checks if the dictionary has the MapComponent.

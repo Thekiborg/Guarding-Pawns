@@ -28,25 +28,46 @@ namespace Thek_GuardingPawns
         }
 
         protected override PawnTableDef PawnTableDef => PawnTableDefOf.GuardingP_PawnTableDef_Guard;
+
+        protected static Map Map => Find.CurrentMap;
+
         protected override IEnumerable<Pawn> Pawns
         {
             get
             {
-                var pawnIEnum = base.Pawns.Where((Pawn pawn) => (pawn.DevelopmentalStage != DevelopmentalStage.Newborn)
-                && pawn.IsFreeNonSlaveColonist
-                && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType));
-
-                var mechIEnum = Find.CurrentMap.mapPawns.SpawnedColonyMechs.Where(p => p.RaceProps.IsMechanoid
-                    && p.OverseerSubject != null
-                    && !p.WorkTypeIsDisabled(WorkTypeDefOf.GuardingP_GuardingWorkType));
-                
-                foreach (Pawn pawn in pawnIEnum)
+                foreach (Pawn pawn in base.Pawns)
                 {
-                    yield return pawn;
+                    if (pawn.DevelopmentalStage != DevelopmentalStage.Newborn
+                        && pawn.IsFreeNonSlaveColonist
+                        && pawn.workSettings.WorkIsActive(WorkTypeDefOf.GuardingP_GuardingWorkType))
+                    {
+                        yield return pawn;
+                    }
+                    
                 }
-                foreach (Pawn mech in mechIEnum)
+
+                foreach (Pawn mech in Find.CurrentMap.mapPawns.SpawnedColonyMechs)
                 {
-                    yield return mech;
+                    if (mech.RaceProps.IsMechanoid
+                    && mech.OverseerSubject != null
+                    && !mech.WorkTypeIsDisabled(WorkTypeDefOf.GuardingP_GuardingWorkType))
+                    {
+                        yield return mech;
+                    }
+                }
+
+                if (GuardingPawns.isVFEInsectoids2Active)
+                {
+                    foreach (Pawn insect in Find.CurrentMap.mapPawns.AllPawnsSpawned)
+                    {
+                        if (insect.RaceProps.Insect
+                            && insect.Faction == Faction.OfPlayer
+                            && (insect.ageTracker.CurLifeStageIndex >= 1)
+                            && !insect.WorkTypeIsDisabled(WorkTypeDefOf.GuardingP_GuardingWorkType))
+                        {
+                            yield return insect;
+                        }
+                    }
                 }
             }
         }
@@ -58,17 +79,16 @@ namespace Thek_GuardingPawns
             base.DoWindowContents(rect);
             bool prevGuardingValue = MapComponent_GuardingPawns.shouldRenderGuardingSpots;
             bool prevPatrollingValue = MapComponent_GuardingPawns.shouldRenderPatrollingSpots;
-            Map map = Find.CurrentMap;
 
             Widgets.Checkbox(rect.xMax - Widgets.CheckboxSize - CheckboxPadding, rect.y, ref MapComponent_GuardingPawns.shouldRenderGuardingSpots);
             Widgets.Label(new Rect(FirstRectLabelUtility()), "GuardingP_GuardingSpotCheckBox".Translate());
             if (prevGuardingValue != MapComponent_GuardingPawns.shouldRenderGuardingSpots)
             {
-                foreach (Thing spot in map.listerBuildings.allBuildingsColonist)
+                foreach (Thing spot in Map.listerBuildings.allBuildingsColonist)
                 {
                     if (GuardSpotDefOf.GetDefOfs().Contains(spot.def))
                     {
-                        spot.DirtyMapMesh(map);
+                        spot.DirtyMapMesh(Map);
                     }
                 }
             }
@@ -78,11 +98,11 @@ namespace Thek_GuardingPawns
             if (prevPatrollingValue != MapComponent_GuardingPawns.shouldRenderGuardingSpots)
             {
 
-                foreach (Thing spot in map.listerBuildings.allBuildingsColonist)
+                foreach (Thing spot in Map.listerBuildings.allBuildingsColonist)
                 {
                     if (GuardPathDefOf.GetDefOfs().Contains(spot.def))
                     {
-                        spot.DirtyMapMesh(map);
+                        spot.DirtyMapMesh(Map);
                     }
                 }
             }
@@ -123,7 +143,5 @@ namespace Thek_GuardingPawns
             return ThirdRectLabel;
         }
         */
-
-        
     }
 }

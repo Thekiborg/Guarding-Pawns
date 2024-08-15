@@ -19,7 +19,7 @@
         {
             if (pawn != null && pawn.Spawned)
             {
-                if (pawn.IsFreeNonSlaveColonist || (pawn.RaceProps.IsMechanoid && !pawn.IsColonyMechRequiringMechanitor())) //Only makes the list if the pawn is not a slave.
+                if (!pawn.RaceProps.IsMechanoid || (pawn.RaceProps.IsMechanoid && !pawn.IsColonyMechRequiringMechanitor())) //Only makes the list if the pawn is not a slave.
                 {
                     if (!MapCompCache.ContainsKey(pawn.MapHeld)) MapCompCache.TryAdd(pawn.MapHeld, pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>());
 

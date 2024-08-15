@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Patch>
+  
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="VFEI_Defender"]/thinkNode[@Class="ThinkNode_Priority"]/subNodes/li[@Class="JobGiver_WanderNearDutyLocation"]</xpath>
+    <value>
+      <li Class="VFEInsectoids.JobGiver_DoWork">
+        <workTypes>
+          <li>GuardingP_GuardingWorkType</li>
+        </workTypes>
+        <workgivers>
+          <li>GuardingP_GuardingSpotWorkGiver</li>
+          <li>GuardingP_GuardPathWorkGiver</li>
+          <li>GuardingP_GuardPawnWorkGiver</li>
+        </workgivers>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>

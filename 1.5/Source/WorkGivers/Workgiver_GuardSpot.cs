@@ -41,7 +41,7 @@ namespace Thek_GuardingPawns
         {
             CacheMapComponent(pawn);
             guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJob);
-            if (guardJob is GuardJobs_GuardSpot)
+            if (guardJob is GuardJobs_GuardSpot && pawn.CanReserve(t, 1, -1, null, forced))
             {
                 GuardJobs_GuardSpot spot;
                 spot = guardJob as GuardJobs_GuardSpot;

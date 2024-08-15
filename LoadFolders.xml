@@ -8,5 +8,6 @@
     <li>/</li>
     <li>1.5</li>
     <li IfModActive="aoba.deadmanswitch.core">ModCompat/DeadManSwitch</li>
+    <li IfModActive="oskarpotocki.vfe.insectoid2">ModCompat/VanillaFactionsExpandedInsectoid2</li>
   </v1.5>
 </loadFolders>
