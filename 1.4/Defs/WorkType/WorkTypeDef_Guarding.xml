@@ -9,7 +9,7 @@
         <description>Guard for the well-being of the colony.</description>
         <verb>Guard</verb>
         <alwaysStartActive>false</alwaysStartActive>
-        <requireCapableColonist>true</requireCapableColonist>
+        <disabledForSlaves>true</disabledForSlaves>
         <naturalPriority>90</naturalPriority>
         <relevantSkills>
           <li>Shooting</li>
