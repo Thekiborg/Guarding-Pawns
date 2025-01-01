@@ -5,7 +5,7 @@
         <defName>GuardingP_PawnTableDef_Guard</defName>
         <workerClass>PawnTable_PlayerPawns</workerClass>
         <columns>
-            <li>LabelShortWithIcon</li>
+            <li>LabelWithIcon</li>
             <li>GuardingP_PawnColumnDef_LifeStage</li>
             <li MayRequire="Ludeon.RimWorld.Biotech">Xenotype</li> 
             <li>GuardingP_PawnColumnDef_Manipulation</li>

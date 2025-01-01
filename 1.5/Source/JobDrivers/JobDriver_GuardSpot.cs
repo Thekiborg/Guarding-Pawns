@@ -8,13 +8,9 @@
         private Thing target;
         private bool anyHostileEverFound;
 
-        Verb Verb
-        {
-            get
-            {
-                return pawn.CurrentEffectiveVerb;
-            }
-        }
+
+        Verb Verb => pawn.CurrentEffectiveVerb;
+        
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {

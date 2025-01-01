@@ -1,10 +1,11 @@
 ﻿namespace Thek_GuardingPawns
 {
-    [DefOf]
+#pragma warning disable CS0649
+	[DefOf]
     internal static class GuardingJobsDefOf
     {
-        public static JobDef GuardingP_GuardSpot;
-        public static JobDef GuardingP_GuardPath;
+		public static JobDef GuardingP_GuardSpot;
+		public static JobDef GuardingP_GuardPath;
         public static JobDef GuardingP_GuardPawn;
         //public static JobDef GuardingP_GuardArea;
         public static JobDef GuardingP_AttackMelee;

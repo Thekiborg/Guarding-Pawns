@@ -1,6 +1,7 @@
 ﻿namespace Thek_GuardingPawns
 {
-    internal class PatrolOptions : IExposable
+#pragma warning disable CS0649
+	internal class PatrolOptions : IExposable
     {
         internal PatrolOptions()
         {

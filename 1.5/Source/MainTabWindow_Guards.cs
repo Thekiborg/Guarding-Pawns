@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Thek_GuardingPawns
+﻿namespace Thek_GuardingPawns
 {
     public class MainTabWindow_Guards : MainTabWindow_PawnTable
     {
@@ -9,7 +7,7 @@ namespace Thek_GuardingPawns
 
         private Rect windowTabRect;
         private Rect firstRectLabel;
-        private Rect secondRectLabel;
+        //private Rect secondRectLabel;
         //private Rect thirdRectLabel;
         //private Rect leftRectLabel;
 
@@ -43,7 +41,6 @@ namespace Thek_GuardingPawns
                     {
                         yield return pawn;
                     }
-                    
                 }
 
                 foreach (Pawn mech in Find.CurrentMap.mapPawns.SpawnedColonyMechs)
@@ -133,7 +130,7 @@ namespace Thek_GuardingPawns
         private Rect SecondRectLabelUtility()
         {
             Rect SecondRectLabel = new(firstRectLabel.xMin - PatrollingSpotKeyWidth - Widgets.CheckboxSize - padding - CheckboxPadding * 2, windowTabRect.y, PatrollingSpotKeyWidth, windowTabRect.height);
-            secondRectLabel = SecondRectLabel;
+            //secondRectLabel = SecondRectLabel;
             return SecondRectLabel;
         }
         /*

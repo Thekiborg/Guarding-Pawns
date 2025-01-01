@@ -5,13 +5,11 @@
         readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
         private Thing target;
         private bool anyHostileEverFound;
-        Verb Verb
-        {
-            get
-            {
-                return pawn.CurrentEffectiveVerb;
-            }
-        }
+
+
+        Verb Verb => pawn.CurrentEffectiveVerb;
+
+
         bool WalkingTowardsProtegee
         {
             get

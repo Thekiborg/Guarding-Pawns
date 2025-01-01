@@ -1,30 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Patch>
   
-    <Operation Class="PatchOperationConditional">
-        <xpath>Defs/ThingDef[defName="Mech_Apocriton" or defName="Mech_CentipedeBlaster" or defName="Mech_CentipedeBurner" or defName="Mech_CentipedeGunner" 
-                    or defName="Mech_Centurion" or defName="Mech_Diabolus" or defName="Mech_Lancer" or defName="Mech_Legionary" or defName="Mech_Militor" 
-                    or defName="Mech_Pikeman" or defName="Mech_Scorcher" or defName="Mech_Scyther" or defName="Mech_Termite_Breach" or defName="Mech_Tesseron" 
-                    or defName="Mech_Warqueen" or defName="Mech_WarUrchin"]/race/mechEnabledWorkTypes</xpath>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName="Mech_Apocriton" or defName="Mech_CentipedeBlaster" or defName="Mech_CentipedeBurner" or defName="Mech_CentipedeGunner" 
-            or defName="Mech_Centurion" or defName="Mech_Diabolus" or defName="Mech_Lancer" or defName="Mech_Legionary" or defName="Mech_Militor" 
-            or defName="Mech_Pikeman" or defName="Mech_Scorcher" or defName="Mech_Scyther" or defName="Mech_Termite_Breach" or defName="Mech_Tesseron" 
-            or defName="Mech_Warqueen" or defName="Mech_WarUrchin"]/race</xpath>
-          <value>
-            <mechEnabledWorkTypes />
-          </value>
-        </nomatch>
-      </Operation>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef/race[not(mechEnabledWorkTypes)]</xpath>
+		<value>
+			<mechEnabledWorkTypes />
+		</value>
+	</Operation>
 
     <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="Mech_Apocriton" or defName="Mech_CentipedeBlaster" or defName="Mech_CentipedeBurner" or defName="Mech_CentipedeGunner" 
-            or defName="Mech_Centurion" or defName="Mech_Diabolus" or defName="Mech_Lancer" or defName="Mech_Legionary" or defName="Mech_Militor" 
-            or defName="Mech_Pikeman" or defName="Mech_Scorcher" or defName="Mech_Scyther" or defName="Mech_Termite_Breach"or defName="Mech_Tesseron" 
-            or defName="Mech_Warqueen" or defName="Mech_WarUrchin"]/race/mechEnabledWorkTypes</xpath>
+        <xpath>Defs/ThingDef/race/mechEnabledWorkTypes</xpath>
         <value>
             <li>GuardingP_GuardingWorkType</li>
         </value>
-      </Operation>
+    </Operation>
 
 </Patch>

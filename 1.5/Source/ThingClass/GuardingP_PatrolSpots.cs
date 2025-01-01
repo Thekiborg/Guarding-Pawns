@@ -6,13 +6,15 @@ namespace Thek_GuardingPawns
     public class GuardingP_PatrolSpots : Building, ILoadReferenceable
     {
         private SortedList<int, Thing> ListForDef;
-        private static readonly Dictionary<ThingDef, int> SpotCounter = new();
-        private string resolvedLabel;
-        private int order;
+        private int spawnOrder;
         private readonly CachedTexture gizmoIcon = new("Gizmo/SortPatrolSpotsIcon");
 
+        internal string newLabel;
 
-        public override void Print(SectionLayer layer)
+		public override string Label => newLabel ?? def.label;
+
+
+		public override void Print(SectionLayer layer)
         {
             if (MapComponent_GuardingPawns.shouldRenderPatrollingSpots)
             {
@@ -27,7 +29,8 @@ namespace Thek_GuardingPawns
             {
                 yield return gizmo;
             }
-            Command_Action command_Action = new()
+
+            yield return new Command_Action()
             {
                 defaultLabel = "GuardingP_ChangeOrderGizmo".Translate(),
                 icon = gizmoIcon.Texture,
@@ -36,31 +39,23 @@ namespace Thek_GuardingPawns
                     Find.WindowStack.Add(new Window_SortPatrolSpots(ListForDef));
                 }
             };
-            yield return command_Action;
+
+            yield return new Command_Action()
+            {
+                defaultLabel = "Rename".Translate(),
+                icon = TexButton.Rename,
+                action = delegate ()
+                {
+                    Find.WindowStack.Add(new Window_RenamePatrolSpots(this));
+                },
+            };
         }
-
-
-        public override string Label => resolvedLabel;
 
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            ChangeLabel();
-            FindListForDef();
             StoreThing();
-        }
-
-
-        private void ChangeLabel()
-        {
-            if (resolvedLabel != null)
-            {
-                return;
-            }
-            SpotCounter.TryAdd(def, 0);
-            SpotCounter[def] += 1;
-            resolvedLabel = $"{def.label} {SpotCounter[def]}";
         }
 
 
@@ -71,23 +66,16 @@ namespace Thek_GuardingPawns
         }
 
 
-        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
-        {
-            UnstoreThing();
-            base.Destroy(mode);
-        }
-
-
         private void StoreThing()
         {
             MapComponent_GuardingPawns mapComp = MapHeld.GetComponent<MapComponent_GuardingPawns>();
 
             FindListForDef();
-            while (ListForDef.ContainsKey(order))
+            while (ListForDef.ContainsKey(spawnOrder))
             {
-                order += 1;
+                spawnOrder += 1;
             }
-            ListForDef.TryAdd(order, this);
+            ListForDef.TryAdd(spawnOrder, this);
             mapComp.PatrolSpotsOnMap.Add(this);
         }
 
@@ -98,11 +86,8 @@ namespace Thek_GuardingPawns
 
             FindListForDef();
             int indexForDeletion = ListForDef.IndexOfValue(this);
-            ListForDef.Remove(indexForDeletion);
-            if (mapComp.PatrolSpotsOnMap.Contains(this))
-            {
-                mapComp.PatrolSpotsOnMap.Remove(this);
-            }
+            ListForDef.RemoveAt(indexForDeletion);
+            mapComp.PatrolSpotsOnMap.Remove(this);
         }
 
 
@@ -140,15 +125,17 @@ namespace Thek_GuardingPawns
                 return;
             }
         }
+
+
         public override void ExposeData()
         {
             if (Scribe.mode == LoadSaveMode.Saving)
             {
-                order = ListForDef.IndexOfValue(this);
+                spawnOrder = ListForDef.IndexOfValue(this);
             }
             base.ExposeData();
-            Scribe_Values.Look(ref order, "GuardingP_OrderInList");
-            Scribe_Values.Look(ref resolvedLabel, "GuardingP_PatrolSpotLabel");
+            Scribe_Values.Look(ref spawnOrder, "GuardingP_OrderInList");
+            Scribe_Values.Look(ref newLabel, "GuardingP_PatrolSpotLabel");
         }
     }
 }
