@@ -23,7 +23,6 @@
 
     <loadAfter>
         <li>brrainz.harmony</li>
-        <li>Aoba.DeadManSwitch.Core</li>
     </loadAfter>
     
     <loadBefore>

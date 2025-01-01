@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Patch>
   
-	<Operation Class="PatchOperationAdd">
-		<xpath>Defs/ThingDef/race[not(mechEnabledWorkTypes)]</xpath>
-		<value>
-			<mechEnabledWorkTypes />
-		</value>
-	</Operation>
-
-    <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef/race/mechEnabledWorkTypes</xpath>
-        <value>
-            <li>GuardingP_GuardingWorkType</li>
-        </value>
+    <!-- PostInheritanceOperation.Patch is a PatchOperation created by bradson. -->
+    <!-- This operation and many more are available at https://github.com/bbradson/Patch-Operation-Collection?tab=readme-ov-file#postinheritanceoperation. -->
+    <Operation Class="PostInheritanceOperation.Patch">
+        <operation Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[not(@Abstract)]/race[fleshType="Mechanoid"][not(mechEnabledWorkTypes)]</xpath>
+            <!-- [not(@Abstract)] => Skips parents for inheritance -->
+            <!-- [fleshType="Mechanoid"] => Only mechanoids -->
+            <!-- [not(mechEnabledWorkTypes)] => Mechanoids without enable work types (Supposedly combat mechs off vanilla logic) -->
+            <value>
+                <mechEnabledWorkTypes>
+                    <li>GuardingP_GuardingWorkType</li>
+                </mechEnabledWorkTypes>
+            </value>
+        </operation>
     </Operation>
 
 </Patch>
