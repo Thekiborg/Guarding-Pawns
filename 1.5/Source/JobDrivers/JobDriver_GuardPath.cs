@@ -406,7 +406,7 @@ namespace Thek_GuardingPawns
 
 		private void DoPrevSpotDictionary()
 		{
-			mapComp = pawn.Map.GetComponent<MapComponent_GuardingPawns>();
+			mapComp = Map.GetComponent<MapComponent_GuardingPawns>();
 			GuardJobs_GuardPath gJob = mapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
 			mapComp.previousPatrolSpotPassedByPawn.TryAdd(pawn, new PatrolOptions() { index = 0, isBacktracking = gJob.shouldLoop }); ;
 		}
@@ -429,7 +429,7 @@ namespace Thek_GuardingPawns
 
 		private void GetSpotsList()
 		{
-			mapComp = pawn.Map.GetComponent<MapComponent_GuardingPawns>();
+			mapComp = Map.GetComponent<MapComponent_GuardingPawns>();
 			switch ((mapComp.GuardJobs[pawn] as GuardJobs_GuardPath).PathColor)
 			{
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:

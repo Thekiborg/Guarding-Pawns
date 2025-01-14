@@ -89,7 +89,7 @@
             };
             behaviorAndScan.preInitActions.Add(delegate
             {
-                Building building = pawn.Position.GetFirstBuilding(pawn.Map);
+                Building building = pawn.Position.GetFirstBuilding(Map);
                 if (building != null && !pawn.pather.Moving)
                 {
                     behaviorAndScan.handlingFacing = true;
@@ -364,7 +364,7 @@
 
         private void GetSelectedSpot()
         {
-            mapComp = pawn.Map.GetComponent<MapComponent_GuardingPawns>();
+            mapComp = Map.GetComponent<MapComponent_GuardingPawns>();
             GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
             spotColor = (PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor)guardJobSpot.SpotColor;
         }
