@@ -21,32 +21,35 @@ namespace Thek_GuardingPawns
             {
                 return true;
             }
+
+
             GuardJobs_GuardPath gPathJob = gJob as GuardJobs_GuardPath;
             switch (gPathJob.PathColor)
             {
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:
-                    if (guardAssignmentMapComp.RedPatrolsOnMap.Count == 0 || SpotsOutsideAllowedArea(guardAssignmentMapComp.RedPatrolsOnMap, pawn)) return true;
+                    if (guardAssignmentMapComp.RedPatrolsOnMap.Count == 0) return true;
                     break;
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_orangePath:
-                    if (guardAssignmentMapComp.OrangePatrolsOnMap.Count == 0 || SpotsOutsideAllowedArea(guardAssignmentMapComp.RedPatrolsOnMap, pawn)) return true;
+                    if (guardAssignmentMapComp.OrangePatrolsOnMap.Count == 0) return true;
                     break;
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_yellowPath:
-                    if (guardAssignmentMapComp.YellowPatrolsOnMap.Count == 0 || SpotsOutsideAllowedArea(guardAssignmentMapComp.RedPatrolsOnMap, pawn)) return true;
+                    if (guardAssignmentMapComp.YellowPatrolsOnMap.Count == 0) return true;
                     break;
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_greenPath:
-                    if (guardAssignmentMapComp.GreenPatrolsOnMap.Count == 0 || SpotsOutsideAllowedArea(guardAssignmentMapComp.RedPatrolsOnMap, pawn)) return true;
+                    if (guardAssignmentMapComp.GreenPatrolsOnMap.Count == 0) return true;
                     break;
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_bluePath:
-                    if (guardAssignmentMapComp.BluePatrolsOnMap.Count == 0 || SpotsOutsideAllowedArea(guardAssignmentMapComp.RedPatrolsOnMap, pawn)) return true;
+                    if (guardAssignmentMapComp.BluePatrolsOnMap.Count == 0) return true;
                     break;
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_purplePath:
-                    if (guardAssignmentMapComp.PurplePatrolsOnMap.Count == 0 || SpotsOutsideAllowedArea(guardAssignmentMapComp.RedPatrolsOnMap, pawn)) return true;
+                    if (guardAssignmentMapComp.PurplePatrolsOnMap.Count == 0) return true;
                     break;
             }
             return false;
         }
 
 
+        /*
         private static bool SpotsOutsideAllowedArea(SortedList<int, Thing> sList, Pawn pawn)
         {
             if (sList.Any(kvp => kvp.Value.IsForbidden(pawn)))
@@ -55,6 +58,7 @@ namespace Thek_GuardingPawns
             }
             return false;
         }
+        */
 
 
         public override Job NonScanJob(Pawn pawn)

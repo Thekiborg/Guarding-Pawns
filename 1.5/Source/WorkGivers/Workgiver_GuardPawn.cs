@@ -23,11 +23,14 @@ namespace Thek_GuardingPawns
         public override Job NonScanJob(Pawn pawn)
         {
             guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob);
-            GuardJobs_GuardPawn protectJob = gJob as GuardJobs_GuardPawn;
-            Job job = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPawn, protectJob.pawnToGuard);
-            job.locomotionUrgency = LocomotionUrgency.Jog;
+            if (gJob is GuardJobs_GuardPawn protectJob && protectJob.pawnToGuard is not null)
+            {
+				Job job = JobMaker.MakeJob(GuardingJobsDefOf.GuardingP_GuardPawn, protectJob.pawnToGuard);
+				job.locomotionUrgency = LocomotionUrgency.Jog;
 
-            return job;
+				return job;
+			}
+            return null;
         }
 
 
