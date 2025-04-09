@@ -32,10 +32,8 @@
                     Listing_Standard listing_Standard = new();
                     listing_Standard.Begin(rect); //This needs a listing_Standard.End(), else the gui crashes.
 
-                    var x = buttonLabel?.ToString() ?? GuardJobType.GuardingP_Undefined.ToString();
-                    if (listing_Standard.ButtonText( //Fires once the button is pressed
-                        label: x.Translate()
-                        ))
+                    var label = buttonLabel?.ToString() ?? GuardJobType.GuardingP_Undefined.ToString();
+                    if (listing_Standard.ButtonText(label.Translate()))
                     {
                         DoFloatMenuButtons(pawn);
                     }

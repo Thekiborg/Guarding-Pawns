@@ -11,12 +11,20 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
-            guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob);
-            GuardJobs_GuardPawn protectJob = gJob as GuardJobs_GuardPawn;
+            if (!guardAssignmentMapComp.GuardJobs.ContainsKey(pawn) || !guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob))
+            {
+                return true;
+            }
+            if (gJob is not GuardJobs_GuardPawn gPawn)
+            {
+                return true;
+            }
+            if (pawn == gPawn.pawnToGuard)
+            {
+                return true;
+            }
 
-            return gJob == null
-                || gJob is not GuardJobs_GuardPawn
-                || pawn == protectJob.pawnToGuard;
+            return false;
         }
 
 

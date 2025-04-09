@@ -11,7 +11,7 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
-            if (!guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJobs))
+            if (!guardAssignmentMapComp.GuardJobs.ContainsKey(pawn) || !guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs guardJobs))
             {
                 return true;
             }
@@ -29,11 +29,8 @@ namespace Thek_GuardingPawns
                     break;
                 }
             }
-            if (shouldSkip)
-            {
-                return true;
-            }
-            return false;
+
+            return shouldSkip;
         }
 
 

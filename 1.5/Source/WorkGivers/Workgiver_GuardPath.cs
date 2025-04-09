@@ -13,18 +13,17 @@ namespace Thek_GuardingPawns
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             CacheMapComponent(pawn);
-            if (!guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob))
+            if (!guardAssignmentMapComp.GuardJobs.ContainsKey(pawn) || !guardAssignmentMapComp.GuardJobs.TryGetValue(pawn, out GuardJobs gJob))
             {
                 return true;
             }
-            if (gJob is not GuardJobs_GuardPath)
+            if (gJob is not GuardJobs_GuardPath gPath)
             {
                 return true;
             }
 
 
-            GuardJobs_GuardPath gPathJob = gJob as GuardJobs_GuardPath;
-            switch (gPathJob.PathColor)
+            switch (gPath.PathColor)
             {
                 case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:
                     if (guardAssignmentMapComp.RedPatrolsOnMap.Count == 0) return true;
