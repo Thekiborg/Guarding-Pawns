@@ -23,6 +23,10 @@ namespace Thek_GuardingPawns
             {
                 return true;
             }
+            if (!gPawn.pawnToGuard.Awake())
+            {
+                return true;
+            }
 
             return false;
         }
