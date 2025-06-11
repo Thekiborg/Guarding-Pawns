@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <PawnTableDef>
+        <defName>GuardingP_PawnTableDef_Guard</defName>
+        <workerClass>PawnTable_PlayerPawns</workerClass>
+        <columns>
+            <li>LabelWithIcon</li>
+            <li>GuardingP_PawnColumnDef_LifeStage</li>
+            <li MayRequire="Ludeon.RimWorld.Biotech">Xenotype</li> 
+            <li>GuardingP_PawnColumnDef_Manipulation</li>
+            <li>GapTiny</li>
+            <li>GuardingP_PawnColumnDef_Movement</li>
+            <li>GapTiny</li>
+            <li>GuardingP_PawnColumnDef_Sight</li>
+            <li>GapTiny</li>
+            <li>GuardingP_PawnColumnDef_Consciousness</li>
+            <li>GuardingP_PawnColumnDef_ShootingLevel</li>
+            <li>GuardingP_PawnColumnDef_MeleeLevel</li>
+            <li>GuardingP_PawnColumnDef_SelectJob</li>
+            <li>GapSmall</li>
+            <li>GuardingP_PawnColumnDef_SelectJobExtras</li>
+        </columns>
+      </PawnTableDef>
+
+</Defs>
