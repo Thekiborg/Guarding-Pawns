@@ -99,7 +99,7 @@
 			});
 			behaviorAndScan.tickAction = () =>
 			{
-				if (Gen.IsHashIntervalTick(pawn, 120))
+				if (Gen.IsHashIntervalTick(pawn, 120, 1))
 				{
 					target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Math.Max(Verb.EffectiveRange, 35f));
 					if (target == null) return;

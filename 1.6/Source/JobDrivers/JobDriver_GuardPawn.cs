@@ -74,7 +74,7 @@
             });
             behaviorAndScan.tickAction = () =>
             {
-                if (Gen.IsHashIntervalTick(pawn, 160))
+                if (Gen.IsHashIntervalTick(pawn, 160, 1))
                 {
                     target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Math.Max(Verb.EffectiveRange, 35f));
                     if (target == null) return;
@@ -87,7 +87,7 @@
                 }
 
 
-                if (!anyHostileEverFound && (!pawn.pather.Moving || pawn.IsHashIntervalTick(120)))
+                if (!anyHostileEverFound && (!pawn.pather.Moving || pawn.IsHashIntervalTick(120, 1)))
                 {
                     bool moveToPawn = false;
                     if (WalkingTowardsProtegee)

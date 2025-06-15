@@ -76,7 +76,7 @@
             behaviorAndScan.defaultCompleteMode = ToilCompleteMode.Delay;
             behaviorAndScan.tickAction = () =>
             {
-                if (Gen.IsHashIntervalTick(pawn, 160))
+                if (Gen.IsHashIntervalTick(pawn, 160, 1))
                 {
                     target = (Thing)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, minDist: 0f, maxDist: Math.Max(Verb.EffectiveRange, 35f));
                     if (target == null) return;
