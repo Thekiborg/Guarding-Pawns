@@ -1,9 +1,9 @@
 ﻿namespace Thek_GuardingPawns
 {
-    /// <summary>
-    /// Skips the aiAvoidCover check for mechanoids doing my jobs, so I don't make all the pawnkinds do it for all instances.
-    /// </summary>
-    [HarmonyPatch(typeof(CastPositionFinder), "CastPositionPreference")]
+	/// <summary>
+	/// Skips the aiAvoidCover check for mechanoids only doing my jobs.
+	/// </summary>
+	[HarmonyPatch(typeof(CastPositionFinder), "CastPositionPreference")]
     internal static class CastPositionFinder_CastPositionPreference_Transpiler
     {
         private static bool IsMechanoidAndGuarding()
