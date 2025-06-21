@@ -35,7 +35,7 @@
 	<!-- Down here we have references to dependencies -->
 	<ItemGroup>
 		<!-- RimWorld itself -->
-		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*-*" /> <!-- Version="1.4.*" targets the newest stable 1.4 build. -->
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.*" /> <!-- Version="1.4.*" targets the newest stable 1.4 build. -->
 		<!-- To include beta builds, append -* to the version, like this: Version="1.4.*-*" -->
 		<!-- To target a beta version of 1.5, as an example, you'd write this: Version="1.5.*-*" -->
 
@@ -62,50 +62,5 @@
 		<!-- The API for zetrith's prepatcher mod. This is an advanced more powerful alternative to Harmony -->
 		<!-- <PackageReference Include="Zetrith.Prepatcher" Version="1.*" /> -->
 		<!-- Details with wiki here: https://github.com/Zetrith/Prepatcher -->
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Core">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Data">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Drawing">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.IO.Compression.FileSystem">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Numerics">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Runtime.Serialization">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Xml">
-	    <Private>False</Private>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Update="System.Xml.Linq">
-	    <Private>False</Private>
-	  </Reference>
 	</ItemGroup>
 </Project>
