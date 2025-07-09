@@ -116,31 +116,33 @@
 			Toil lastWait = Wait(pawn, Rand.Range(30, 120));
 			lastWait.AddFinishAction(delegate
 			{
-				GuardJobs_GuardPath gJob = mapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
-				var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
-				if (dictContainsPawn && gJob.shouldLoop == false)
+				if (mapComp.GuardJobs[pawn] is GuardJobs_GuardPath gJob)
 				{
-					if (patrolOptions.index == spotsList.Count - 1)
+					var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
+					if (dictContainsPawn && gJob.shouldLoop == false)
 					{
-						mapComp.previousPatrolSpotPassedByPawn[pawn].index = 0;
+						if (patrolOptions.index == spotsList.Count - 1)
+						{
+							mapComp.previousPatrolSpotPassedByPawn[pawn].index = 0;
+						}
+						else
+						{
+							mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
+						}
 					}
-					else
+					else if (dictContainsPawn && gJob.shouldLoop)
 					{
-						mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
-					}
-				}
-				else if (dictContainsPawn && gJob.shouldLoop)
-				{
-					if (patrolOptions.isBacktracking == false)
-					{
-						mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
-						if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) patrolOptions.isBacktracking = true;
-					}
-					else
-					{
-						if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
-						mapComp.previousPatrolSpotPassedByPawn[pawn].index -= 1;
-						if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
+						if (patrolOptions.isBacktracking == false)
+						{
+							mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
+							if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) patrolOptions.isBacktracking = true;
+						}
+						else
+						{
+							if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
+							mapComp.previousPatrolSpotPassedByPawn[pawn].index -= 1;
+							if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
+						}
 					}
 				}
 			});

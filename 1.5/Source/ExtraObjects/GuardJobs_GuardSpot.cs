@@ -6,7 +6,7 @@
         {
             SpotColor = PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor.GuardingP_redSpot;
         }
-        internal PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor? SpotColor;
+        internal PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor SpotColor;
 
         public override void ExposeData()
         {

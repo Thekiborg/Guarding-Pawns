@@ -19,11 +19,11 @@
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            GetSelectedSpot();
+			yield return Toils_General.Do(GetSelectedSpot);
 
 
-            // Handles attacking manually until the threat response kicks in
-            Toil attackUntilNoEnemies = ToilMaker.MakeToil("MakeNewToils");
+			// Handles attacking manually until the threat response kicks in
+			Toil attackUntilNoEnemies = ToilMaker.MakeToil("MakeNewToils");
             attackUntilNoEnemies.AddPreInitAction(delegate
             {
                 if (pawn.RaceProps.IsMechanoid && (pawn.equipment.Primary == null || !pawn.equipment.Primary.def.IsRangedWeapon))
@@ -71,8 +71,15 @@
                 pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
             });
             GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
-            behaviorAndScan.FailOn(() => spotColor != guardJobSpot.SpotColor);
-            behaviorAndScan.defaultDuration = 4000;
+			behaviorAndScan.FailOn(() =>
+			{
+				if (mapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
+				{
+					return spotColor != guardJobSpot.SpotColor;
+				}
+				return true;
+			});
+			behaviorAndScan.defaultDuration = 4000;
             behaviorAndScan.defaultCompleteMode = ToilCompleteMode.Delay;
             behaviorAndScan.tickAction = () =>
             {
@@ -362,11 +369,13 @@
             return toil;
         }
 
-        private void GetSelectedSpot()
-        {
-            mapComp = pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
-            GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
-            spotColor = (PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor)guardJobSpot.SpotColor;
-        }
-    }
+		private void GetSelectedSpot()
+		{
+			mapComp = pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
+			if (mapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
+			{
+				spotColor = guardJobSpot.SpotColor;
+			}
+		}
+	}
 }

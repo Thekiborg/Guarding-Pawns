@@ -19,7 +19,7 @@
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            GetSelectedSpot();
+            yield return Toils_General.Do(GetSelectedSpot);
 
 
             // Handles attacking manually until the threat response kicks in
@@ -70,8 +70,14 @@
             {
                 pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
             });
-            GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
-            behaviorAndScan.FailOn(() => spotColor != guardJobSpot.SpotColor);
+            behaviorAndScan.FailOn(() =>
+            {
+				if (mapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
+				{
+					return spotColor != guardJobSpot.SpotColor;
+				}
+                return true;
+            });
             behaviorAndScan.defaultDuration = 4000;
             behaviorAndScan.defaultCompleteMode = ToilCompleteMode.Delay;
             behaviorAndScan.tickAction = () =>
@@ -365,8 +371,10 @@
         private void GetSelectedSpot()
         {
             mapComp = pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
-            GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
-            spotColor = (PawnColumnWorker_SelectJobExtras.GuardSpotGroupColor)guardJobSpot.SpotColor;
-        }
+            if (mapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
+            {
+                spotColor = guardJobSpot.SpotColor;
+			}
+		}
     }
 }
