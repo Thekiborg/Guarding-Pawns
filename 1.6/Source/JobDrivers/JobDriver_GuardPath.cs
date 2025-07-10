@@ -9,6 +9,14 @@
 		private bool anyHostileEverFound;
 
 
+		MapComponent_GuardingPawns MapComp
+		{
+			get
+			{
+				mapComp ??= pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
+				return mapComp;
+			}
+		}
 		Verb Verb => pawn.CurrentEffectiveVerb;
 
 
@@ -57,13 +65,13 @@
 			Toil behaviorAndScan = ToilMaker.MakeToil("MakeNewToils");
 			behaviorAndScan.defaultCompleteMode = ToilCompleteMode.PatherArrival;
 			behaviorAndScan.preInitActions ??= new List<Action>();
-			behaviorAndScan.preInitActions.Add(delegate
+			behaviorAndScan.preInitActions.Add((Action)delegate
 			{
 				// ------ Behavior (Patrolling) -------
 
 				GetSpotsList();
 				DoPrevSpotDictionary();
-				PatrolOptions prevPatrolSpot = mapComp.previousPatrolSpotPassedByPawn[pawn];
+				PatrolOptions prevPatrolSpot = this.MapComp.previousPatrolSpotPassedByPawn[pawn];
 
 				if (prevPatrolSpot.index > spotsList.Count - 1 || prevPatrolSpot.index < 0)
 				{
@@ -114,34 +122,34 @@
 
 			Toil waitJumpObj = Wait(pawn, Rand.Range(30, 160));
 			Toil lastWait = Wait(pawn, Rand.Range(30, 120));
-			lastWait.AddFinishAction(delegate
+			lastWait.AddFinishAction((Action)delegate
 			{
-				if (mapComp.GuardJobs[pawn] is GuardJobs_GuardPath gJob)
+				if (this.MapComp.GuardJobs[pawn] is GuardJobs_GuardPath gJob)
 				{
-					var dictContainsPawn = mapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
+					var dictContainsPawn = this.MapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
 					if (dictContainsPawn && gJob.shouldLoop == false)
 					{
 						if (patrolOptions.index == spotsList.Count - 1)
 						{
-							mapComp.previousPatrolSpotPassedByPawn[pawn].index = 0;
+							this.MapComp.previousPatrolSpotPassedByPawn[pawn].index = 0;
 						}
 						else
 						{
-							mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
+							this.MapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
 						}
 					}
 					else if (dictContainsPawn && gJob.shouldLoop)
 					{
 						if (patrolOptions.isBacktracking == false)
 						{
-							mapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
-							if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) patrolOptions.isBacktracking = true;
+							this.MapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
+							if (this.MapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) patrolOptions.isBacktracking = true;
 						}
 						else
 						{
-							if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
-							mapComp.previousPatrolSpotPassedByPawn[pawn].index -= 1;
-							if (mapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
+							if (this.MapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
+							this.MapComp.previousPatrolSpotPassedByPawn[pawn].index -= 1;
+							if (this.MapComp.previousPatrolSpotPassedByPawn[pawn].index == 0) patrolOptions.isBacktracking = false;
 						}
 					}
 				}
@@ -406,9 +414,8 @@
 
 		private void DoPrevSpotDictionary()
 		{
-			mapComp ??= Map.GetComponent<MapComponent_GuardingPawns>();
-			GuardJobs_GuardPath gJob = mapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
-			mapComp.previousPatrolSpotPassedByPawn.TryAdd(pawn, new PatrolOptions() { index = 0, isBacktracking = gJob.shouldLoop }); ;
+			GuardJobs_GuardPath gJob = MapComp.GuardJobs[pawn] as GuardJobs_GuardPath;
+			MapComp.previousPatrolSpotPassedByPawn.TryAdd(pawn, new PatrolOptions() { index = 0, isBacktracking = gJob.shouldLoop }); ;
 		}
 
 
@@ -429,31 +436,30 @@
 
 		private void GetSpotsList()
 		{
-			mapComp ??= Map.GetComponent<MapComponent_GuardingPawns>();
-			switch ((mapComp.GuardJobs[pawn] as GuardJobs_GuardPath).PathColor)
+			switch ((MapComp.GuardJobs[pawn] as GuardJobs_GuardPath).PathColor)
 			{
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_redPath:
-					spotsList = [.. mapComp.RedPatrolsOnMap.Values];
+					spotsList = [.. MapComp.RedPatrolsOnMap.Values];
 					break;
 
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_orangePath:
-					spotsList = [.. mapComp.OrangePatrolsOnMap.Values];
+					spotsList = [.. MapComp.OrangePatrolsOnMap.Values];
 					break;
 
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_yellowPath:
-					spotsList = [.. mapComp.YellowPatrolsOnMap.Values];
+					spotsList = [.. MapComp.YellowPatrolsOnMap.Values];
 					break;
 
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_greenPath:
-					spotsList = [.. mapComp.GreenPatrolsOnMap.Values];
+					spotsList = [.. MapComp.GreenPatrolsOnMap.Values];
 					break;
 
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_bluePath:
-					spotsList = [.. mapComp.BluePatrolsOnMap.Values];
+					spotsList = [.. MapComp.BluePatrolsOnMap.Values];
 					break;
 
 				case PawnColumnWorker_SelectJobExtras.GuardPathGroupColor.GuardingP_purplePath:
-					spotsList = [.. mapComp.PurplePatrolsOnMap.Values];
+					spotsList = [.. MapComp.PurplePatrolsOnMap.Values];
 					break;
 
 				default:

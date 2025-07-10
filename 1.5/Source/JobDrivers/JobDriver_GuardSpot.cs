@@ -9,7 +9,15 @@
         private bool anyHostileEverFound;
 
 
-        Verb Verb => pawn.CurrentEffectiveVerb;
+		MapComponent_GuardingPawns MapComp
+		{
+			get
+			{
+				mapComp ??= pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
+				return mapComp;
+			}
+		}
+		Verb Verb => pawn.CurrentEffectiveVerb;
         
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -70,15 +78,15 @@
             {
                 pawn.playerSettings.hostilityResponse = HostilityResponseMode.Attack;
             });
-            GuardJobs_GuardSpot guardJobSpot = mapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
-			behaviorAndScan.FailOn(() =>
+            GuardJobs_GuardSpot guardJobSpot = MapComp.GuardJobs.TryGetValue(pawn) as GuardJobs_GuardSpot;
+			behaviorAndScan.FailOn((Func<bool>)(() =>
 			{
-				if (mapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
+				if (GenCollection.TryGetValue<Pawn, GuardJobs>(this.MapComp.GuardJobs, pawn) is GuardJobs_GuardSpot guardJobSpot)
 				{
 					return spotColor != guardJobSpot.SpotColor;
 				}
 				return true;
-			});
+			}));
 			behaviorAndScan.defaultDuration = 4000;
             behaviorAndScan.defaultCompleteMode = ToilCompleteMode.Delay;
             behaviorAndScan.tickAction = () =>
@@ -371,8 +379,7 @@
 
 		private void GetSelectedSpot()
 		{
-			mapComp = pawn.MapHeld.GetComponent<MapComponent_GuardingPawns>();
-			if (mapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
+			if (MapComp.GuardJobs.TryGetValue(pawn) is GuardJobs_GuardSpot guardJobSpot)
 			{
 				spotColor = guardJobSpot.SpotColor;
 			}
