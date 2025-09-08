@@ -9,7 +9,7 @@
 		[HarmonyPostfix]
 		private static void GuardingWorkTypeIsNotWork(ref bool __result, Pawn pawn)
 		{
-			if (pawn.RaceProps.mechEnabledWorkTypes.Contains(WorkTypeDefOf.GuardingP_GuardingWorkType))
+			if (GuardingPawns.isMechanoidSpotsActive && pawn.RaceProps.mechEnabledWorkTypes.Contains(WorkTypeDefOf.GuardingP_GuardingWorkType))
 			{
 				__result = false;
 			}

@@ -9,19 +9,19 @@ global using Verse.AI;
 
 namespace Thek_GuardingPawns
 {
-    [StaticConstructorOnStartup]
-    public static class GuardingPawns
-    {
+	[StaticConstructorOnStartup]
+	public static class GuardingPawns
+	{
+		internal static bool isMechanoidSpotsActive = ModsConfig.IsActive("veltaris.mechstations");
+		internal static bool isVFEInsectoids2Active = ModsConfig.IsActive("oskarpotocki.vfe.insectoid2");
 
-        internal static bool isVFEInsectoids2Active = ModsConfig.IsActive("oskarpotocki.vfe.insectoid2");
+		static GuardingPawns()
+		{
+			Log.Message("<color=#702963>Thek was here:</color> Guarding Pawns <color=#702963>loaded!</color>");
 
-        static GuardingPawns()
-        {
-            Log.Message("<color=#702963>Thek was here:</color> Guarding Pawns <color=#702963>loaded!</color>");
-
-            // Harmony init
-            Harmony harmony = new("Thekiborg.GuardingPawns");
-            harmony.PatchAll();
-        }
-    }
+			// Harmony init
+			Harmony harmony = new("Thekiborg.GuardingPawns");
+			harmony.PatchAll();
+		}
+	}
 }

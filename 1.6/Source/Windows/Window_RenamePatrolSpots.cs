@@ -10,7 +10,7 @@
 		private const float buttonWidthReduction = 15f;
 
 		public override Vector2 InitialSize => new(280f, 175f);
-		
+
 
 		public Window_RenamePatrolSpots(GuardingP_PatrolSpots patrolSpot)
 		{
@@ -21,7 +21,7 @@
 		public override void DoWindowContents(Rect inRect)
 		{
 			Text.Font = GameFont.Medium;
-			Rect textRect = new (inRect)
+			Rect textRect = new(inRect)
 			{
 				height = Text.LineHeight + 10f
 			};

@@ -64,8 +64,8 @@
 			// Handles the behavior of the guard job and scanning for enemies
 			Toil behaviorAndScan = ToilMaker.MakeToil("MakeNewToils");
 			behaviorAndScan.defaultCompleteMode = ToilCompleteMode.PatherArrival;
-			behaviorAndScan.preInitActions ??= new List<Action>();
-			behaviorAndScan.preInitActions.Add((Action)delegate
+			behaviorAndScan.preInitActions ??= [];
+			behaviorAndScan.preInitActions.Add(delegate
 			{
 				// ------ Behavior (Patrolling) -------
 
@@ -122,12 +122,12 @@
 
 			Toil waitJumpObj = Wait(pawn, Rand.Range(30, 160));
 			Toil lastWait = Wait(pawn, Rand.Range(30, 120));
-			lastWait.AddFinishAction((Action)delegate
+			lastWait.AddFinishAction(delegate
 			{
 				if (this.MapComp.GuardJobs[pawn] is GuardJobs_GuardPath gJob)
 				{
 					var dictContainsPawn = this.MapComp.previousPatrolSpotPassedByPawn.TryGetValue(pawn, out PatrolOptions patrolOptions);
-					if (dictContainsPawn && gJob.shouldLoop == false)
+					if (dictContainsPawn && !gJob.shouldLoop)
 					{
 						if (patrolOptions.index == spotsList.Count - 1)
 						{
@@ -140,7 +140,7 @@
 					}
 					else if (dictContainsPawn && gJob.shouldLoop)
 					{
-						if (patrolOptions.isBacktracking == false)
+						if (!patrolOptions.isBacktracking)
 						{
 							this.MapComp.previousPatrolSpotPassedByPawn[pawn].index += 1;
 							if (this.MapComp.previousPatrolSpotPassedByPawn[pawn].index == spotsList.Count - 1) patrolOptions.isBacktracking = true;
@@ -174,8 +174,8 @@
 			if (target is Pawn tPawn)
 			{
 				#region target is a Pawn
-				bool flag = !tPawn.Downed
-					&& Verb.CanHitTargetFrom(pawn.Position, tPawn)
+				bool flag = (!tPawn.Downed
+					&& Verb.CanHitTargetFrom(pawn.Position, tPawn))
 					|| GenSight.LineOfSightToThing(pawn.Position, tPawn, Map);
 
 				bool flag2 = tPawn.DeadOrDowned
@@ -213,9 +213,9 @@
 			else
 			{
 				#region target is a Thing
-				bool flag = target != null
+				bool flag = (target != null
 					&& !target.Destroyed
-					&& Verb.CanHitTargetFrom(pawn.Position, target)
+					&& Verb.CanHitTargetFrom(pawn.Position, target))
 					|| GenSight.LineOfSightToThing(pawn.Position, target, Map);
 
 				bool flag2 = target == null
@@ -262,10 +262,7 @@
 				#region target is Pawn
 				if (Verb.CanHitTarget(pawnTarget) && !pawnTarget.DeadOrDowned)
 				{
-					if (pawn.mindState != null)
-					{
-						pawn.mindState.enemyTarget = pawnTarget;
-					}
+					pawn.mindState?.enemyTarget = pawnTarget;
 
 					CastPositionRequest cast = new()
 					{
@@ -306,10 +303,7 @@
 				#region target is Thing
 				if (Verb.CanHitTarget(target) && !target.Destroyed)
 				{
-					if (pawn.mindState != null)
-					{
-						pawn.mindState.enemyTarget = target;
-					}
+					pawn.mindState?.enemyTarget = target;
 
 					CastPositionRequest cast = new()
 					{
@@ -358,14 +352,11 @@
 				{
 					if (!pawnTarget.DeadOrDowned && GenSight.LineOfSightToThing(pawn.Position, pawnTarget, Map))
 					{
-						if (pawn.mindState != null)
-						{
-							pawn.mindState.enemyTarget = pawnTarget;
-						}
+						pawn.mindState?.enemyTarget = pawnTarget;
 
 						if (pawnTarget.pather.curPath != null && pawnTarget.pather.curPath.NodesLeftCount > 0)
 						{
-							int peekAt = (pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3) - 1);
+							int peekAt = pawnTarget.pather.curPath.NodesLeftCount - (pawnTarget.pather.curPath.NodesLeftCount / 3) - 1;
 
 							IntVec3 targetTile = pawnTarget.pather.curPath.Peek(peekAt);
 
@@ -395,10 +386,7 @@
 				{
 					if (!target.Destroyed && GenSight.LineOfSightToThing(pawn.Position, target, Map))
 					{
-						if (pawn.mindState != null)
-						{
-							pawn.mindState.enemyTarget = target;
-						}
+						pawn.mindState?.enemyTarget = target;
 
 						if (pawn.CanReach(target, PathEndMode.Touch, Danger.Deadly))
 						{

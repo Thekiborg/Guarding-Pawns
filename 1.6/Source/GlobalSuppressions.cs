@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute.#ctor(System.String)")]
 [assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>", Scope = "member", Target = "~M:Thek_GuardingPawns.ThinkNode_ConditionalWorkMech_Satisfied_Postfix.GuardingWorkTypeIsNotWork(System.Boolean@,Verse.Pawn)")]
+[assembly: SuppressMessage("Style", "IDE0051:Remove unused private members", Justification = "<Pending>", Scope = "member", Target = "~M:Thek_GuardingPawns.CastPositionFinder_CastPositionPreference_Transpiler.SkipAiAvoidCoverCheck(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction})~System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction}")]
