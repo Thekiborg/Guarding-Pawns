@@ -1,5 +1,6 @@
 ﻿namespace Thek_GuardingPawns
 {
+	 [StaticConstructorOnStartup]
 	public class MainTabWindow_Guards : MainTabWindow_PawnTable
 	{
 		const float padding = 5f + CheckboxPadding;
@@ -135,4 +136,5 @@
         }
         */
 	}
+
 }
