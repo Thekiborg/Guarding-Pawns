@@ -1,4 +1,6 @@
-﻿namespace Thek_GuardingPawns
+﻿using System.Linq;
+
+namespace Thek_GuardingPawns
 {
 	public class JobDriver_GuardSpot : JobDriver
 	{
@@ -7,6 +9,7 @@
 		readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
 		private Thing target;
 		private bool anyHostileEverFound;
+		private int antiCTD = 0;
 
 
 		MapComponent_GuardingPawns MapComp
@@ -27,6 +30,7 @@
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
+			AddFailCondition(() => antiCTD > GuardingPawns.antiCTDThreshold);
 			yield return Toils_General.Do(GetSelectedSpot);
 
 
@@ -80,7 +84,7 @@
 			});
 			behaviorAndScan.FailOn(() =>
 			{
-				if (GenCollection.TryGetValue<Pawn, GuardJobs>(this.MapComp.GuardJobs, pawn) is GuardJobs_GuardSpot guardJobSpot)
+				if (GenCollection.TryGetValue(MapComp.GuardJobs, pawn) is GuardJobs_GuardSpot guardJobSpot)
 				{
 					return spotColor != guardJobSpot.SpotColor;
 				}
@@ -103,11 +107,11 @@
 			};
 			behaviorAndScan.preInitActions.Add(delegate
 			{
-				Building building = pawn.Position.GetFirstBuilding(Map);
-				if (building != null && !pawn.pather.Moving)
+				Thing thing = Map.thingGrid.ThingsListAt(pawn.Position).Where(b => b is GuardingP_StoreSpots).FirstOrFallback();
+				if (thing != null && !pawn.pather.Moving)
 				{
 					behaviorAndScan.handlingFacing = true;
-					pawn.Rotation = building.Rotation;
+					pawn.Rotation = thing.Rotation;
 				}
 			});
 			Toil waitToil = Wait(pawn, 2);
@@ -271,6 +275,7 @@
 
 		private void AttackUntilNoEnemies(Toil thisToil)
 		{
+			antiCTD++;
 			if (target is Pawn tPawn)
 			{
 				#region target is a Pawn
@@ -349,7 +354,7 @@
 		}
 
 
-		public static Toil Wait(Pawn pawn, int ticks)
+		private static Toil Wait(Pawn pawn, int ticks)
 		{
 			Toil toil = ToilMaker.MakeToil("Wait");
 			toil.initAction = pawn.pather.StopDead;
@@ -358,8 +363,11 @@
 			toil.handlingFacing = true;
 			toil.tickAction = delegate
 			{
-				Building building = toil.actor.Position.GetFirstBuilding(toil.actor.Map);
-				if (building != null) toil.actor.Rotation = building.Rotation;
+				Thing thing = pawn.Map.thingGrid.ThingsListAt(pawn.Position).Where(b => b is GuardingP_StoreSpots).FirstOrFallback();
+				if (thing != null && !pawn.pather.Moving)
+				{
+					pawn.Rotation = thing.Rotation;
+				}
 			};
 			return toil;
 		}

@@ -12,6 +12,7 @@ namespace Thek_GuardingPawns
 	[StaticConstructorOnStartup]
 	public static class GuardingPawns
 	{
+		internal const int antiCTDThreshold = 10000;
 		internal static bool isMechanoidSpotsActive = ModsConfig.IsActive("veltaris.mechstations");
 		internal static bool isVFEInsectoids2Active = ModsConfig.IsActive("oskarpotocki.vfe.insectoid2");
 

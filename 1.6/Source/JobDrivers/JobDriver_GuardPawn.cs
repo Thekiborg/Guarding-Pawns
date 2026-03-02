@@ -5,6 +5,7 @@
 		readonly TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.LOSBlockableByGas | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;
 		private Thing target;
 		private bool anyHostileEverFound;
+		private int antiCTD = 0;
 
 
 		Verb Verb => pawn.CurrentEffectiveVerb;
@@ -14,6 +15,7 @@
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
+			AddFailCondition(() => antiCTD > GuardingPawns.antiCTDThreshold);
 			// Handles attacking manually until the threat response kicks in
 			Toil attackUntilNoEnemies = ToilMaker.MakeToil("MakeNewToils");
 			attackUntilNoEnemies.AddPreInitAction(delegate
@@ -132,6 +134,7 @@
 
 		private void AttackUntilNoEnemies(Toil thisToil)
 		{
+			antiCTD++;
 			if (target is Pawn tPawn)
 			{
 				#region target is a Pawn
