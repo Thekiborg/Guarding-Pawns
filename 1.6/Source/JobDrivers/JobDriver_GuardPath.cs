@@ -23,7 +23,6 @@
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			AddFailCondition(() => antiCTD > GuardingPawns.antiCTDThreshold);
 			// Handles attacking manually until the threat response kicks in
 			Toil attackUntilNoEnemies = ToilMaker.MakeToil("MakeNewToils");
 			attackUntilNoEnemies.AddPreInitAction(delegate
@@ -173,7 +172,11 @@
 
 		private void AttackUntilNoEnemies(Toil thisToil)
 		{
-			antiCTD++;
+			if (antiCTD++ > GuardingPawns.antiCTDThreshold)
+			{
+				Log.Message("<color=#702963>GP:</color> saved game from CTD.");
+				EndJobWith(JobCondition.Errored);
+			}
 			if (target is Pawn tPawn)
 			{
 				#region target is a Pawn

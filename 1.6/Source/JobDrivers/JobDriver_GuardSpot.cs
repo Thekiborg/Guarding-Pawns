@@ -30,7 +30,6 @@ namespace Thek_GuardingPawns
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			AddFailCondition(() => antiCTD > GuardingPawns.antiCTDThreshold);
 			yield return Toils_General.Do(GetSelectedSpot);
 
 
@@ -275,7 +274,11 @@ namespace Thek_GuardingPawns
 
 		private void AttackUntilNoEnemies(Toil thisToil)
 		{
-			antiCTD++;
+			if (antiCTD++ > GuardingPawns.antiCTDThreshold)
+			{
+				Log.Message("<color=#702963>GP:</color> saved game from CTD.");
+				EndJobWith(JobCondition.Errored);
+			}
 			if (target is Pawn tPawn)
 			{
 				#region target is a Pawn
