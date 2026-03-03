@@ -274,7 +274,6 @@ namespace Thek_GuardingPawns
 
 		private void AttackUntilNoEnemies(Toil thisToil)
 		{
-			Log.Message(antiCTD);
 			if (antiCTD++ > GuardingPawns.antiCTDThreshold)
 			{
 				Log.Message("<color=#702963>GP:</color> saved game from CTD.");
